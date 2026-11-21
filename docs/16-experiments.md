@@ -25,10 +25,12 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E17 | Reading audit | generated readings | readings pass the batteries of [[14-reading-audit]] | any battery fails |
 | E18 | Martingale drift trigger | longitudinal data with known changes | the trigger fires after real changes and rarely otherwise | missed changes or frequent false triggers |
 | E19 | Cohort transfer | private cohort + new users | cohort answers improve readings for users who are never asked | no gain for new users ([[19-private-cohort-pilot]]) |
+| E20 | Recurring situations | cohort, calibration week | after one answer, later readings of the same situation improve vs a micro-randomised no-question control | no gain on the same situation ([[20-recurring-situations]]) |
+| E21 | Words vs expression | public multimodal sets + cohort | incongruent moments are where generic models fail and where one question gains most | no gap between congruent and incongruent moments ([[21-text-face-incongruence]]) |
 
 ## Before the interview (done)
 
-A synthetic simulation of E1-like, E2-like, E3-like, E4-like, E9-like and E19-like experiments. → [[18-simulation]]
+A synthetic simulation of E1-like, E2-like, E3-like, E4-like, E9-like, E19-like and E20-like experiments. → [[18-simulation]]
 
 ## First 90 days
 

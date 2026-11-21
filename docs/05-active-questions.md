@@ -19,8 +19,11 @@ The options are 2–3 plausible states, always with "none of these" and "somethi
   question, the user's response rate at that hour and time of day needed up to 88% fewer questions than random
   timing and 32% fewer than uncertainty alone, on the participant with most labels.
 - **Receptivity and affect are linked** (King et al., 2024): asking at the wrong moment biases the data.
-- **Our simulation is more modest:** choosing ambiguous moments did not beat random moments clearly. The
-  claim must be tested on real people. → [[18-simulation]]
+- **Our simulations:** when the mood drifts from moment to moment, choosing ambiguous moments did not beat
+  random moments ([[18-simulation]]). When situations recur, it does: one closed question at an ambiguous moment
+  makes later readings of the same situation correct about 9 times in 10 (0.892 vs 0.497 without questions), and
+  ambiguous timing beats random timing (0.863 vs 0.751) with fewer questions. → [[20-recurring-situations]]
+- The claim must still be tested on real people (E3, E15, E20).
 
 ## What to ask (the options)
 

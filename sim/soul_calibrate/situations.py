@@ -1,0 +1,283 @@
+"""Recurring situations: does a question improve the next reading of the same situation?
+
+The earlier active-question experiment measured accuracy on later moments in general.
+This module asks a narrower question, closer to how a person lives: the same
+situations come back (the evening after a long work call, the gym, dinner with a
+partner). Each situation has a fixed true state for that person and a personal signal
+signature. A generic model narrows the field to two or three states; the user's answer
+should then make every later reading of *that* situation more precise.
+
+World
+-----
+* Four states. Each state has a population prototype in feature space.
+* Each user distorts the prototypes in a personal way (expression style), so the
+  population model is often torn between two or three states for that user.
+* Each user has a few recurring situations: a fixed true state, a personal signature
+  (prototype + personal distortion + a situation-specific component) and a frequency.
+* An occurrence is the signature plus measurement noise. Features are already centred
+  on the person's baseline (enrollment done).
+
+Personal memory
+---------------
+Every answer is stored with the signal it was given for. A new reading adds, to the
+population log-probabilities, the evidence of the stored answers weighted by a Gaussian
+kernel on signal distance. The model never sees the situation's identity: it can only
+recognise a situation by its signal.
+
+Questions
+---------
+* closed: the options are the states of the conformal set (plus "neither": then the
+  user answers openly);
+* open: the user names the state freely, with a higher error.
+
+Policies, at the same budget of one question a day at most:
+* never: no questions (today's approach);
+* random: a random moment each day;
+* ambiguous: the first moment of the day whose set has two or three states;
+* ambiguous + new: as ambiguous, but skip moments the memory already covers
+  (a simple value-of-information rule: do not ask what you already know).
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+from .conformal import calibrate, prediction_sets
+
+N_STATES = 4
+NEIGHBOURS = {0: (1, 3), 1: (0, 2), 2: (1, 3), 3: (0, 2)}
+
+
+@dataclass(frozen=True)
+class SituationConfig:
+    n_features: int = 16
+    n_situations: int = 6          # recurring situations per person
+    moments_per_day: int = 4
+    calib_days: int = 7            # the calibration week, with questions
+    test_days: int = 5             # afterwards: no questions, readings only
+    separation: float = 0.15       # distance between population prototypes (per feature)
+    personal_sd: float = 0.45      # personal distortion of the prototypes
+    situation_sd: float = 0.2      # what makes one situation different from another of the same state
+    noise_sd: float = 0.35         # moment-to-moment measurement noise
+    stability: float = 1.0         # probability that a situation brings its usual state
+    closed_error: float = 0.05     # wrong pick among offered options
+    open_error: float = 0.15       # wrong state named in an open answer
+    alpha: float = 0.1             # conformal miscoverage
+    bandwidth: float | None = None # kernel bandwidth; None = estimated from the noise
+    covered_weight: float = 0.5    # "ambiguous + new" skips moments already this covered
+
+
+@dataclass
+class Person:
+    protos: np.ndarray       # (4, d) the person's own version of each state
+    component: np.ndarray    # (S, d) what is specific to each situation
+    truth: np.ndarray        # (S,) usual state of each situation
+    freq: np.ndarray         # (S,)
+
+    @property
+    def signatures(self) -> np.ndarray:
+        return self.protos[self.truth] + self.component
+
+
+def _world(cfg: SituationConfig, world_seed: int) -> np.ndarray:
+    rng = np.random.default_rng(world_seed)
+    return rng.normal(0.0, cfg.separation, size=(N_STATES, cfg.n_features))
+
+
+def make_person(cfg: SituationConfig, protos: np.ndarray, rng: np.random.Generator) -> Person:
+    personal = protos + rng.normal(0.0, cfg.personal_sd, size=protos.shape)
+    truth = rng.integers(0, N_STATES, size=cfg.n_situations)
+    component = rng.normal(0.0, cfg.situation_sd, size=(cfg.n_situations, cfg.n_features))
+    freq = rng.dirichlet(np.full(cfg.n_situations, 2.0))
+    return Person(protos=personal, component=component, truth=truth, freq=freq)
+
+
+def occurrences(cfg: SituationConfig, person: Person, n: int, rng: np.random.Generator):
+    """Situation, signal and true state of n moments.
+
+    With probability 1 - stability the situation brings a neighbouring state instead
+    of its usual one, and the signal follows that state.
+    """
+    s = rng.choice(len(person.truth), size=n, p=person.freq)
+    y = person.truth[s].copy()
+    for t in np.flatnonzero(rng.random(n) >= cfg.stability):
+        y[t] = rng.choice(NEIGHBOURS[int(y[t])])
+    X = person.protos[y] + person.component[s] + rng.normal(0.0, cfg.noise_sd, size=(n, cfg.n_features))
+    return s, X, y
+
+
+def population_model(cfg: SituationConfig, protos: np.ndarray, n_people: int, rng: np.random.Generator):
+    Xs, ys = [], []
+    for _ in range(n_people):
+        p = make_person(cfg, protos, rng)
+        _, X, y = occurrences(cfg, p, 20, rng)
+        Xs.append(X)
+        ys.append(y)
+    model = LogisticRegression(max_iter=2000, C=1.0)
+    model.fit(np.vstack(Xs), np.concatenate(ys))
+    return model
+
+
+def answer(true_state: int, offered: np.ndarray | None, cfg: SituationConfig, rng: np.random.Generator) -> int:
+    """The user's answer. offered = boolean mask of the options (closed question) or None (open)."""
+    if offered is not None and offered[true_state]:
+        if rng.random() < cfg.closed_error:
+            others = np.flatnonzero(offered & (np.arange(N_STATES) != true_state))
+            if len(others):
+                return int(rng.choice(others))
+        return true_state
+    # open question, or "neither" followed by an open answer
+    if rng.random() < cfg.open_error:
+        return int(rng.choice(NEIGHBOURS[true_state]))
+    return true_state
+
+
+class Memory:
+    """Answers stored with their signals; evidence spreads to similar signals."""
+
+    def __init__(self, bandwidth: float, reliability: float = 0.9):
+        self.h = bandwidth
+        self.X: list[np.ndarray] = []
+        self.a: list[int] = []
+        self.llr = float(np.log(reliability / ((1 - reliability) / (N_STATES - 1))))
+
+    def weights(self, x: np.ndarray) -> np.ndarray:
+        if not self.X:
+            return np.zeros(0)
+        d2 = ((np.asarray(self.X) - x) ** 2).sum(axis=1)
+        return np.exp(-d2 / (2 * self.h ** 2))
+
+    def coverage_weight(self, x: np.ndarray) -> float:
+        w = self.weights(x)
+        return float(w.max()) if len(w) else 0.0
+
+    def adjust(self, logp: np.ndarray, x: np.ndarray) -> np.ndarray:
+        w = self.weights(x)
+        out = logp.copy()
+        for wi, ai in zip(w, self.a):
+            out[ai] += wi * self.llr
+        out -= out.max()
+        p = np.exp(out)
+        return p / p.sum()
+
+    def add(self, x: np.ndarray, a: int) -> None:
+        self.X.append(x)
+        self.a.append(a)
+
+
+POLICIES = ("never", "random", "ambiguous", "ambiguous_new")
+
+
+def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, policy: str,
+               qtype: str, bandwidth: float, rng: np.random.Generator) -> dict:
+    """One person through the calibration week and the test days under one policy."""
+    s_all, X_all, y_all = stream
+    days = cfg.calib_days + cfg.test_days
+    mem = Memory(bandwidth, reliability=1 - (cfg.closed_error if qtype == "closed" else cfg.open_error))
+    asked_situations: set[int] = set()
+    log = []
+    for day in range(days):
+        idx = range(day * cfg.moments_per_day, (day + 1) * cfg.moments_per_day)
+        asked_today = False
+        random_pick = int(rng.integers(0, cfg.moments_per_day))
+        for j, t in enumerate(idx):
+            x, s = X_all[t], int(s_all[t])
+            y = int(y_all[t])
+            logp = model.predict_log_proba(x[None, :])[0]
+            proba = mem.adjust(logp, x)
+            st = prediction_sets(proba[None, :], thresholds)[0]
+            size = int(st.sum())
+            pred = int(proba.argmax())
+            # who had been asked about this situation *before* this reading
+            seen_before = s in asked_situations
+            log.append({"day": day, "s": s, "correct": pred == y, "size": size,
+                        "in_set": bool(st[y]), "after_asked": seen_before, "test": day >= cfg.calib_days})
+            if day >= cfg.calib_days or asked_today or policy == "never":
+                continue
+            ask = False
+            if policy == "random":
+                ask = j == random_pick
+            elif policy == "ambiguous":
+                ask = 2 <= size <= 3
+            elif policy == "ambiguous_new":
+                ask = 2 <= size <= 3 and mem.coverage_weight(x) < cfg.covered_weight
+            if ask:
+                offered = st if (qtype == "closed" and size <= 3) else None
+                mem.add(x, answer(y, offered, cfg, rng))
+                asked_situations.add(s)
+                asked_today = True
+                log[-1]["asked"] = True
+    return {"log": log, "n_asked": len(mem.a)}
+
+
+def exp_situations(seed: int, cfg: SituationConfig = SituationConfig(), n_people: int = 60,
+                   qtypes=("closed", "open")) -> dict:
+    """Same world, same people, same moments: only the questions differ between policies."""
+    protos = _world(cfg, world_seed=1000 + seed)
+    rng = np.random.default_rng(seed)
+    model = population_model(cfg, protos, n_people=150, rng=rng)
+
+    # conformal calibration on other people
+    Xc, yc = [], []
+    for _ in range(60):
+        p = make_person(cfg, protos, rng)
+        _, X, y = occurrences(cfg, p, 10, rng)
+        Xc.append(X)
+        yc.append(y)
+    thresholds = calibrate(model.predict_proba(np.vstack(Xc)), np.concatenate(yc), cfg.alpha, per_class=True)
+
+    h = cfg.bandwidth or float(cfg.noise_sd * np.sqrt(2 * cfg.n_features))
+    n_moments = (cfg.calib_days + cfg.test_days) * cfg.moments_per_day
+    people = [make_person(cfg, protos, rng) for _ in range(n_people)]
+    streams = [occurrences(cfg, p, n_moments, rng) for p in people]
+
+    logs: dict[tuple[str, str], list] = {}
+    for qtype in qtypes:
+        for policy in POLICIES:
+            if policy == "never" and qtype != qtypes[0]:
+                continue
+            key = ("none" if policy == "never" else qtype, policy)
+            entries = []
+            for i, (p, st) in enumerate(zip(people, streams)):
+                prng = np.random.default_rng([seed, i, POLICIES.index(policy), qtypes.index(qtype)])
+                out = run_person(cfg, model, thresholds, p, st, policy, qtype, h, prng)
+                for e in out["log"]:
+                    e["person"] = i
+                entries.extend(out["log"])
+            logs[key] = entries
+    return summarise(logs, cfg)
+
+
+def summarise(logs: dict, cfg: SituationConfig) -> dict:
+    never = logs[("none", "never")]
+    base_correct = np.array([e["correct"] for e in never])
+    days = cfg.calib_days + cfg.test_days
+    res: dict = {}
+    for (qtype, policy), entries in logs.items():
+        name = policy if policy == "never" else f"{policy}/{qtype}"
+        correct = np.array([e["correct"] for e in entries])
+        test = np.array([e["test"] for e in entries])
+        after = np.array([e["after_asked"] for e in entries])
+        size = np.array([e["size"] for e in entries])
+        day = np.array([e["day"] for e in entries])
+        asked = np.array([e.get("asked", False) for e in entries])
+        r = {
+            "test_accuracy": float(correct[test].mean()),
+            "questions_per_person": float(asked.sum() / (len(entries) / (days * cfg.moments_per_day))),
+            # the same situation, read again after the user answered about it,
+            # compared with the very same moments when nobody asked
+            "same_situation_after": float(correct[after].mean()) if after.any() else float("nan"),
+            "same_situation_without_questions": float(base_correct[after].mean()) if after.any() else float("nan"),
+            # situations the policy never asked about (spill-over)
+            "other_situations": float(correct[~after & (day > 0)].mean()),
+            "other_situations_without_questions": float(base_correct[~after & (day > 0)].mean()),
+            "share_moments_after_asked": float(after.mean()),
+            "accuracy_by_day": [float(correct[day == d].mean()) for d in range(days)],
+            "set_size_by_day": [float(size[day == d].mean()) for d in range(days)],
+            "speak_by_day": [float((size[day == d] == 1).mean()) for d in range(days)],
+        }
+        res[name] = r
+    return res

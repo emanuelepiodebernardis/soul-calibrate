@@ -20,6 +20,10 @@ repository records the date of each part.
    evidence maps. → `docs/13`
 6. **Reading audit** of the language layer. → `docs/14`
 7. **Simulation** of the loop with synthetic users. → `sim/`
+8. **Recurring situations:** questions at ambiguous moments calibrate the person's own recurring situations, so
+   every later reading of the same situation becomes more precise. → `docs/20`, `sim/soul_calibrate/situations.py`
+9. **Incongruence as a reason to ask:** disagreement between words and expression, read against the person's
+   baseline, triggers a calibrated question instead of a prompt-level guess. → `docs/21`
 
 ## Credits
 

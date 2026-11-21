@@ -46,13 +46,35 @@ Also: a rolling baseline recovers after a step change in the signals (0.581 vs 0
 with a generic model Nightlet would have to ask at 76% of moments, so personalization comes before speaking
 and questions need a budget. → [docs/18-simulation.md](docs/18-simulation.md)
 
+The generic model scores 0.578 in the personalization ladder and 0.550 above: the second setting adds a
+difference between public training data and real users.
+
 ![Cohort transfer](sim/results/fig4_cohort_transfer.png)
+
+### Recurring situations: one answer, every later reading of the same situation
+
+People live in recurring situations, each with a personal signal signature. In a second simulation (6 recurring
+situations per person, a 7-day calibration week with at most one question a day, then 5 test days without questions):
+
+| Policy | Questions | Accuracy in the test days |
+| --- | --- | --- |
+| No questions (today) | 0 | 0.504 |
+| Random moment, closed question | 7.0 | 0.751 |
+| Ambiguous moment, closed question | 6.0 | **0.863** |
+
+After one answer, the same situation is read correctly 89% of the time (vs 50% for the same moments without
+questions), and the set of plausible states narrows from 2.4 to 1.4 in a week. → [docs/20-recurring-situations.md](docs/20-recurring-situations.md)
+
+![Recurring situations](sim/results/fig5_recurring_situations.png)
+
+When words and face or voice disagree, the disagreement becomes a reason to ask, read against the person's own
+baseline. → [docs/21-text-face-incongruence.md](docs/21-text-face-incongruence.md)
 
 ## Repository map
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/19` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/21` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `graph/` | knowledge graph of the project (Graphify): report, data and interactive map |
@@ -66,8 +88,9 @@ browser without an internet connection.
 ```bash
 cd sim
 pip install -r requirements.txt
-python -m pytest -q tests                      # 10 tests
+python -m pytest -q tests                      # 14 tests
 python run_simulation.py --seeds 5 --out results
+python run_situations.py --seeds 5 --out results
 ```
 
 ## Author and license

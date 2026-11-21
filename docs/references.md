@@ -62,3 +62,9 @@ Compiled by Emanuele De Bernardis, November 2026. Grouped by the module that use
 
 - RinDig, [AuditEngine](https://github.com/RinDig/AuditEngine): psychometric batteries administered to language models → [[14-reading-audit]]
 - RinDig, [icm-architect](https://github.com/RinDig/icm-architect) and Van Clief & McDermott, *Interpretable Context Methodology* ([arXiv:2603.16021](https://arxiv.org/abs/2603.16021)) → structure of this repository, [[17-roadmap-and-governance]]
+
+## Recurring situations and incongruence — [[20-recurring-situations]], [[21-text-face-incongruence]]
+
+- Stacchio, Ubaldi, Mauri, Gaggioli, Galdelli, Frontoni. Empathic Prompting: Non-Verbal Context Integration for Multimodal LLM Conversations. [arXiv:2510.20743](https://arxiv.org/abs/2510.20743)
+- Dragut, Lacuesta, Gaya-Morey, Buades-Rubio (2026). Evaluating multimodal emotion recognition in proactive conversational agents: A user study. [arXiv:2605.20200](https://arxiv.org/abs/2605.20200)
+- Hoque & Picard. Acted vs. natural frustration and delight: many people smile in natural frustration. [MIT Media Lab](https://www.media.mit.edu/publications/acted-vs-natural-frustration-and-delight-many-people-smile-in-natural-frustration/)

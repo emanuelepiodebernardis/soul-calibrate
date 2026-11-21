@@ -21,17 +21,19 @@ the time. Accuracy is always measured on later moments, never on the moments the
 | C. Conformal sets (target 90%) | coverage 0.905; with a generic model the set is ambiguous at 76% of moments |
 | D. Step change in signals | fixed baseline 0.541, rolling 0.581, no-change reference 0.584 |
 | E. Cohort transfer (users never asked) | today 0.550 → cohort of 50 users 0.590; full loop 0.652 |
+| F. Recurring situations ([[20-recurring-situations]]) | no questions 0.504 → random moments 0.751 → ambiguous moments, closed questions 0.863; same situation after one answer 0.892 |
 
 ![Personalization](../sim/results/fig1_personalization.png)
 ![Cohort transfer](../sim/results/fig4_cohort_transfer.png)
 ![Decisions and drift](../sim/results/fig3_decisions_and_drift.png)
 ![Active vs random](../sim/results/fig2_active_vs_random.png)
+![Recurring situations](../sim/results/fig5_recurring_situations.png)
 
 ## What this says, and what it does not
 
 - **Personalization is the main lever:** every layer adds accuracy, and the loop gains about 10 points over today's approach on these synthetic users.
 - **A private cohort helps everyone:** answers from 50 consented users raise accuracy for new users who are never asked (0.550 → 0.590). → [[19-private-cohort-pilot]]
-- **Choosing when to ask is not yet shown to help:** the literature (Tazarv et al.) reports large savings; this simulation does not. It must be tested on real people (E3, E15).
+- **Choosing when to ask helps when situations recur:** with a mood that drifts at every moment (part B) ambiguous and random timing tie; with recurring situations (part F) ambiguous timing wins clearly, closed questions beat open ones, and the set of plausible states narrows from 2.4 to 1.4 states in a week. It must be tested on real people (E3, E15, E20).
 - **A budget is not optional:** with a generic model Nightlet would have to ask at three moments out of four.
 - **With public data that differ from real users, person normalisation alone did not help** (0.550 vs 0.545); it helps when the shared model is trained on in-domain data (experiment A).
 
