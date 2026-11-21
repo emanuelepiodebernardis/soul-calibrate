@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use or build on this work, please cite it as below."
+title: "SOUL-Calibrate: personal calibration, active questions and user-grounded evaluation for emotion-reading systems"
+authors:
+  - family-names: "De Bernardis"
+    given-names: "Emanuele"
+    email: "emanuelepio.debernardis@gmail.com"
+date-released: 2026-11-21
+version: "0.1.0"
+license: MIT
+repository-code: "https://github.com/emanuelepiodebernardis/soul-calibrate"
+keywords:
+  - affective computing
+  - personalization
+  - conformal prediction
+  - active learning
+  - wearables
