@@ -8,6 +8,9 @@ Author: Emanuele De Bernardis · Module: Personal model · Part of: [[01-archite
 - **Inputs normalised on the personal baseline** (person-mean centering). → [[04-rolling-baseline]]
 - **A small personal head** per user, updated on the phone. It sees the population model's log-probabilities and
   the user's normalised features, and is shrunk toward the population until answers accumulate.
+- **A situation memory** next to the head: answers stored with the signal they were given for, so a recurring
+  situation is read the way the person described it. The head learns how the person shows each state; the memory
+  learns what their recurring situations mean. Order: population → head → memory. → [[20-recurring-situations]]
 - **On the bracelet:** the head can be an integer additive model with exact per-signal contributions,
   so every reading can say which signal moved and by how much. → [[13-ideas-from-prior-work]]
 

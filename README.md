@@ -63,20 +63,45 @@ situations per person, a 7-day calibration week with at most one question a day,
 | Ambiguous moment, closed question | 6.0 | **0.863** |
 
 After one answer, the same situation is read correctly 89% of the time (vs 50% for the same moments without
-questions), and the set of plausible states narrows from 2.4 to 1.4 in a week. → [docs/20-recurring-situations.md](docs/20-recurring-situations.md)
+questions), and the set of plausible states narrows from 2.4 to 1.4 in a week. After the week Nightlet speaks in
+72% of readings and is right 94% of the time when it does (today: 7.5% and 82%). With a shared model trained only
+on public data, as Nightlet's privacy promise requires, the gain grows as the public data differ more from users.
+The same experiments surface two new problems, coverage after personalization and life changes, with their fixes. → [docs/20-recurring-situations.md](docs/20-recurring-situations.md)
 
 ![Recurring situations](sim/results/fig5_recurring_situations.png)
 
 When words and face or voice disagree, the disagreement becomes a reason to ask, read against the person's own
 baseline. → [docs/21-text-face-incongruence.md](docs/21-text-face-incongruence.md)
 
+## 5. Code Nightlet can run: `engine/soulcal`
+
+A small Python package (numpy only) that takes what the device and app already produce (facial, speech and
+text model outputs; heart rate, HRV, skin temperature, movement) and returns speak / ask / quiet for every
+reading, learns from answers and one-tap corrections, flags when words and expression disagree, and keeps its
+state in a JSON file on the phone. `soulcal bench` runs the SOUL-Bench ladder B0–B6 on any readings with
+self-reports, so in-house and partner models are compared the same way. It also builds a personal pattern graph (context, body, expression and the
+astrology reflection layer) with false-discovery correction and replication, so chance patterns are never
+shown as findings.
+
+| Demo, 20 synthetic people | Accuracy, week 6 | Accuracy when speaking |
+| --- | --- | --- |
+| Today: generic reading | 0.57 | 0.68 |
+| Engine (baseline + questions + corrections + memory) | **0.77** | **0.94** |
+
+```bash
+cd engine && python -m pytest tests -q && python -m soulcal demo --out examples/demo_out
+```
+
+→ [docs/22-engine.md](docs/22-engine.md)
+
 ## Repository map
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/21` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/22` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
+| `engine/` | the `soulcal` package: usable engine, command line, demo outputs and tests |
 | `graph/` | knowledge graph of the project (Graphify): report, data and interactive map |
 | `AUTHORS.md` | authorship and original contributions |
 
@@ -88,9 +113,12 @@ browser without an internet connection.
 ```bash
 cd sim
 pip install -r requirements.txt
-python -m pytest -q tests                      # 14 tests
+python -m pytest -q tests                      # 15 tests
 python run_simulation.py --seeds 5 --out results
 python run_situations.py --seeds 5 --out results
+cd ../engine
+python -m pytest -q tests                      # 13 tests
+python -m soulcal demo --out examples/demo_out
 ```
 
 ## Author and license

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from soul_calibrate.situations import Memory, SituationConfig, answer, exp_situations
+from soul_calibrate.situations import Memory, SituationConfig, answer, exp_life_change, exp_situations
 
 
 def test_memory_moves_the_reading_toward_the_answer():
@@ -37,3 +37,10 @@ def test_no_questions_means_no_change():
     res = exp_situations(seed=1, n_people=10, qtypes=("closed",))
     assert res["never"]["questions_per_person"] == 0.0
     assert res["never"]["other_situations"] == res["never"]["other_situations_without_questions"]
+
+
+def test_life_change_reports_every_variant():
+    res = exp_life_change(seed=0, n_people=8, visibility=0.5)
+    assert "answers never fade" in res and "+ user corrections (30% of wrong readings)" in res
+    for v in res.values():
+        assert 0.0 <= v["changed_first_week"] <= 1.0 and v["interactions_per_person"] > 0

@@ -22,6 +22,8 @@ the time. Accuracy is always measured on later moments, never on the moments the
 | D. Step change in signals | fixed baseline 0.541, rolling 0.581, no-change reference 0.584 |
 | E. Cohort transfer (users never asked) | today 0.550 → cohort of 50 users 0.590; full loop 0.652 |
 | F. Recurring situations ([[20-recurring-situations]]) | no questions 0.504 → random moments 0.751 → ambiguous moments, closed questions 0.863; same situation after one answer 0.892 |
+| G. Public data only (Nightlet's constraint) | the more public data differ from users, the larger the gain: +0.36, +0.38, +0.40 |
+| H. New problems | coverage 0.855 with random questions (0.881 with adaptive conformal, 0.930 with ambiguous questions); after a subtle life change, one-tap corrections recover best (0.649 → 0.711) |
 
 ![Personalization](../sim/results/fig1_personalization.png)
 ![Cohort transfer](../sim/results/fig4_cohort_transfer.png)

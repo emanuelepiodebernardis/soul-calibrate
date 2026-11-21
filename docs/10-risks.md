@@ -19,5 +19,8 @@ Author: Emanuele De Bernardis · Module: Risks · Concerns: [[02-enrollment]], [
 | Face | camera | weak signal + regulatory risk | optional, drop if no gain | E10 |
 | Diagnostic drift of language | generated readings | wellbeing app sounding clinical | reading audit; banned vocabulary | E17 |
 | Too many questions | generic model | in simulation the set is ambiguous at 76% of moments | personalise first; cap questions | [[18-simulation]] |
+| Broken guarantee | personal memory changes probabilities | coverage 0.855 with random questions | ask at ambiguous moments; adaptive conformal thresholds per user | E22, [[20-recurring-situations]] |
+| Life change | situation memory | old answers mislead when a situation changes meaning | one-tap corrections; situation-level drift from repeated corrections | E23, [[20-recurring-situations]] |
+| Masking | words vs face or voice | the person says "fine" while the expression disagrees, or always looks serious | incongruence read against the person's baseline; ask, never assume | E21, [[21-text-face-incongruence]] |
 
 Every risk has an experiment in [[16-experiments]].

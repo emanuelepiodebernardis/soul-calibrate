@@ -1,0 +1,475 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {
+  "user_id": "demo-user"
+ },
+ "nodes": [
+  {
+   "id": "state_calm",
+   "label": "calm",
+   "community": 0,
+   "community_name": "States",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)"
+  },
+  {
+   "id": "state_energized",
+   "label": "energized",
+   "community": 0,
+   "community_name": "States",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)"
+  },
+  {
+   "id": "state_tense",
+   "label": "tense",
+   "community": 0,
+   "community_name": "States",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)"
+  },
+  {
+   "id": "state_low",
+   "label": "low",
+   "community": 0,
+   "community_name": "States",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)"
+  },
+  {
+   "id": "factor_body_hrv_below_usual",
+   "label": "HRV below usual",
+   "community": 2,
+   "community_name": "Body",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 14 labelled readings"
+  },
+  {
+   "id": "factor_body_heart_rate_above_usual",
+   "label": "heart rate above usual",
+   "community": 2,
+   "community_name": "Body",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 12 labelled readings"
+  },
+  {
+   "id": "factor_body_moving_more_than_usual",
+   "label": "moving more than usual",
+   "community": 2,
+   "community_name": "Body",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 12 labelled readings"
+  },
+  {
+   "id": "factor_context_day__fri",
+   "label": "day: Fri",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 18 labelled readings"
+  },
+  {
+   "id": "factor_context_day__mon",
+   "label": "day: Mon",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 18 labelled readings"
+  },
+  {
+   "id": "factor_context_day__sat",
+   "label": "day: Sat",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 18 labelled readings"
+  },
+  {
+   "id": "factor_context_day__sun",
+   "label": "day: Sun",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 18 labelled readings"
+  },
+  {
+   "id": "factor_context_time__evening",
+   "label": "time: evening",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 84 labelled readings"
+  },
+  {
+   "id": "factor_context_time__night",
+   "label": "time: night",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 42 labelled readings"
+  },
+  {
+   "id": "factor_context_weekend",
+   "label": "weekend",
+   "community": 1,
+   "community_name": "Context",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 36 labelled readings"
+  },
+  {
+   "id": "factor_expression_face_suggests_calm",
+   "label": "face suggests calm",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 24 labelled readings"
+  },
+  {
+   "id": "factor_expression_face_suggests_low",
+   "label": "face suggests low",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 14 labelled readings"
+  },
+  {
+   "id": "factor_expression_face_suggests_tense",
+   "label": "face suggests tense",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 19 labelled readings"
+  },
+  {
+   "id": "factor_expression_text_suggests_calm",
+   "label": "text suggests calm",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 19 labelled readings"
+  },
+  {
+   "id": "factor_expression_text_suggests_energized",
+   "label": "text suggests energized",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 15 labelled readings"
+  },
+  {
+   "id": "factor_expression_text_suggests_low",
+   "label": "text suggests low",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 22 labelled readings"
+  },
+  {
+   "id": "factor_expression_voice_suggests_calm",
+   "label": "voice suggests calm",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 27 labelled readings"
+  },
+  {
+   "id": "factor_expression_voice_suggests_energized",
+   "label": "voice suggests energized",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 31 labelled readings"
+  },
+  {
+   "id": "factor_expression_voice_suggests_low",
+   "label": "voice suggests low",
+   "community": 3,
+   "community_name": "Expression",
+   "file_type": "concept",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 33 labelled readings"
+  },
+  {
+   "id": "factor_reflection_moon_phase__first_quarter",
+   "label": "moon phase: first quarter",
+   "community": 4,
+   "community_name": "Reflection (reflection, not evidence)",
+   "file_type": "rationale",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 19 labelled readings"
+  },
+  {
+   "id": "factor_reflection_moon_sign__capricorn",
+   "label": "moon sign: Capricorn",
+   "community": 4,
+   "community_name": "Reflection (reflection, not evidence)",
+   "file_type": "rationale",
+   "source_file": "personal data (demo-user)",
+   "rationale": "seen in 15 labelled readings"
+  }
+ ],
+ "links": [
+  {
+   "source": "factor_body_hrv_below_usual",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 3.48,
+   "p_all": 0.0002,
+   "q_discovery": 0.1149,
+   "p_replication": 0.0207
+  },
+  {
+   "source": "factor_body_heart_rate_above_usual",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "EXTRACTED",
+   "status": "supported",
+   "lift": 4.75,
+   "p_all": 0.0,
+   "q_discovery": 0.0084,
+   "p_replication": 0.0031
+  },
+  {
+   "source": "factor_body_moving_more_than_usual",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "EXTRACTED",
+   "status": "supported",
+   "lift": 4.75,
+   "p_all": 0.0,
+   "q_discovery": 0.0084,
+   "p_replication": 0.0031
+  },
+  {
+   "source": "factor_context_day__fri",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.61,
+   "p_all": 0.0067,
+   "q_discovery": 0.5574,
+   "p_replication": 0.039
+  },
+  {
+   "source": "factor_context_day__mon",
+   "target": "state_tense",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 6.0,
+   "p_all": 0.0001,
+   "q_discovery": 0.2634,
+   "p_replication": 0.0018
+  },
+  {
+   "source": "factor_context_day__sat",
+   "target": "state_calm",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 1.94,
+   "p_all": 0.0314,
+   "q_discovery": 0.7675,
+   "p_replication": 0.1281
+  },
+  {
+   "source": "factor_context_day__sun",
+   "target": "state_low",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.5,
+   "p_all": 0.0075,
+   "q_discovery": 0.8222,
+   "p_replication": 0.0125
+  },
+  {
+   "source": "factor_context_time__evening",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 16.0,
+   "p_all": 0.0,
+   "q_discovery": 0.1186,
+   "p_replication": 0.0006
+  },
+  {
+   "source": "factor_context_time__evening",
+   "target": "state_tense",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 4.0,
+   "p_all": 0.0327,
+   "q_discovery": 0.8704,
+   "p_replication": 0.2507
+  },
+  {
+   "source": "factor_context_time__night",
+   "target": "state_low",
+   "relation": "goes_with",
+   "confidence": "EXTRACTED",
+   "status": "supported",
+   "lift": 7.71,
+   "p_all": 0.0,
+   "q_discovery": 0.0084,
+   "p_replication": 0.0
+  },
+  {
+   "source": "factor_context_weekend",
+   "target": "state_calm",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 1.77,
+   "p_all": 0.0352,
+   "q_discovery": 0.6545,
+   "p_replication": 0.2323
+  },
+  {
+   "source": "factor_expression_face_suggests_calm",
+   "target": "state_calm",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 1.97,
+   "p_all": 0.016,
+   "q_discovery": 0.6545,
+   "p_replication": 0.0723
+  },
+  {
+   "source": "factor_expression_face_suggests_low",
+   "target": "state_low",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.46,
+   "p_all": 0.0207,
+   "q_discovery": 1.0,
+   "p_replication": 0.0125
+  },
+  {
+   "source": "factor_expression_face_suggests_tense",
+   "target": "state_tense",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.82,
+   "p_all": 0.0307,
+   "q_discovery": 0.6545,
+   "p_replication": 0.1451
+  },
+  {
+   "source": "factor_expression_text_suggests_calm",
+   "target": "state_tense",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 3.58,
+   "p_all": 0.0067,
+   "q_discovery": 0.6545,
+   "p_replication": 0.0288
+  },
+  {
+   "source": "factor_expression_text_suggests_energized",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.77,
+   "p_all": 0.0034,
+   "q_discovery": 0.2051,
+   "p_replication": 0.1857
+  },
+  {
+   "source": "factor_expression_text_suggests_low",
+   "target": "state_low",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.93,
+   "p_all": 0.0005,
+   "q_discovery": 0.1126,
+   "p_replication": 0.0621
+  },
+  {
+   "source": "factor_expression_voice_suggests_calm",
+   "target": "state_calm",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 3.17,
+   "p_all": 0.0,
+   "q_discovery": 0.1126,
+   "p_replication": 0.0008
+  },
+  {
+   "source": "factor_expression_voice_suggests_energized",
+   "target": "state_energized",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.88,
+   "p_all": 0.0007,
+   "q_discovery": 0.6144,
+   "p_replication": 0.0021
+  },
+  {
+   "source": "factor_expression_voice_suggests_low",
+   "target": "state_low",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 3.57,
+   "p_all": 0.0,
+   "q_discovery": 0.1633,
+   "p_replication": 0.0005
+  },
+  {
+   "source": "factor_reflection_moon_phase__first_quarter",
+   "target": "state_calm",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.06,
+   "p_all": 0.016,
+   "q_discovery": 0.6545,
+   "p_replication": 0.1948
+  },
+  {
+   "source": "factor_reflection_moon_sign__capricorn",
+   "target": "state_calm",
+   "relation": "goes_with",
+   "confidence": "AMBIGUOUS",
+   "status": "exploratory",
+   "lift": 2.08,
+   "p_all": 0.0209,
+   "q_discovery": 0.2051,
+   "p_replication": 0.4477
+  }
+ ],
+ "hyperedges": []
+}

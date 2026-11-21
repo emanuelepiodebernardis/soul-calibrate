@@ -67,4 +67,5 @@ Compiled by Emanuele De Bernardis, November 2026. Grouped by the module that use
 
 - Stacchio, Ubaldi, Mauri, Gaggioli, Galdelli, Frontoni. Empathic Prompting: Non-Verbal Context Integration for Multimodal LLM Conversations. [arXiv:2510.20743](https://arxiv.org/abs/2510.20743)
 - Dragut, Lacuesta, Gaya-Morey, Buades-Rubio (2026). Evaluating multimodal emotion recognition in proactive conversational agents: A user study. [arXiv:2605.20200](https://arxiv.org/abs/2605.20200)
+- Gibbs & Candès (2021). Adaptive Conformal Inference Under Distribution Shift. *NeurIPS*. [arXiv:2106.00170](https://arxiv.org/abs/2106.00170)
 - Hoque & Picard. Acted vs. natural frustration and delight: many people smile in natural frustration. [MIT Media Lab](https://www.media.mit.edu/publications/acted-vs-natural-frustration-and-delight-many-people-smile-in-natural-frustration/)

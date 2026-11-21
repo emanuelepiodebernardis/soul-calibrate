@@ -25,7 +25,7 @@ missing modalities (a survey: Wu et al., 2024). The model must work with a singl
 
 "I'm fine" said in a flat voice: words and voice conflict. General audio-language models follow the words
 (VoxParadox: no model above 31% across 12 models). A conflict relative to the person's baseline is exactly the
-moment to ask. → [[05-active-questions]]
+moment to ask. → [[05-active-questions]], designed in [[21-text-face-incongruence]]
 
 ## The bracelet as an intervention, not only a sensor
 

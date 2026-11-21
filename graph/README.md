@@ -1,7 +1,7 @@
 # Knowledge graph of the project
 
 Built with [Graphify](https://pypi.org/project/graphifyy/) from `docs/`, `README.md`, `AUTHORS.md`, the
-simulation code in `sim/soul_calibrate/` and `sim/results/RESULTS.md`.
+simulation code and results in `sim/`, and the engine in `engine/soulcal/` with its demo reports.
 
 | File | What it is |
 | --- | --- |
@@ -10,16 +10,22 @@ simulation code in `sim/soul_calibrate/` and `sim/results/RESULTS.md`.
 | `graph.json` | the graph data (nodes, links, communities) |
 | `build_map.py` | rebuilds `map.html` from `graph.json` with a precomputed layout |
 
-At the last build: 326 nodes, 830 links, 8 communities (problem and evidence; simulation code; authorship,
-prior work and governance; risks; labels, question budget and consent; decision and active questions;
-clinical practices; analogous systems).
+At the last build: 680 nodes, 1898 links, 27 communities (21 with three or more nodes), from 30 documents and
+19 code files: the docs, the simulation and the `soulcal` engine.
 
 ## What the graph found
 
-- The active-question module is the bridge between most areas: if users stop answering, the loop stops.
-- Each simulation function is linked to the result it produces in `docs/18-simulation.md`.
-- Weakly connected nodes point to design items not yet in the code (for example the audio quality check) and
-  to risks that need their own experiment (added as E11–E14 in `docs/16-experiments.md`).
+Built three times while the project grew; each round pointed at the next fix.
+
+| Round | What the graph showed | What was done |
+| --- | --- | --- |
+| 1 (docs + simulation) | Active questions are the bridge between most areas; 23 isolated nodes (audio quality check, sliders, enrollment studies) | Answer rate became the first metric; E11–E14 added for the weak risks |
+| 2 (+ recurring situations, incongruence) | "Situation stability" formed an island; the situation memory and the personal head were two separate clusters; incongruence was linked to the literature but not to fusion | Life-change and coverage experiments (docs/20), the population → head → memory order (docs/06), fusion linked to docs/21; new risks in docs/10 and E22–E23 |
+| 3 (+ the engine) | The decision rule (speak / ask / quiet) and the engine are now the backbone, and SOUL-Bench is the bridge between evidence, risks, consent and regulation; 20+ concepts are linked to the code that implements them | SOUL-Bench ladder and quality gate implemented in `engine/soulcal` |
+
+Still only on paper (no code yet): the session anchor and the enrollment flow, the reading audit batteries, the
+private cohort pilot, HRV biofeedback and the micro-randomised trials. These are the next things to build or run,
+and they need real users or Nightlet's app.
 
 ## Rebuild
 

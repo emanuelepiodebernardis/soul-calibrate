@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOUL-Calibrate — personal pattern graph (synthetic demo user)</title>
+<style>
+  :root { --bg:#fbfaf8; --panel:#ffffff; --ink:#1f1e1c; --quiet:#6b6862; --line:#e4e1db; --edge:#cfcac1; --accent:#c4622d; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1b1a18; --panel:#242320; --ink:#eceae6; --quiet:#a19d95; --line:#3a3833; --edge:#4a4741; --accent:#e08a5a; } }
+  * { box-sizing:border-box; }
+  html, body { height:100%; margin:0; }
+  body { font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; background:var(--bg); color:var(--ink); display:flex; flex-direction:column; }
+  header { padding:14px 20px 10px; border-bottom:1px solid var(--line); }
+  h1 { font-size:18px; margin:0 0 4px; }
+  .lead { color:var(--quiet); font-size:13px; margin:0; }
+  main { flex:1; display:flex; min-height:0; }
+  #stage { flex:1; position:relative; min-width:0; }
+  svg { width:100%; height:100%; display:block; cursor:grab; touch-action:none; }
+  svg.dragging { cursor:grabbing; }
+  .edge { stroke:var(--edge); stroke-width:1; vector-effect:non-scaling-stroke; }
+  .edge.inf { stroke-dasharray:4 3; }
+  .edge.hl { stroke:var(--accent); stroke-width:2; vector-effect:non-scaling-stroke; }
+  .node circle { stroke-width:1.5; vector-effect:non-scaling-stroke; cursor:pointer; }
+  .node text { font-size:var(--fs, 11px); fill:var(--ink); pointer-events:none; paint-order:stroke; stroke:var(--bg); stroke-width:3px; }
+  .node.minor text { display:none; }
+  svg.zoomed .node.minor text { display:inline; }
+  .node.sel circle { stroke:var(--ink); stroke-width:3; }
+  .dim { opacity:.12; }
+  .hidden { display:none; }
+  .controls { position:absolute; left:12px; top:12px; display:flex; gap:6px; }
+  .controls button { background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:5px 10px; font-size:13px; cursor:pointer; }
+  aside { width:330px; flex:none; border-left:1px solid var(--line); background:var(--panel); padding:12px 14px; overflow:auto; font-size:13px; }
+  input[type=search] { width:100%; padding:7px 9px; border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--ink); font-size:13px; }
+  .lg { display:flex; align-items:center; gap:8px; margin:4px 0; cursor:pointer; user-select:none; }
+  .lg.off { opacity:.35; }
+  .dot { width:11px; height:11px; border-radius:50%; flex:none; }
+  h2 { font-size:15px; margin:14px 0 4px; }
+  .meta, .hint { color:var(--quiet); font-size:12px; }
+  ul { padding-left:16px; margin:6px 0; }
+  li { margin:3px 0; cursor:pointer; }
+  li:hover { color:var(--accent); }
+  @media (max-width:800px) { main { flex-direction:column; } aside { width:auto; height:45vh; border-left:none; border-top:1px solid var(--line); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>SOUL-Calibrate — personal pattern graph (synthetic demo user)</h1>
+  <p class="lead">Drag to move, scroll or use the buttons to zoom, click a node to see its sources and links. Dashed lines are inferred links. Names of small nodes appear when you zoom in.</p>
+</header>
+<main>
+  <div id="stage">
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg"><g id="edges"></g><g id="nodes"></g></svg>
+    <div class="controls"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="fit">Fit</button><button id="clear">Clear</button></div>
+  </div>
+  <aside>
+    <input type="search" id="q" placeholder="Search a concept">
+    <div id="legend" style="margin:12px 0"></div>
+    <div id="info"><p class="hint">Click a node.</p></div>
+  </aside>
+</main>
+<script id="data" type="application/json">{"nodes": [{"id": "state_calm", "l": "calm", "c": 0, "cn": "States", "t": "concept", "f": "personal data (demo-user)", "r": "", "d": 6, "x": -314.4, "y": 333.6}, {"id": "state_energized", "l": "energized", "c": 0, "cn": "States", "t": "concept", "f": "personal data (demo-user)", "r": "", "d": 7, "x": -672.3, "y": 390.8}, {"id": "state_tense", "l": "tense", "c": 0, "cn": "States", "t": "concept", "f": "personal data (demo-user)", "r": "", "d": 4, "x": -466.5, "y": 531.3}, {"id": "state_low", "l": "low", "c": 0, "cn": "States", "t": "concept", "f": "personal data (demo-user)", "r": "", "d": 5, "x": -520.8, "y": 178.5}, {"id": "factor_body_hrv_below_usual", "l": "HRV below usual", "c": 2, "cn": "Body", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 14 labelled readings", "d": 1, "x": -363.3, "y": -477.5}, {"id": "factor_body_heart_rate_above_usual", "l": "heart rate above usual", "c": 2, "cn": "Body", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 12 labelled readings", "d": 1, "x": -451.7, "y": -200.5}, {"id": "factor_body_moving_more_than_usual", "l": "moving more than usual", "c": 2, "cn": "Body", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 12 labelled readings", "d": 1, "x": -665.5, "y": -397.6}, {"id": "factor_context_day__fri", "l": "day: Fri", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 18 labelled readings", "d": 1, "x": 20.7, "y": 688.2}, {"id": "factor_context_day__mon", "l": "day: Mon", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 18 labelled readings", "d": 1, "x": 167.8, "y": 773.3}, {"id": "factor_context_day__sat", "l": "day: Sat", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 18 labelled readings", "d": 1, "x": 119.0, "y": 393.7}, {"id": "factor_context_day__sun", "l": "day: Sun", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 18 labelled readings", "d": 1, "x": 387.9, "y": 556.7}, {"id": "factor_context_time__evening", "l": "time: evening", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 84 labelled readings", "d": 2, "x": 291.2, "y": 410.6}, {"id": "factor_context_time__night", "l": "time: night", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 42 labelled readings", "d": 1, "x": 328.5, "y": 719.4}, {"id": "factor_context_weekend", "l": "weekend", "c": 1, "cn": "Context", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 36 labelled readings", "d": 1, "x": 4.5, "y": 519.1}, {"id": "factor_expression_face_suggests_calm", "l": "face suggests calm", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 24 labelled readings", "d": 1, "x": 769.9, "y": 131.4}, {"id": "factor_expression_face_suggests_low", "l": "face suggests low", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 14 labelled readings", "d": 1, "x": 820.0, "y": -3.6}, {"id": "factor_expression_face_suggests_tense", "l": "face suggests tense", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 19 labelled readings", "d": 1, "x": 505.6, "y": 184.4}, {"id": "factor_expression_text_suggests_calm", "l": "text suggests calm", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 19 labelled readings", "d": 1, "x": 414.0, "y": -74.3}, {"id": "factor_expression_text_suggests_energized", "l": "text suggests energized", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 15 labelled readings", "d": 1, "x": 646.8, "y": 201.5}, {"id": "factor_expression_text_suggests_low", "l": "text suggests low", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 22 labelled readings", "d": 1, "x": 509.9, "y": -187.5}, {"id": "factor_expression_voice_suggests_calm", "l": "voice suggests calm", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 27 labelled readings", "d": 1, "x": 655.7, "y": -203.8}, {"id": "factor_expression_voice_suggests_energized", "l": "voice suggests energized", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 31 labelled readings", "d": 1, "x": 759.0, "y": -121.7}, {"id": "factor_expression_voice_suggests_low", "l": "voice suggests low", "c": 3, "cn": "Expression", "t": "concept", "f": "personal data (demo-user)", "r": "seen in 33 labelled readings", "d": 1, "x": 409.0, "y": 73.5}, {"id": "factor_reflection_moon_phase__first_quarter", "l": "moon phase: first quarter", "c": 4, "cn": "Reflection (reflection, not evidence)", "t": "rationale", "f": "personal data (demo-user)", "r": "seen in 19 labelled readings", "d": 1, "x": 26.1, "y": -554.8}, {"id": "factor_reflection_moon_sign__capricorn", "l": "moon sign: Capricorn", "c": 4, "cn": "Reflection (reflection, not evidence)", "t": "rationale", "f": "personal data (demo-user)", "r": "seen in 15 labelled readings", "d": 1, "x": 350.9, "y": -605.5}], "edges": [{"s": "factor_body_hrv_below_usual", "t": "state_energized", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_body_heart_rate_above_usual", "t": "state_energized", "r": "goes_with", "k": "EXTRACTED"}, {"s": "factor_body_moving_more_than_usual", "t": "state_energized", "r": "goes_with", "k": "EXTRACTED"}, {"s": "factor_context_day__fri", "t": "state_energized", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_context_day__mon", "t": "state_tense", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_context_day__sat", "t": "state_calm", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_context_day__sun", "t": "state_low", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_context_time__evening", "t": "state_energized", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_context_time__evening", "t": "state_tense", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_context_time__night", "t": "state_low", "r": "goes_with", "k": "EXTRACTED"}, {"s": "factor_context_weekend", "t": "state_calm", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_face_suggests_calm", "t": "state_calm", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_face_suggests_low", "t": "state_low", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_face_suggests_tense", "t": "state_tense", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_text_suggests_calm", "t": "state_tense", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_text_suggests_energized", "t": "state_energized", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_text_suggests_low", "t": "state_low", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_voice_suggests_calm", "t": "state_calm", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_voice_suggests_energized", "t": "state_energized", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_expression_voice_suggests_low", "t": "state_low", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_reflection_moon_phase__first_quarter", "t": "state_calm", "r": "goes_with", "k": "AMBIGUOUS"}, {"s": "factor_reflection_moon_sign__capricorn", "t": "state_calm", "r": "goes_with", "k": "AMBIGUOUS"}], "hyper": [], "comms": {"0": "States", "2": "Body", "1": "Context", "3": "Expression", "4": "Reflection (reflection, not evidence)"}, "palette": ["#c4622d", "#2f7d8c", "#7a5ea8", "#3f8f4f", "#b0476b", "#b8922a", "#4a6fb5", "#8a8478", "#6b8e23", "#a0522d", "#5f7f99", "#9a6b3f"]}</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('data').textContent);
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('svg'), gE = document.getElementById('edges'), gN = document.getElementById('nodes');
+  var byId = {}, adj = {};
+  D.nodes.forEach(function (n) { byId[n.id] = n; adj[n.id] = []; });
+  D.edges.forEach(function (e) { adj[e.s].push(e.t); adj[e.t].push(e.s); });
+  function color(c) { var p = D.palette; return p[((c % p.length) + p.length) % p.length]; }
+  var maxD = Math.max.apply(null, D.nodes.map(function (n) { return n.d; }).concat([1]));
+  var sorted = D.nodes.slice().sort(function (a, b) { return b.d - a.d; });
+  var major = {}; sorted.filter(function (n) { return n.t !== 'document' && n.t !== 'code'; }).slice(0, Math.max(12, Math.round(D.nodes.length * 0.12))).forEach(function (n) { major[n.id] = true; });
+
+  var edgeEls = D.edges.map(function (e) {
+    var a = byId[e.s], b = byId[e.t], l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', a.x); l.setAttribute('y1', a.y); l.setAttribute('x2', b.x); l.setAttribute('y2', b.y);
+    l.setAttribute('class', 'edge' + (e.k === 'EXTRACTED' ? '' : ' inf'));
+    gE.appendChild(l); return l;
+  });
+  var nodeEls = {};
+  D.nodes.forEach(function (n) {
+    var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'node' + (major[n.id] ? '' : ' minor'));
+    var r = 4 + 12 * Math.sqrt(n.d / maxD);
+    var c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', n.x); c.setAttribute('cy', n.y); c.setAttribute('r', r);
+    c.setAttribute('fill', n.t === 'document' ? 'var(--bg)' : color(n.c)); c.setAttribute('stroke', color(n.c));
+    if (n.t === 'document') c.setAttribute('stroke-width', '2.5');
+    var t = document.createElementNS(NS, 'text'); t.setAttribute('x', n.x + r + 3); t.setAttribute('y', n.y + 4);
+    t.textContent = n.l.length > 48 ? n.l.slice(0, 46) + '…' : n.l;
+    var tip = document.createElementNS(NS, 'title'); tip.textContent = n.l;
+    g.appendChild(tip); g.appendChild(c); g.appendChild(t);
+    g.addEventListener('click', function (ev) { ev.stopPropagation(); select(n.id); });
+    gN.appendChild(g); nodeEls[n.id] = g;
+  });
+
+  // View box handling
+  var xs = D.nodes.map(function (n) { return n.x; }), ys = D.nodes.map(function (n) { return n.y; });
+  var full = { x: Math.min.apply(null, xs) - 80, y: Math.min.apply(null, ys) - 60 };
+  full.w = Math.max.apply(null, xs) - full.x + 260; full.h = Math.max.apply(null, ys) - full.y + 60;
+  var vb = { x: full.x, y: full.y, w: full.w, h: full.h };
+  function apply() {
+    svg.setAttribute('viewBox', vb.x + ' ' + vb.y + ' ' + vb.w + ' ' + vb.h);
+    var r = svg.getBoundingClientRect(), s = Math.max(vb.w / Math.max(1, r.width), vb.h / Math.max(1, r.height));
+    svg.style.setProperty('--fs', (12 * s).toFixed(2) + 'px');
+    svg.classList.toggle('zoomed', vb.w < full.w * 0.45);
+  }
+  function zoom(f, cx, cy) {
+    if (cx === undefined) { cx = vb.x + vb.w / 2; cy = vb.y + vb.h / 2; }
+    vb.x = cx - (cx - vb.x) * f; vb.y = cy - (cy - vb.y) * f; vb.w *= f; vb.h *= f; apply();
+  }
+  function fit() { vb = { x: full.x, y: full.y, w: full.w, h: full.h }; apply(); }
+  function toSvg(px, py) {
+    var r = svg.getBoundingClientRect(), s = Math.max(vb.w / r.width, vb.h / r.height);
+    var ox = (r.width * s - vb.w) / 2, oy = (r.height * s - vb.h) / 2;
+    return { x: vb.x - ox + (px - r.left) * s, y: vb.y - oy + (py - r.top) * s, s: s };
+  }
+  svg.addEventListener('wheel', function (ev) { ev.preventDefault(); var p = toSvg(ev.clientX, ev.clientY); zoom(ev.deltaY > 0 ? 1.15 : 1 / 1.15, p.x, p.y); }, { passive: false });
+  var drag = null;
+  svg.addEventListener('pointerdown', function (ev) { drag = { x: ev.clientX, y: ev.clientY, vx: vb.x, vy: vb.y, s: toSvg(ev.clientX, ev.clientY).s, moved: false }; svg.classList.add('dragging'); });
+  window.addEventListener('pointermove', function (ev) { if (!drag) return; var dx = ev.clientX - drag.x, dy = ev.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true; vb.x = drag.vx - dx * drag.s; vb.y = drag.vy - dy * drag.s; apply(); });
+  window.addEventListener('pointerup', function () { drag = null; svg.classList.remove('dragging'); });
+  document.getElementById('zin').onclick = function () { zoom(1 / 1.4); };
+  document.getElementById('zout').onclick = function () { zoom(1.4); };
+  document.getElementById('fit').onclick = fit;
+  document.getElementById('clear').onclick = function () { clearSel(); };
+  svg.addEventListener('click', function () { if (drag === null) {} });
+
+  // Legend
+  var hidden = {};
+  var legend = document.getElementById('legend');
+  Object.keys(D.comms).sort(function (a, b) { return a - b; }).forEach(function (c) {
+    var count = D.nodes.filter(function (n) { return String(n.c) === c; }).length;
+    var row = document.createElement('div'); row.className = 'lg';
+    var dot = document.createElement('span'); dot.className = 'dot'; dot.style.background = color(+c);
+    var label = document.createElement('span'); label.textContent = D.comms[c] + ' (' + count + ')';
+    row.appendChild(dot); row.appendChild(label);
+    row.onclick = function () { hidden[c] = !hidden[c]; row.classList.toggle('off', hidden[c]); refreshHidden(); };
+    legend.appendChild(row);
+  });
+  function refreshHidden() {
+    D.nodes.forEach(function (n) { nodeEls[n.id].classList.toggle('hidden', !!hidden[String(n.c)]); });
+    D.edges.forEach(function (e, i) { edgeEls[i].classList.toggle('hidden', !!hidden[String(byId[e.s].c)] || !!hidden[String(byId[e.t].c)]); });
+  }
+
+  // Selection
+  var info = document.getElementById('info');
+  function clearSel() {
+    Object.keys(nodeEls).forEach(function (id) { nodeEls[id].classList.remove('dim', 'sel'); });
+    edgeEls.forEach(function (l) { l.classList.remove('dim', 'hl'); });
+    intro();
+  }
+  function select(id) {
+    var n = byId[id], near = {}; near[id] = true; adj[id].forEach(function (x) { near[x] = true; });
+    Object.keys(nodeEls).forEach(function (k) { nodeEls[k].classList.toggle('dim', !near[k]); nodeEls[k].classList.toggle('sel', k === id); });
+    D.edges.forEach(function (e, i) { var on = e.s === id || e.t === id; edgeEls[i].classList.toggle('dim', !on); edgeEls[i].classList.toggle('hl', on); });
+    info.innerHTML = '';
+    var h = document.createElement('h2'); h.textContent = n.l; info.appendChild(h);
+    var m = document.createElement('div'); m.className = 'meta'; m.textContent = (D.comms[n.c] || '') + ' · ' + n.f + ' · ' + n.d + ' links'; info.appendChild(m);
+    if (n.r) { var p = document.createElement('p'); p.textContent = n.r; info.appendChild(p); }
+    var hy = D.hyper.filter(function (x) { return x.n.indexOf(id) >= 0; });
+    if (hy.length) { var q = document.createElement('p'); q.className = 'hint'; q.textContent = 'Part of: ' + hy.map(function (x) { return x.l; }).join('; '); info.appendChild(q); }
+    if (n.d <= 1 && n.t !== 'document') { var w = document.createElement('p'); w.style.color = 'var(--accent)'; w.textContent = 'Weakly connected: a possible gap in the project.'; info.appendChild(w); }
+    var t = document.createElement('div'); t.className = 'hint'; t.textContent = 'Linked to:'; info.appendChild(t);
+    var ul = document.createElement('ul');
+    adj[id].map(function (x) { return byId[x]; }).sort(function (a, b) { return b.d - a.d; }).forEach(function (x) {
+      var li = document.createElement('li'); li.textContent = x.l; li.onclick = function () { select(x.id); center(x.id); }; ul.appendChild(li);
+    });
+    info.appendChild(ul);
+  }
+  function center(id) { var n = byId[id]; vb.x = n.x - vb.w / 2; vb.y = n.y - vb.h / 2; apply(); }
+  document.getElementById('q').addEventListener('input', function (ev) {
+    var s = ev.target.value.trim().toLowerCase(); if (s.length < 2) return;
+    var hit = sorted.filter(function (n) { return n.l.toLowerCase().indexOf(s) >= 0; })[0];
+    if (hit) { if (vb.w > full.w * 0.5) zoom(0.45); select(hit.id); center(hit.id); }
+  });
+  function intro() {
+    info.innerHTML = '';
+    var p = document.createElement('p'); p.className = 'hint'; p.textContent = 'Most connected concepts (click to explore):'; info.appendChild(p);
+    var ul = document.createElement('ul');
+    sorted.filter(function (n) { return n.t !== 'document' && n.t !== 'code'; }).slice(0, 12).forEach(function (x) {
+      var li = document.createElement('li'); li.textContent = x.l + ' (' + x.d + ')'; li.onclick = function () { select(x.id); }; ul.appendChild(li);
+    });
+    info.appendChild(ul);
+  }
+  apply(); intro();
+  window.addEventListener('resize', apply);
+})();
+</script>
+</body>
+</html>

@@ -32,7 +32,7 @@ that decide whether the loop is reliable and lawful. This module connects them.
 
 | Level | Stays on the phone | May leave the phone | Basis |
 | --- | --- | --- | --- |
-| 0 — Normal use | features, baseline, personal head, answers | nothing ("never used for training") | the product's promise |
+| 0 — Normal use | features, baseline, personal head, situation memory, answers, corrections | nothing ("never used for training") | the product's promise |
 | 1 — Federated improvement | as level 0 | aggregated updates with differential privacy | explicit, revocable consent |
 | 2 — Research cohort | as level 0 | pseudonymised features and answers | separate explicit consent, GDPR |
 

@@ -63,7 +63,77 @@ question: when the same situation comes back, is it read better because the user
 The advantage shrinks as situations become less predictable but holds at every level tested. For the product
 this means: the more regular a person's evenings, the faster the calibration week pays off.
 
+## Under Nightlet's data constraint
+
+Nightlet promises that users' voice and face data are never used for training, so the shared model can learn
+only from public data, which map states onto signals differently from real users. The experiment repeats the
+calibration week with a shared model trained on shifted public data (closed questions, 5 seeds):
+
+| Public data differ from users by | No questions (today) | Random moment | Ambiguous moment | Gain over today |
+| --- | --- | --- | --- | --- |
+| 0 (same mapping) | 0.504 | 0.751 | 0.863 | +0.36 |
+| 0.1 | 0.442 | 0.728 | 0.822 | +0.38 |
+| 0.2 | 0.369 | 0.706 | 0.764 | +0.40 |
+
+The worse the public data match the users, the worse today's approach gets and the more the calibration week
+gains: the person's own answers replace the training data Nightlet has chosen not to collect, and they never
+leave the phone.
+
 ![Recurring situations](../sim/results/fig5_recurring_situations.png)
+
+## New problems the loop creates, and what fixes them
+
+Building the graph of this project and stress-testing the simulation surfaced three new problems.
+
+### 1. The 90% guarantee can break after personalization
+
+The conformal thresholds are calibrated on the population, but the personal memory changes the probabilities.
+In the test days (5 seeds):
+
+| Policy | Coverage (target 0.90) | Readings that speak | Accuracy when speaking |
+| --- | --- | --- | --- |
+| No questions (today) | 0.918 | 7.5% | 0.818 |
+| Random moments | **0.855** | 73.4% | 0.845 |
+| Ambiguous moments | 0.930 | 71.8% | **0.938** |
+| Random moments + adaptive conformal (step 0.1) | 0.881 | 62.7% | 0.852 |
+
+- With questions at ambiguous moments the guarantee holds (0.930) and **Nightlet speaks in 72% of readings and is
+  right 94% of the time when it does**, against 7.5% and 82% today.
+- With random questions coverage falls to 0.855. **Partial fix:** adaptive conformal inference (Gibbs & Candès,
+  2021) on the person's own answers: a miss widens that person's sets, a hit narrows them. It raises coverage to
+  0.881; with about 7 answers per person it cannot get further, so the first fix is asking at ambiguous moments.
+- SOUL-Bench reports coverage per user, not only on average ([[08-evaluation-soul-bench]]).
+
+### 2. A life change makes old answers wrong
+
+After the calibration week two of six situations change their usual state for good (a new job, a new
+relationship), and questions stay allowed for 14 more days. When the signals move fully with the new state,
+the loop recovers on its own (changed situations: 0.738 in the first week, 0.883 in the second). When the
+situation still looks halfway like before, old answers mislead:
+
+| Memory variant (signal moves halfway) | Changed situations, week 1 | Week 2 | Unchanged situations |
+| --- | --- | --- | --- |
+| Answers never fade | 0.451 | 0.649 | 0.880 |
+| + check-in questions on 15% of days | 0.460 | 0.632 | 0.886 |
+| **+ user corrections ("not quite") on 30% of wrong readings** | **0.487** | **0.711** | **0.902** |
+| + answers fade (half-life 7 days) | 0.485 | 0.663 | 0.853 |
+| + contradicted answers weaken nearby ones | 0.474 | 0.600 | 0.798 |
+
+- **Fix that works:** let the user correct a confident reading with one tap ("not quite") and name the state.
+  It is the only variant that helps both changed and unchanged situations.
+- **Fixes that do not:** fading all answers or erasing contradicted ones costs 3–8 points on the situations
+  that did not change. Forgetting must be targeted: the situation-level drift signal is repeated corrections in
+  the same region of the person's signals, the same logic as the martingale trigger of [[04-rolling-baseline]].
+- Recovery still takes about two weeks when the change is subtle: Nightlet should say so ("you've corrected me
+  a few times after work lately; has something changed?") instead of insisting.
+
+### 3. Two personal models must not compete
+
+The graph showed the situation memory and the personal head of [[06-personal-model]] as separate clusters.
+They answer different questions: the head learns how this person shows each state in general; the memory learns
+what this person's recurring situations mean. Both start from the population log-probabilities; the head adjusts
+them first, then the memory adds the evidence of nearby answers. Both stay on the phone (consent level 0,
+[[15-labels-and-consent]]).
 
 ## What it means for the product
 
@@ -71,8 +141,11 @@ this means: the more regular a person's evenings, the faster the calibration wee
    states, with closed options, at most once a day.
 2. Stop asking about what is already known (the memory's coverage) and spend questions on new situations.
 3. Keep 5–10% of questions at random ordinary moments, against selection bias ([[05-active-questions]]).
-4. A situation that changes its usual state shows up as repeated corrections: that is the drift signal of
+4. Every confident reading carries a one-tap "not quite": corrections are the cheapest labels and the fix for
+   life changes.
+5. A situation that changes its usual state shows up as repeated corrections: that is the drift signal of
    [[04-rolling-baseline]] at situation level.
+6. Track coverage per user and adapt each person's thresholds with their own answers.
 
 ## Limits
 
@@ -83,6 +156,8 @@ this means: the more regular a person's evenings, the faster the calibration wee
 
 ## Check
 
+- E22: coverage per user after personalization, with and without adaptive conformal thresholds.
+- E23: recovery after a life change, with and without one-tap corrections.
 - E20: on real users, accuracy on the second and later occurrences of an answered situation vs a micro-randomised
   control where the question was not asked ([[12-clinical-practices]]).
 - `python run_situations.py --seeds 5 --out results` reproduces every number above; `tests/test_situations.py`

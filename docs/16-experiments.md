@@ -27,6 +27,8 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E19 | Cohort transfer | private cohort + new users | cohort answers improve readings for users who are never asked | no gain for new users ([[19-private-cohort-pilot]]) |
 | E20 | Recurring situations | cohort, calibration week | after one answer, later readings of the same situation improve vs a micro-randomised no-question control | no gain on the same situation ([[20-recurring-situations]]) |
 | E21 | Words vs expression | public multimodal sets + cohort | incongruent moments are where generic models fail and where one question gains most | no gap between congruent and incongruent moments ([[21-text-face-incongruence]]) |
+| E22 | Coverage after personalization | cohort | per-user coverage stays near 90% with adaptive conformal thresholds | coverage below 85% for many users ([[20-recurring-situations]]) |
+| E23 | Life change | cohort, follow-up | one-tap corrections recover changed situations faster without hurting the others | no faster recovery ([[20-recurring-situations]]) |
 
 ## Before the interview (done)
 

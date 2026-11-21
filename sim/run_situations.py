@@ -19,10 +19,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
-from soul_calibrate.situations import SituationConfig, exp_situations  # noqa: E402
+from soul_calibrate.situations import SituationConfig, exp_life_change, exp_situations  # noqa: E402
 
 INK, QUIET, ACCENT, SECOND, THIRD = "#1f1e1c", "#8a8478", "#c4622d", "#2f7d8c", "#b9b2a5"
-SCALARS = ("test_accuracy", "questions_per_person", "same_situation_after", "same_situation_without_questions",
+SCALARS = ("test_accuracy", "test_coverage", "test_speak_share", "test_speak_accuracy", "questions_per_person", "same_situation_after", "same_situation_without_questions",
            "other_situations", "other_situations_without_questions", "share_moments_after_asked")
 CURVES = ("accuracy_by_day", "set_size_by_day", "speak_by_day")
 LABELS = {
@@ -72,7 +72,26 @@ def main() -> None:
         cfg = replace(base, stability=stab)
         sweep[str(stab)] = aggregate([exp_situations(s, cfg, qtypes=("closed",)) for s in seeds])
 
-    (out / "situations.json").write_text(json.dumps({"main": main_res, "stability_sweep": sweep,
+    shift = {}
+    for sh in (0.0, 0.1, 0.2):
+        cfg = replace(base, public_shift=sh)
+        shift[str(sh)] = aggregate([exp_situations(s, cfg, qtypes=("closed",)) for s in seeds])
+
+    aci = {}
+    for g in (0.0, 0.1):
+        cfg = replace(base, aci_gamma=g)
+        aci[str(g)] = aggregate([exp_situations(s, cfg, qtypes=("closed",)) for s in seeds])
+
+    life = {}
+    for vis in (1.0, 0.5):
+        runs = [exp_life_change(s, base, visibility=vis) for s in seeds]
+        life[str(vis)] = {name: {k: {"mean": float(np.mean([r[name][k] for r in runs])),
+                                     "sd": float(np.std([r[name][k] for r in runs]))}
+                                 for k in ("changed_first_week", "changed_second_week", "unchanged", "interactions_per_person")}
+                          for name in runs[0]}
+
+    (out / "situations.json").write_text(json.dumps({"main": main_res, "stability_sweep": sweep, "public_shift_sweep": shift,
+                                                     "life_change": life, "adaptive_conformal": aci,
                                                      "config": base.__dict__, "seeds": seeds}, indent=2))
 
     lines = [
@@ -107,6 +126,41 @@ def main() -> None:
     for stab, r in sweep.items():
         lines.append(f"| {stab} | {fmt(r['never']['test_accuracy'])} | {fmt(r['random/closed']['test_accuracy'])} | "
                      f"{fmt(r['ambiguous/closed']['test_accuracy'])} | {fmt(r['ambiguous_new/closed']['test_accuracy'])} |")
+    lines += ["", "## D. Nightlet's data constraint: a shared model trained on public data only (closed questions)", "",
+              "User voice and face data are never used for training, so the shared model learns from public data. "
+              "Public shift = how differently public data map states onto signals (0 = same as the product's users).",
+              "",
+              "| Public shift | No questions (today) | Random moment | Ambiguous moment | Gain of ambiguous over today |",
+              "| --- | --- | --- | --- | --- |"]
+    for sh, r in shift.items():
+        gain = r['ambiguous/closed']['test_accuracy']['mean'] - r['never']['test_accuracy']['mean']
+        lines.append(f"| {sh} | {fmt(r['never']['test_accuracy'])} | {fmt(r['random/closed']['test_accuracy'])} | "
+                     f"{fmt(r['ambiguous/closed']['test_accuracy'])} | +{gain:.3f} |")
+    lines += ["", "## F. Is the 90% guarantee kept after personalization? (closed questions, test days)", "",
+              "The conformal thresholds are calibrated on the population; the personal memory changes the "
+              "probabilities, so coverage must be checked again. Adaptive conformal inference (ACI) shifts each "
+              "person's thresholds with their own answers: a miss widens the sets, a hit narrows them.", "",
+              "| Policy | ACI step | Coverage (target 0.90) | Share of readings that speak | Accuracy when speaking | Accuracy |",
+              "| --- | --- | --- | --- | --- | --- |"]
+    for g, r in aci.items():
+        for name in ("never", "random/closed", "ambiguous/closed"):
+            if name == "never" and g != "0.0":
+                continue
+            v = r[name]
+            lines.append(f"| {LABELS[name]} | {g} | {fmt(v['test_coverage'])} | {fmt(v['test_speak_share'])} | "
+                         f"{fmt(v['test_speak_accuracy'])} | {fmt(v['test_accuracy'])} |")
+    lines += ["", "## E. A life change: two of six situations change their usual state after the calibration week", "",
+              "Questions stay allowed (closed, ambiguous moments, at most one a day) for 14 more days. Visibility = how much "
+              "the signal moves with the new state (1 = fully; 0.5 = halfway, so old answers mislead). "
+              "Interactions = questions plus user corrections over the 21 days.", ""]
+    for vis, r in life.items():
+        lines += [f"Visibility {vis}:", "",
+                  "| Memory variant | Changed situations, week 1 | Changed situations, week 2 | Unchanged situations | Interactions per person |",
+                  "| --- | --- | --- | --- | --- |"]
+        for name, v in r.items():
+            lines.append(f"| {name} | {fmt(v['changed_first_week'])} | {fmt(v['changed_second_week'])} | "
+                         f"{fmt(v['unchanged'])} | {v['interactions_per_person']['mean']:.1f} |")
+        lines.append("")
     (out / "SITUATIONS.md").write_text("\n".join(lines) + "\n")
 
     # Figure 5: accuracy by day

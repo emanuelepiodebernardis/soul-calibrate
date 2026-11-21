@@ -24,6 +24,9 @@ repository records the date of each part.
    every later reading of the same situation becomes more precise. → `docs/20`, `sim/soul_calibrate/situations.py`
 9. **Incongruence as a reason to ask:** disagreement between words and expression, read against the person's
    baseline, triggers a calibrated question instead of a prompt-level guess. → `docs/21`
+10. **The `soulcal` engine:** a usable implementation of the whole loop on multimodal device readings, with a
+   personal pattern graph whose reflection layer (astrology) is held to the same statistical guardrails as the
+   measured signals. → `engine/`, `docs/22`
 
 ## Credits
 

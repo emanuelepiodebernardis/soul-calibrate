@@ -23,6 +23,10 @@ temperature) and turns each new measurement into a deviation from that person's 
 - In the simulation, after a step change in the signals, a rolling baseline recovers the accuracy of a user
   with no change (0.581 vs 0.584), while a fixed baseline drops to 0.541. → [[18-simulation]]
 
+- **At situation level the trigger is behavioural:** repeated corrections of confident readings in the same
+  region of a person's signals mean that a recurring situation changed its meaning. One-tap corrections recover
+  it without erasing the rest of the memory. → [[20-recurring-situations]]
+
 ## Traps
 
 - If the baseline also absorbs anomalous days, it "normalises" a long stressful period: separate drift from real change. → [[10-risks]]
