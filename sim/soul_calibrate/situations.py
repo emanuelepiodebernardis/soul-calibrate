@@ -51,6 +51,17 @@ N_STATES = 4
 NEIGHBOURS = {0: (1, 3), 1: (0, 2), 2: (1, 3), 3: (0, 2)}
 
 
+def configure_states(k: int) -> None:
+    """Switch the world to k states arranged on a circle (valence x arousal circumplex): each state's
+    neighbours are the states next to it. k = 4 gives the four quadrants; k = 8 adds an intermediate state
+    between each pair (for example 'content' between calm and energized)."""
+    global N_STATES, NEIGHBOURS
+    from . import conformal
+    N_STATES = k
+    NEIGHBOURS = {i: ((i - 1) % k, (i + 1) % k) for i in range(k)}
+    conformal.N_STATES = k
+
+
 @dataclass(frozen=True)
 class SituationConfig:
     n_features: int = 16
@@ -69,6 +80,10 @@ class SituationConfig:
     bandwidth: float | None = None # kernel bandwidth; None = estimated from the noise
     covered_weight: float = 0.5    # "ambiguous + new" skips moments already this covered
     public_shift: float = 0.0      # how much public training data differ from the product's users
+    circumplex: bool = False       # states placed on a circle (valence x arousal) instead of at random
+    radius: float = 1.0            # size of the circle, when circumplex
+    max_options: int = 3           # most states a closed question can offer
+    ask_wide: bool = False         # also ask when more states are plausible, offering the most likely ones
     aci_gamma: float = 0.0         # adaptive conformal step on the person's own answers (0 = off)
     questions_per_day: float = 1.0 # question budget; below 1 = one question every few days
     spread: bool = False           # spread questions over the day instead of using the first chances
@@ -91,6 +106,14 @@ class Person:
 
 def _world(cfg: SituationConfig, world_seed: int) -> np.ndarray:
     rng = np.random.default_rng(world_seed)
+    if cfg.circumplex:
+        # two directions in feature space play valence and arousal; states sit at equal angles,
+        # starting between the axes so that k = 4 gives the four quadrants
+        A = rng.normal(0.0, cfg.separation, size=cfg.n_features)
+        B = rng.normal(0.0, cfg.separation, size=cfg.n_features)
+        ang = 2 * np.pi * (np.arange(N_STATES) + 0.5) / N_STATES if N_STATES == 4 else 2 * np.pi * (np.arange(N_STATES) + 1) / N_STATES
+        specific = rng.normal(0.0, cfg.separation * 0.3, size=(N_STATES, cfg.n_features))
+        return cfg.radius * (np.cos(ang)[:, None] * A + np.sin(ang)[:, None] * B) * np.sqrt(2) + specific
     return rng.normal(0.0, cfg.separation, size=(N_STATES, cfg.n_features))
 
 
@@ -262,7 +285,8 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
             pred = int(proba.argmax())
             # who had been asked about this situation *before* this reading
             seen_before = s in asked_situations
-            log.append({"day": day, "s": s, "correct": pred == y, "size": size,
+            dist = min((pred - y) % N_STATES, (y - pred) % N_STATES)
+            log.append({"day": day, "s": s, "correct": pred == y, "near": dist <= 1, "size": size,
                         "in_set": bool(st[y]), "after_asked": seen_before, "test": day >= cfg.calib_days})
             if cfg.note_p and day < cfg.calib_days and rng.random() < cfg.note_p:
                 # an unprompted note from the user: free text read on the phone into a state, no budget used
@@ -280,9 +304,10 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
             elif policy == "random":
                 ask = j in random_picks
             elif policy == "ambiguous":
-                ask = 2 <= size <= 3
+                ask = 2 <= size <= cfg.max_options or (cfg.ask_wide and size > cfg.max_options)
             elif policy == "ambiguous_new":
-                ask = 2 <= size <= 3 and mem.coverage_weight(x) < cfg.covered_weight
+                ask = (2 <= size <= cfg.max_options or (cfg.ask_wide and size > cfg.max_options)) \
+                    and mem.coverage_weight(x) < cfg.covered_weight
             if ask and cfg.allowed_slots is not None and j not in cfg.allowed_slots:
                 ask = False
             if ask and cfg.spread and policy != "random":
@@ -294,7 +319,11 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
                     if ask:
                         windows_used.add(w)
             if ask:
-                offered = st if (qtype == "closed" and size <= 3) else None
+                offered = st if (qtype == "closed" and size <= cfg.max_options) else None
+                if qtype == "closed" and size > cfg.max_options and cfg.ask_wide:
+                    top = np.argsort(-proba)[:cfg.max_options]
+                    offered = np.zeros(N_STATES, dtype=bool)
+                    offered[top] = True
                 a = answer(y, offered, cfg, rng)
                 if cfg.aci_gamma:
                     # adaptive conformal inference: a miss widens this person's sets, a hit narrows them
@@ -363,8 +392,10 @@ def summarise(logs: dict, cfg: SituationConfig) -> dict:
         asked = np.array([e.get("asked", False) for e in entries])
         in_set = np.array([e["in_set"] for e in entries])
         speak = size == 1
+        near = np.array([e.get("near", e["correct"]) for e in entries])
         r = {
             "test_accuracy": float(correct[test].mean()),
+            "test_within_one": float(near[test].mean()),
             "test_coverage": float(in_set[test].mean()),
             "test_speak_share": float(speak[test].mean()),
             "test_speak_accuracy": float(correct[test & speak].mean()) if (test & speak).any() else float("nan"),

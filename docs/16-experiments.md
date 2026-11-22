@@ -32,6 +32,11 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E24 | Personalization speed | cohort, randomised presets | Light, Standard and Fast reach the same accuracy, Fast sooner | no difference in speed, or a lower ceiling for Light ([[23-question-budget]]) |
 | E25 | Burden by preset | cohort | answer rate and drop-out stay acceptable for Standard and Fast | drop-out rises sharply with the budget ([[23-question-budget]]) |
 | E26 | Free notes | cohort | notes replace questions at the same accuracy | notes add nothing ([[23-question-budget]]) |
+| E27 | Four vs eight states | cohort | agreement with self-report stays useful with eight states, and wrong readings are mostly neighbours | no gain from the finer vocabulary ([[24-what-precise-means]]) |
+| E28 | Answers needed by granularity | cohort | eight states need about 50% more answers with wide questions | eight states never reach the four-state level ([[24-what-precise-means]]) |
+| E29 | Level of detail per reading | cohort | showing the main state until the fine one is sure keeps readings right from the first days without slowing learning | no gain in early shown precision ([[25-coarse-to-fine-and-archetypes]]) |
+| E30 | Archetypes | cohort, new users | matching a new person to an archetype beats one head pooled over the cohort in the first week (synthetic: the pooled head already gives +3 to +5 points, archetypes add nothing) | no gain over the pooled head, or worse for people who fit no archetype ([[25-coarse-to-fine-and-archetypes]]) |
+| E31 | First check on real voice | public multi-speaker emotion speech, pretrained speech model (PyTorch) | a per-speaker baseline and a few answers per speaker beat the generic model, scored on held-out recordings of each speaker | no gain over the generic model on real audio ([[00-problem]], [[06-personal-model]]) |
 
 ## Before the interview (done)
 

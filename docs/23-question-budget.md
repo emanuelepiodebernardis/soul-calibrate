@@ -117,6 +117,10 @@ updates (level 1, federated with differential privacy) or pseudonymised features
   reinforced each other's majority. Wrong answers are better handled by reliability weights and one-tap
   corrections. Documented so it is not tried again without a new idea.
 
+## Finer states
+
+With eight states the same speeds stretch: about 50% more answers, 0.90 in 12 days at 2 a day. → [[24-what-precise-means]]
+
 ## Check
 
 - E24: on real users, days to a target accuracy for the Light, Standard and Fast presets (randomised).

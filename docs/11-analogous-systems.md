@@ -11,6 +11,7 @@ Author: Emanuele De Bernardis · Module: Analogues · Inspires: [[02-enrollment]
 - Dexcom G6 (2018) was the first real-time factory-calibrated CGM; removing user calibration also removed an error source.
 - In critically ill patients factory calibration may not suffice and per-patient calibration is recommended (Ramesh et al., 2025).
 - **Lesson:** the user's label is useful but noisy; reduce the need for it over time, keep it for people who deviate.
+  The same path for SOUL, through archetypes built from the cohort: → [[25-coarse-to-fine-and-archetypes]]
 
 ## Brain–computer interfaces (BCI)
 

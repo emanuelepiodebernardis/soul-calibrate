@@ -137,3 +137,47 @@ def test_free_note_teaches_like_an_answer():
         eng.note(d.reading_index, "energized")
     after = eng.observe(Reading("u", T0 + timedelta(days=35), voice=flat))
     assert after.proba["energized"] > before.proba["energized"]
+
+
+def test_wide_question_offers_the_most_likely_states():
+    flat = {"calm": 0.3, "energized": 0.28, "tense": 0.22, "low": 0.2}
+    narrow = SoulEngine(Profile("u"), EngineConfig(thresholds=[0.95] * 4))
+    wide = SoulEngine(Profile("u"), EngineConfig(thresholds=[0.95] * 4, ask_wide=True))
+    assert narrow.observe(Reading("u", T0, voice=flat)).action == "quiet"
+    d = wide.observe(Reading("u", T0, voice=flat))
+    assert d.action == "ask" and len(d.options) == 3
+
+
+def test_level_of_detail_shows_main_state_until_fine_is_sure():
+    from soulcal.detail import EXAMPLE_PARENT, is_right, level_of_detail
+    unsure = {s: 0.0 for s in EXAMPLE_PARENT} | {"calm": 0.45, "content": 0.45, "tired": 0.10}
+    d = level_of_detail(unsure, EXAMPLE_PARENT, tau_fine=0.2, tau_coarse=0.2)
+    assert (d.level, d.state) == ("coarse", "calm") and is_right(d, "content", EXAMPLE_PARENT)
+    sure = {s: 0.0 for s in EXAMPLE_PARENT} | {"content": 0.9, "calm": 0.1}
+    assert level_of_detail(sure, EXAMPLE_PARENT).state == "content"
+    torn = {s: 0.0 for s in EXAMPLE_PARENT} | {"calm": 0.4, "anxious": 0.35, "tired": 0.25}
+    d = level_of_detail(torn, EXAMPLE_PARENT)
+    assert d.level == "ask" and set(d.options) == {"calm", "anxious", "tired"}
+    assert level_of_detail(torn, EXAMPLE_PARENT, can_ask=False).level == "quiet"
+
+
+def test_archetype_start_and_no_match_far_away():
+    import numpy as np
+    from soulcal import archetypes as A
+    from soulcal.run import run_stream
+    from soulcal.schema import Profile
+    from soulcal.synthetic import generate
+    rng = np.random.default_rng(0)
+    cohort = []
+    for name, kind in A.TYPES.items():
+        for i in range(3):
+            p = A._person(kind, f"{name}-{i}", rng)
+            r, y, _ = generate(days=14, seed=i, person=p)
+            cohort.append((r[:12], run_stream(r, y, Profile(p.user_id), seed=i).engine))
+    model = A.fit(cohort, k=3, radius_margin=5.0)   # small cohort: wider radius
+    assert sum(a.members for a in model.archetypes) == 9
+    r, _, _ = generate(days=4, seed=99, person=A._person(A.TYPES["masks with words"], "new", rng))
+    eng, k = model.start_engine(Profile("new"), r)
+    assert k is not None and np.allclose(eng.head.W, model.archetypes[k].W)
+    far = A.signature(r) + 100 * model.scale
+    assert model.match(far)[0] is None

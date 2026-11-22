@@ -44,3 +44,25 @@ def test_life_change_reports_every_variant():
     assert "answers never fade" in res and "+ user corrections (30% of wrong readings)" in res
     for v in res.values():
         assert 0.0 <= v["changed_first_week"] <= 1.0 and v["interactions_per_person"] > 0
+
+
+def test_eight_states_need_wide_questions():
+    from dataclasses import replace
+    from soul_calibrate import situations as S
+    S.configure_states(8)
+    try:
+        base = replace(S.SituationConfig(), circumplex=True, radius=0.5)
+        narrow = S.exp_situations(0, base, n_people=15, qtypes=("closed",))["ambiguous/closed"]
+        wide = S.exp_situations(0, replace(base, ask_wide=True), n_people=15, qtypes=("closed",))["ambiguous/closed"]
+    finally:
+        S.configure_states(4)
+    assert wide["questions_per_person"] > narrow["questions_per_person"]
+    assert wide["test_accuracy"] > narrow["test_accuracy"] + 0.2
+
+
+def test_level_of_detail_per_reading_is_right_more_often_early():
+    from soul_calibrate.progressive import run
+    fine = run(0, "fine", days=7, n_people=15)
+    per = run(0, "per_reading", days=7, n_people=15)
+    assert sum(per["shown"][:3]) > sum(fine["shown"][:3])
+    assert abs(per["fine"][-1] - fine["fine"][-1]) < 1e-9   # same learning, only the display differs

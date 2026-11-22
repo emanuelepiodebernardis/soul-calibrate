@@ -7,6 +7,11 @@ A proposal for the SOUL layer of Nightlet, by **Emanuele De Bernardis** (Novembe
 > cannot know when it is right for one person. SOUL-Calibrate gives every user a personal baseline and a model
 > that learns from them, asks only when it is unsure, and measures everything against the user's own answers.
 
+**In Nightlet's terms:** people want to feel understood, not optimized. SOUL-Calibrate sits on top of any SOUL
+model, in-house or from a partner, and makes its reading right for this person: it decides when SOUL speaks,
+asks "does this feel right?" or stays quiet (and so when the bracelet should pulse), learns on the phone
+without breaking "never used for training", and measures every model against the user's own answers.
+
 ## 1. The problem
 
 - In the largest in-the-wild smartphone study (560 people), prosody predicted momentary valence at ρ = 0.02.
@@ -33,6 +38,9 @@ A proposal for the SOUL layer of Nightlet, by **Emanuele De Bernardis** (Novembe
 - **Private cohort pilot:** a consented group's answers improve readings even for users who are never asked. → [docs/19](docs/19-private-cohort-pilot.md)
 - **Clinical methods** for timing and testing: just-in-time adaptive interventions, micro-randomised trials, outcome monitoring, HRV biofeedback, alarm fatigue. → [docs/12](docs/12-clinical-practices.md)
 - **Reading audit:** the language model writes the reading but never decides it. → [docs/14](docs/14-reading-audit.md)
+- **Next step on real voice:** everything here is synthetic. The first experiment on real audio: a pretrained
+  speech model on a public multi-speaker emotion dataset, generic vs per-speaker baseline vs a few answers per
+  speaker, scored by speaker. → [docs/16](docs/16-experiments.md) (E31)
 
 ## 4. What a simulation shows (synthetic users, not real people)
 
@@ -80,6 +88,26 @@ ambiguous moments. Users choose the speed, the hours, and can leave free notes i
 
 ![Personalization speed](sim/results/fig6_personalization_speed.png)
 
+### What "precise" means, and eight states
+
+Every accuracy here means: the reading names the state the person would choose themselves, at that moment,
+which is SOUL's own definition (the user is the best source). It does not yet cover intensity, mixed states or
+causes. With eight states (an intermediate state between each pair on the valence x arousal circle) the
+question rule must also ask when more than three states are plausible; then eight states reach the same level,
+needing about 50% more answers (0.90 in 12 days at 2 questions a day, vs 8 days with four states).
+→ [docs/24-what-precise-means.md](docs/24-what-precise-means.md)
+
+### Coarse to fine, and archetypes
+
+Ask about the fine states from day one, but show each reading at the level the model is sure of ("calm" before
+"content"): with eight states, readings are right 0.75 of the time on day 3 and 0.85 after a week (vs 0.55 and
+0.75 when showing eight states from the start), and the model learns just as fast. Switching to fine questions
+only later slows learning. Future phase: learn from consenting users so new people are read well with few questions, as
+glucose monitors moved from finger-stick to factory calibration. A first synthetic check: a fusion head pooled
+over the cohort raises first-week accuracy by 3 to 5 points; archetypes (prototype in `engine/soulcal/archetypes.py`)
+add nothing on top of it yet, so the pooled cohort comes first.
+→ [docs/25-coarse-to-fine-and-archetypes.md](docs/25-coarse-to-fine-and-archetypes.md)
+
 When words and face or voice disagree, the disagreement becomes a reason to ask, read against the person's own
 baseline. → [docs/21-text-face-incongruence.md](docs/21-text-face-incongruence.md)
 
@@ -108,7 +136,7 @@ cd engine && python -m pytest tests -q && python -m soulcal demo --out examples/
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/23` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/25` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `engine/` | the `soulcal` package: usable engine, command line, demo outputs and tests |
@@ -123,14 +151,16 @@ browser without an internet connection.
 ```bash
 cd sim
 pip install -r requirements.txt
-python -m pytest -q tests                      # 15 tests
+python -m pytest -q tests                      # 17 tests
 python run_simulation.py --seeds 5 --out results
 python run_situations.py --seeds 5 --out results
 python run_budget.py --seeds 5 --out results   # question budget, timing, spreading
 python run_speed.py --seeds 5 --out results    # personalization speed
 python run_user_control.py --seeds 5 --out results
+python run_states.py --seeds 5 --out results   # four vs eight states
+python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                      # 15 tests
+python -m pytest -q tests                      # 18 tests
 python -m soulcal demo --out examples/demo_out
 ```
 

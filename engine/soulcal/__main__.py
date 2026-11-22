@@ -3,6 +3,7 @@
     python -m soulcal demo --out demo_out            synthetic people, today's reading vs SOUL-Calibrate
     python -m soulcal run --readings my.csv --out o  your own readings (CSV format in soulcal/schema.py)
     python -m soulcal bench --readings my.csv        SOUL-Bench ladder B0-B6 against the self_report column
+    python -m soulcal archetypes --out demo_out      future phase: archetypes from a synthetic cohort
                           [--birth-date 1990-05-17]  only for the optional reflection layer
 """
 
@@ -131,6 +132,28 @@ def bench(readings_path: Path, out: Path) -> None:
     print("\n".join(text))
 
 
+def archetypes_demo(out: Path, seeds: int) -> None:
+    from .archetypes import synthetic_check
+    out.mkdir(parents=True, exist_ok=True)
+    res = synthetic_check(seeds=seeds)
+    weeks = len(next(iter(res.values()))["generic"])
+    head = " | ".join(f"Week {w + 1}" for w in range(weeks))
+    text = ["# Archetypes (future phase, synthetic people only)", "",
+            f"A cohort of 24 consenting synthetic people (three types, 8 each) answers questions for 6 weeks; their "
+            f"first 4 days of readings give a label-free signature, grouped into 3 archetypes. New people are matched "
+            f"after 4 days and start from their archetype's fusion head. Control: one fusion head pooled over the whole "
+            f"cohort. All starts keep asking up to 1 question a day. Accuracy per week, {seeds} seeds, 8 new people per type and seed.", "",
+            f"| New person | Start | {head} | Matched to an archetype |",
+            "| --- | --- | " + " | ".join("---" for _ in range(weeks)) + " | --- |"]
+    for name, r in res.items():
+        text.append(f"| {name} | generic | " + " | ".join(f"{v:.3f}" for v in r["generic"]) + " | |")
+        text.append(f"| {name} | cohort, pooled | " + " | ".join(f"{v:.3f}" for v in r["pooled"]) + " | |")
+        text.append(f"| {name} | archetype | " + " | ".join(f"{v:.3f}" for v in r["archetype"]) + f" | {r['matched']:.0%} |")
+    (out / "ARCHETYPES.md").write_text("\n".join(text) + "\n", encoding="utf-8")
+    (out / "archetypes.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
+    print("\n".join(text))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="soulcal")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -145,9 +168,14 @@ def main() -> None:
     b = sub.add_parser("bench")
     b.add_argument("--readings", required=True)
     b.add_argument("--out", default="soulcal_bench")
+    c = sub.add_parser("archetypes")
+    c.add_argument("--out", default="demo_out")
+    c.add_argument("--seeds", type=int, default=10)
     a = ap.parse_args()
     if a.cmd == "demo":
         demo(Path(a.out), a.people, a.weeks)
+    elif a.cmd == "archetypes":
+        archetypes_demo(Path(a.out), a.seeds)
     elif a.cmd == "bench":
         bench(Path(a.readings), Path(a.out))
     else:

@@ -30,6 +30,11 @@ same harness for in-house and partner models.
 
 Each step enters the product only if it beats the one below.
 
+## What "precise" means
+
+Agreement with the state the person would choose themselves, per reading and per person; not intensity, mixed
+states or causes (yet). → [[24-what-precise-means]]
+
 ## Metrics
 
 - **Within person:** CCC and Spearman on per-user centred values, alongside global ones.

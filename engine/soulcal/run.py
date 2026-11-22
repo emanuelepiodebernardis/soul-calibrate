@@ -26,9 +26,11 @@ class RunResult:
 
 def run_stream(readings: list[Reading], truth: list[str | None], profile: Profile,
                config: EngineConfig | None = None, learn: bool = True, correct_p: float = 0.3,
-               slip: float = 0.05, seed: int = 0, masking: list[bool] | None = None) -> RunResult:
+               slip: float = 0.05, seed: int = 0, masking: list[bool] | None = None,
+               engine: SoulEngine | None = None) -> RunResult:
+    """``engine``: start from an existing engine (for example one warm-started from an archetype)."""
     rng = np.random.default_rng(seed)
-    eng = SoulEngine(profile, config)
+    eng = engine or SoulEngine(profile, config)
     res = RunResult()
     start = readings[0].timestamp
     for i, (r, y) in enumerate(zip(readings, truth)):

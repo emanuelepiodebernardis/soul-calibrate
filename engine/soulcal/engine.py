@@ -40,6 +40,7 @@ class EngineConfig:
     max_questions_per_day: float = 1          # below 1 = one question every few days (0.5 = every other day)
     question_hours: tuple | None = None       # the user's chosen window, e.g. (18, 23); None = any time
     max_options: int = 3
+    ask_wide: bool = False                    # also ask when more states are plausible, offering the most likely ones (docs/24)
     incongruence_z: float = 2.0               # personal z-score above which words and expression disagree
     incongruence_min: float = 0.15            # and the raw disagreement (Jensen-Shannon, bits) above this
     memory_bandwidth: float = 0.3
@@ -156,6 +157,9 @@ class SoulEngine:
         elif 2 <= len(order) <= self.cfg.max_options and budget_left:
             action, options = ASK, [STATES[k] for k in order]
             reason = f"{len(order)} plausible states"
+        elif self.cfg.ask_wide and len(order) > self.cfg.max_options and budget_left:
+            action, options = ASK, [STATES[k] for k in order[:self.cfg.max_options]]
+            reason = f"{len(order)} plausible states: the {self.cfg.max_options} most likely offered"
         else:
             action, options = QUIET, []
             reason = "too uncertain" if len(order) > self.cfg.max_options else "question budget used today"
