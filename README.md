@@ -9,7 +9,7 @@ A proposal for the SOUL layer of Nightlet, by **Emanuele De Bernardis** (Novembe
 
 **In Nightlet's terms:** people want to feel understood, not optimized. SOUL-Calibrate sits on top of any SOUL
 model, in-house or from a partner, and makes its reading right for this person: it decides when SOUL speaks,
-asks "does this feel right?" or stays quiet (and so when the bracelet should pulse), learns on the phone
+asks "does this feel right?" or stays quiet, and so when the bracelet should pulse to calm, learns on the phone
 without breaking "never used for training", and measures every model against the user's own answers.
 
 ## 1. The problem
@@ -108,6 +108,16 @@ over the cohort raises first-week accuracy by 3 to 5 points; archetypes (prototy
 add nothing on top of it yet, so the pooled cohort comes first.
 → [docs/25-coarse-to-fine-and-archetypes.md](docs/25-coarse-to-fine-and-archetypes.md)
 
+### When the bracelet pulses
+
+The pulse is where the reading becomes help, so it follows the same rule: **pulse** when the engine is sure the
+person is tense against their own baseline (a slow heartbeat below their resting heart rate, or a breathing pacer
+at about 6 a minute, with a line on screen and an optional calm voice), **offer** a calm minute when tense is only
+possible, and stay still when they are calm, excited or moving. In a synthetic check, pulses triggered by the
+body alone land on excitement half the time and reach 3% of tense moments; the calibrated decision reaches 56%
+at 88% precision. 20% of eligible moments are held out at random, so the effect is measured on the person's own
+recovery and the rhythm that calms them is learned. → [docs/26-when-to-pulse.md](docs/26-when-to-pulse.md)
+
 When words and face or voice disagree, the disagreement becomes a reason to ask, read against the person's own
 baseline. → [docs/21-text-face-incongruence.md](docs/21-text-face-incongruence.md)
 
@@ -136,7 +146,7 @@ cd engine && python -m pytest tests -q && python -m soulcal demo --out examples/
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/25` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/26` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `engine/` | the `soulcal` package: usable engine, command line, demo outputs and tests |
@@ -160,7 +170,7 @@ python run_user_control.py --seeds 5 --out results
 python run_states.py --seeds 5 --out results   # four vs eight states
 python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                      # 18 tests
+python -m pytest -q tests                      # 19 tests
 python -m soulcal demo --out examples/demo_out
 ```
 

@@ -37,6 +37,7 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E29 | Level of detail per reading | cohort | showing the main state until the fine one is sure keeps readings right from the first days without slowing learning | no gain in early shown precision ([[25-coarse-to-fine-and-archetypes]]) |
 | E30 | Archetypes | cohort, new users | matching a new person to an archetype beats one head pooled over the cohort in the first week (synthetic: the pooled head already gives +3 to +5 points, archetypes add nothing) | no gain over the pooled head, or worse for people who fit no archetype ([[25-coarse-to-fine-and-archetypes]]) |
 | E31 | First check on real voice | public multi-speaker emotion speech, pretrained speech model (PyTorch) | a per-speaker baseline and a few answers per speaker beat the generic model, scored on held-out recordings of each speaker | no gain over the generic model on real audio ([[00-problem]], [[06-personal-model]]) |
+| E32 | When to pulse | cohort, micro-randomised | pulses at moments the engine is sure are tense improve HRV and heart-rate recovery and "did it help?" over held-out moments, with fewer false pulses than pulses triggered by the body alone | no recovery gain, or people turn pulses off ([[26-when-to-pulse]]) |
 
 ## Before the interview (done)
 

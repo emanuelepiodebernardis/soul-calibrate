@@ -181,3 +181,23 @@ def test_archetype_start_and_no_match_far_away():
     assert k is not None and np.allclose(eng.head.W, model.archetypes[k].W)
     far = A.signature(r) + 100 * model.scale
     assert model.match(far)[0] is None
+
+
+def test_pulse_only_when_sure_of_tension_and_never_while_moving():
+    from datetime import datetime
+    from soulcal.schema import Decision, Reading
+    from soulcal.support import NONE, OFFER, PULSE, SupportConfig, SupportPolicy
+    sp = SupportPolicy(SupportConfig(hold_out=0.0))
+    ts = datetime(2026, 9, 7, 19, 0)
+    still = Reading("u", ts, heart_rate=80.0, motion=0.2)
+    tense = Decision(action="speak", state="tense", options=[], proba={})
+    s = sp.decide(tense, still, resting_hr=60.0)
+    assert s.action == PULSE and s.screen_text and s.voice_text is None
+    if s.pattern == "slow_heartbeat":
+        assert s.rate_per_minute == 48.0            # 80% of the resting heart rate
+    assert sp.decide(tense, Reading("u", ts.replace(hour=20), heart_rate=80.0, motion=0.2)).reason == "cooldown"
+    sp2 = SupportPolicy(SupportConfig(hold_out=0.0))
+    assert sp2.decide(tense, Reading("u", ts, heart_rate=120.0, motion=1.6)).action == NONE      # gym
+    assert sp2.decide(Decision("speak", "energized", [], {}), still).action == NONE             # excitement
+    assert sp2.decide(Decision("ask", None, ["tense", "energized"], {}), still).action == OFFER
+    sp2.record_outcome(0, 40.0, 50.0)                                                            # unknown id: ignored

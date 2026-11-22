@@ -4,6 +4,7 @@
     python -m soulcal run --readings my.csv --out o  your own readings (CSV format in soulcal/schema.py)
     python -m soulcal bench --readings my.csv        SOUL-Bench ladder B0-B6 against the self_report column
     python -m soulcal archetypes --out demo_out      future phase: archetypes from a synthetic cohort
+    python -m soulcal support --out demo_out         when and how the bracelet should pulse (synthetic)
                           [--birth-date 1990-05-17]  only for the optional reflection layer
 """
 
@@ -154,6 +155,29 @@ def archetypes_demo(out: Path, seeds: int) -> None:
     print("\n".join(text))
 
 
+def support_demo(out: Path, seeds: int) -> None:
+    from .support_sim import support_check
+    out.mkdir(parents=True, exist_ok=True)
+    res = support_check(seeds=seeds)
+    text = ["# When to pulse (synthetic people; the effect of a pulse is an assumption)", "",
+            f"20 synthetic people per seed, {seeds} seeds, 6 weeks, 3 evening readings a day. A pulse helps only when "
+            "the person is tense: the pattern that suits them adds about 1.0 to recovery, the other about 0.2. Each "
+            "false pulse makes the person turn pulses off with probability 5%. Same gates for every policy: bracelet "
+            "worn, not moving, at most 3 a day, 90 minutes apart; 20% of eligible moments held out to measure the effect.",
+            "", "| When to pulse | Pulses per week | Pulses at tense moments | Pulses at excitement | "
+            "Tense moments helped (pulse or accepted offer) | Extra recovery per tense moment | People who turned pulses off |",
+            "| --- | --- | --- | --- | --- | --- | --- |"]
+    for r in res.values():
+        text.append(f"| {r['label']} | {r['pulses_per_week']:.2f} | {r['precision']:.0%} | {r['false_on_excitement']:.0%} | "
+                    f"{r['tense_moments_helped']:.0%} | {r['extra_recovery_per_tense_moment']:.2f} | {r['turned_pulses_off']:.0%} |")
+    lr = res["learned"]
+    text += ["", f"Pattern learned per person after 6 weeks: the one that suits them in {lr['right_pattern']:.0%} of people "
+             f"(50% by chance); error of the measured effect against the true one {lr['effect_error']:.2f} (true effect about 1.0)."]
+    (out / "SUPPORT.md").write_text("\n".join(text) + "\n", encoding="utf-8")
+    (out / "support.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
+    print("\n".join(text))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="soulcal")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -171,9 +195,14 @@ def main() -> None:
     c = sub.add_parser("archetypes")
     c.add_argument("--out", default="demo_out")
     c.add_argument("--seeds", type=int, default=10)
+    su = sub.add_parser("support")
+    su.add_argument("--out", default="demo_out")
+    su.add_argument("--seeds", type=int, default=5)
     a = ap.parse_args()
     if a.cmd == "demo":
         demo(Path(a.out), a.people, a.weeks)
+    elif a.cmd == "support":
+        support_demo(Path(a.out), a.seeds)
     elif a.cmd == "archetypes":
         archetypes_demo(Path(a.out), a.seeds)
     elif a.cmd == "bench":

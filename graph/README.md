@@ -10,12 +10,12 @@ simulation code and results in `sim/`, and the engine in `engine/soulcal/` with 
 | `graph.json` | the graph data (nodes, links, communities) |
 | `build_map.py` | rebuilds `map.html` from `graph.json` with a precomputed layout |
 
-At the last build: 840 nodes, 2387 links, 41 communities (37 with three or more nodes), from 39 documents and
-27 code files: the docs, the simulation and the `soulcal` engine.
+At the last build: 894 nodes, 2570 links, 27 communities (24 with three or more nodes), from 41 documents and
+29 code files: the docs, the simulation and the `soulcal` engine.
 
 ## What the graph found
 
-Built five times while the project grew; each round pointed at the next fix.
+Built six times while the project grew; each round pointed at the next fix.
 
 | Round | What the graph showed | What was done |
 | --- | --- | --- |
@@ -24,10 +24,11 @@ Built five times while the project grew; each round pointed at the next fix.
 | 3 (+ the engine) | The decision rule (speak / ask / quiet) and the engine are now the backbone, and SOUL-Bench is the bridge between evidence, risks, consent and regulation; 20+ concepts are linked to the code that implements them | SOUL-Bench ladder and quality gate implemented in `engine/soulcal` |
 | 4 (+ question budget, eight states, coarse to fine) | The open question of docs/24 (start with the main states?) is answered by docs/25; the glucose-monitor analogy (docs/11) stops being an island and joins cohort transfer (E19) and the private pilot through archetypes; but the level of detail per reading and archetypes existed only in the simulation, linked to the engine by nothing but numpy | `engine/soulcal/detail.py` and a prototype `engine/soulcal/archetypes.py` with its own check |
 | 5 (+ detail and archetype code) | Archetypes now connect to the engine, the personal baseline and the incongruence score; the check found that one head pooled over the cohort gives the gain and archetypes add nothing on top, so the pilot plan changed (pooled cohort first). New gaps: everything is still synthetic (E31, a first check on real voice, has no code yet); "when the bracelet should pulse" is in the README but not in code; the fits-no-archetype check is weak (it matched 88% of a type it never saw) | E31 added; the next code is the real-voice experiment |
+| 6 (+ when and how the bracelet pulses) | docs/26 becomes one of the most connected documents (37 links), touching 12 areas: the decision rule, the question budget, clinical practice (HRV biofeedback, alarm fatigue, micro-randomised trials), the problem (the body says how much, not which way), fusion and the cohort pilot; HRV biofeedback, on paper since round 1, is now linked to code; 41 communities merge into 27, because the pulse is where the reading, the budget and the evaluation meet. New gaps: the support policy sits next to the engine (they share only the reading); the effect of a pulse is assumed until the cohort measures it (E32); no support is defined for "low" | `engine/soulcal/support.py`, E32 |
 
 Still only on paper (no code yet): the session anchor and the enrollment flow, the reading audit batteries, the
-private cohort pilot, HRV biofeedback and when to pulse, the micro-randomised trials, and any check on real voice
-(E31). Most need real users or Nightlet's app; E31 only needs public speech data and a GPU.
+private cohort pilot, the measured effect of a pulse (E32), the micro-randomised trials, and any check on real
+voice (E31). Most need real users or Nightlet's app; E31 only needs public speech data and a GPU.
 
 ## Rebuild
 

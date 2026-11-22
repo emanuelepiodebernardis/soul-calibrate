@@ -1,0 +1,46 @@
+{
+ "body": {
+  "label": "Body alone: heart rate above the person's usual, not moving",
+  "pulses_per_week": 0.14833333333333334,
+  "precision": 0.47191011235955055,
+  "false_on_excitement": 0.5056179775280899,
+  "tense_moments_helped": 0.027851458885941646,
+  "extra_recovery_per_tense_moment": 0.018368499660000606,
+  "turned_pulses_off": 0.0,
+  "right_pattern": null,
+  "effect_error": null
+ },
+ "generic": {
+  "label": "Generic reading says tense (today's reading, no questions)",
+  "pulses_per_week": 0.49,
+  "precision": 0.8639455782312925,
+  "false_on_excitement": 0.06462585034013606,
+  "tense_moments_helped": 0.16323907455012854,
+  "extra_recovery_per_tense_moment": 0.10174094344252986,
+  "turned_pulses_off": 0.0,
+  "right_pattern": null,
+  "effect_error": null
+ },
+ "fixed": {
+  "label": "SOUL-Calibrate decision, one fixed pattern (breathing)",
+  "pulses_per_week": 1.0,
+  "precision": 0.8816666666666667,
+  "false_on_excitement": 0.058333333333333334,
+  "tense_moments_helped": 0.5607843137254902,
+  "extra_recovery_per_tense_moment": 0.3632276229088133,
+  "turned_pulses_off": 0.02,
+  "right_pattern": null,
+  "effect_error": null
+ },
+ "learned": {
+  "label": "SOUL-Calibrate decision, pattern learned per person",
+  "pulses_per_week": 0.9983333333333333,
+  "precision": 0.8614357262103506,
+  "false_on_excitement": 0.05342237061769616,
+  "tense_moments_helped": 0.5713342140026421,
+  "extra_recovery_per_tense_moment": 0.40742382351612333,
+  "turned_pulses_off": 0.06,
+  "right_pattern": 0.72,
+  "effect_error": 0.5102003601032677
+ }
+}

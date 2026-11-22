@@ -63,6 +63,14 @@ Compiled by Emanuele De Bernardis, November 2026. Grouped by the module that use
 - RinDig, [AuditEngine](https://github.com/RinDig/AuditEngine): psychometric batteries administered to language models → [[14-reading-audit]]
 - RinDig, [icm-architect](https://github.com/RinDig/icm-architect) and Van Clief & McDermott, *Interpretable Context Methodology* ([arXiv:2603.16021](https://arxiv.org/abs/2603.16021)) → structure of this repository, [[17-roadmap-and-governance]]
 
+## When to pulse — [[26-when-to-pulse]]
+
+- Azevedo, Bennett, Bilicki, Hooper, Markopoulou, Tsakiris (2017). The calming effect of a new wearable device during the anticipation of public speech. *Scientific Reports* 7:2285. [doi:10.1038/s41598-017-02274-2](https://doi.org/10.1038/s41598-017-02274-2)
+- Paredes, Zhou, Hasan, Nakashima, Mohan, Landay et al. (2018). Just Breathe: In-car interventions for guided slow breathing. *Proc. ACM IMWUT* 2(1):28. [doi:10.1145/3191760](https://doi.org/10.1145/3191760)
+- Miri, Uusberg, Culbertson, Flory, Gross, Marzullo et al. (2020). PIV: Placement, pattern and personalization of an inconspicuous vibrotactile breathing pacer. *ACM TOCHI*. [NSF PAR](https://par.nsf.gov/servlets/purl/10145875)
+- The effectiveness and user preferences of two tactile breathing devices in reducing stress in stressed individuals (2025). *International Journal of Clinical and Health Psychology*. [doi:10.1016/j.ijchp.2025.100603](https://doi.org/10.1016/j.ijchp.2025.100603)
+- Suh, Howe, Lewis, Hernandez, Saha, Althoff et al. (2024). Toward tailoring just-in-time adaptive intervention systems for workplace stress reduction. *JMIR Mental Health*. [link](https://mental.jmir.org/2024/1/e48974)
+
 ## Recurring situations and incongruence — [[20-recurring-situations]], [[21-text-face-incongruence]]
 
 - Stacchio, Ubaldi, Mauri, Gaggioli, Galdelli, Frontoni. Empathic Prompting: Non-Verbal Context Integration for Multimodal LLM Conversations. [arXiv:2510.20743](https://arxiv.org/abs/2510.20743)

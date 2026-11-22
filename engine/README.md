@@ -9,11 +9,12 @@ personal pattern graph with statistical guardrails (including the astrology refl
 
 ```bash
 pip install -e .                       # or just run from this folder
-python -m pytest tests -q              # 18 tests
+python -m pytest tests -q              # 19 tests
 python -m soulcal bench --readings my_readings.csv
 python -m soulcal demo --out examples/demo_out
 python -m soulcal run --readings my_readings.csv --out results [--birth-date 1990-05-17]
 python -m soulcal archetypes --out examples/demo_out    # future phase: archetypes, synthetic cohort
+python -m soulcal support --out examples/demo_out       # when and how the bracelet pulses
 ```
 
 - Input format: `soulcal/schema.py` (CSV columns or `Reading` objects).

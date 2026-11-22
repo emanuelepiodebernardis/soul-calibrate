@@ -55,7 +55,7 @@ side of the line (no diagnosis).
 ## 6. Heart-rate-variability biofeedback
 
 - Meta-analysis (Goessl, Curtiss & Hofmann, 2017; 24 studies, 484 participants): large reduction in self-reported stress and anxiety (between-group g = 0.83).
-- **For Nightlet:** the bracelet's pulse can pace slow breathing; HRV during the pulse is the proximal outcome. → [[07-fusion]]
+- **For Nightlet:** the bracelet's pulse can pace slow breathing; HRV during the pulse is the proximal outcome. → [[07-fusion]], designed in [[26-when-to-pulse]]
 
 ## 7. Naming emotions as a skill
 
@@ -63,14 +63,15 @@ side of the line (no diagnosis).
   measures decreased and identified emotions increased in experience-sampling data (Costache et al., 2025).
 - Emotional granularity grows with repeated experience sampling (Hoemann, Barrett & Quigley, 2021).
 - **For Nightlet:** a vocabulary that grows: start with four broad states, then offer finer words to people
-  who answer consistently (from "tense" to "worried", "frustrated", "pressured").
+  who answer consistently (from "tense" to "worried", "frustrated", "pressured"). → [[25-coarse-to-fine-and-archetypes]]
 
 ## 8. Alarm fatigue
 
 - Between 72% and 99% of clinical monitor alarms are false or not actionable, and staff respond to alarms in
   proportion to how reliable they find them.
 - **For Nightlet:** every question is a small alarm. Track the share of unnecessary questions and cap them; a
-  user who learns that questions are pointless will stop answering, and the loop stops. → [[10-risks]]
+  user who learns that questions are pointless will stop answering, and the loop stops. A pulse is an alarm on the
+  wrist: same cap, and only when the reading is sure. → [[10-risks]], [[26-when-to-pulse]]
 
 ## Check
 
