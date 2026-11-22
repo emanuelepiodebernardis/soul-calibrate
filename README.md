@@ -84,7 +84,8 @@ only writes the words of a reading; it never decides what the reading is.
 
 A rolling baseline recovers after a step change in the signals (0.581 vs 0.541 for a fixed one), and with a
 generic model Nightlet would have to ask at 76% of moments, so personalization comes before speaking and
-questions need a budget. → [docs/18-simulation.md](docs/18-simulation.md)
+questions need a budget. The generic model scores 0.578 in the personalization ladder and 0.550 here: this
+setting adds a difference between public training data and real users. → [docs/18-simulation.md](docs/18-simulation.md)
 
 ![Cohort transfer](sim/results/fig4_cohort_transfer.png)
 
