@@ -115,3 +115,25 @@ def test_no_question_from_body_signals_alone():
     eng = SoulEngine(Profile("u"), EngineConfig(thresholds=[0.99] * 4))
     d = eng.observe(Reading("u", T0, heart_rate=90, hrv_rmssd=20))
     assert d.action != "ask"
+
+
+def test_user_chosen_hours_and_light_budget():
+    flat = {"calm": 0.45, "energized": 0.45, "tense": 0.05, "low": 0.05}   # two plausible states
+    eng = SoulEngine(Profile("u"), EngineConfig(thresholds=[0.7] * 4, question_hours=(18, 23)))
+    morning = eng.observe(Reading("u", T0.replace(hour=9), voice=flat))
+    evening = eng.observe(Reading("u", T0.replace(hour=20), voice=flat))
+    assert morning.action != "ask" and evening.action == "ask"
+    light = SoulEngine(Profile("u"), EngineConfig(thresholds=[0.7] * 4, max_questions_per_day=0.5))
+    asks = [light.observe(Reading("u", T0 + timedelta(days=d), voice=flat)).action == "ask" for d in range(4)]
+    assert asks == [False, True, False, True]   # one question every other day
+
+
+def test_free_note_teaches_like_an_answer():
+    eng = SoulEngine(Profile("u"), EngineConfig(thresholds=[0.95] * 4, max_questions_per_day=0))
+    flat = {"calm": 0.3, "energized": 0.2, "tense": 0.3, "low": 0.2}
+    before = eng.observe(Reading("u", T0, voice=flat))
+    for k in range(4):
+        d = eng.observe(Reading("u", T0 + timedelta(days=7 * (k + 1)), voice=flat))
+        eng.note(d.reading_index, "energized")
+    after = eng.observe(Reading("u", T0 + timedelta(days=35), voice=flat))
+    assert after.proba["energized"] > before.proba["energized"]

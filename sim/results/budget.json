@@ -1,0 +1,622 @@
+{
+ "budget": {
+  "0.25": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.5865,
+    "questions_per_person": 1.0,
+    "test_speak_share": 0.2851666666666667,
+    "test_speak_accuracy": 0.8623025792906629,
+    "test_coverage": 0.8871666666666667,
+    "same_situation_after": 0.9041708982057426
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.5806666666666667,
+    "questions_per_person": 0.9833333333333334,
+    "test_speak_share": 0.2831666666666667,
+    "test_speak_accuracy": 0.8514207325269982,
+    "test_coverage": 0.8808333333333334,
+    "same_situation_after": 0.9243969416545947
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.5816666666666667,
+    "questions_per_person": 0.9833333333333334,
+    "test_speak_share": 0.282,
+    "test_speak_accuracy": 0.8481960938505108,
+    "test_coverage": 0.881,
+    "same_situation_after": 0.9215803419653563
+   }
+  },
+  "0.5": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.6961666666666667,
+    "questions_per_person": 3.0,
+    "test_speak_share": 0.5533333333333333,
+    "test_speak_accuracy": 0.8462779858157082,
+    "test_coverage": 0.859,
+    "same_situation_after": 0.8735998967842177
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.7283333333333334,
+    "questions_per_person": 2.8066666666666666,
+    "test_speak_share": 0.5081666666666667,
+    "test_speak_accuracy": 0.8994022851741551,
+    "test_coverage": 0.8963333333333333,
+    "same_situation_after": 0.878516679840051
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.7461666666666666,
+    "questions_per_person": 2.5966666666666667,
+    "test_speak_share": 0.4411666666666667,
+    "test_speak_accuracy": 0.9047219267955793,
+    "test_coverage": 0.909,
+    "same_situation_after": 0.864255517918102
+   }
+  },
+  "1": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7506666666666666,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7340000000000001,
+    "test_speak_accuracy": 0.8450905750469986,
+    "test_coverage": 0.8553333333333333,
+    "same_situation_after": 0.840059099621735
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8631666666666667,
+    "questions_per_person": 5.993333333333333,
+    "test_speak_share": 0.7175,
+    "test_speak_accuracy": 0.937992272571565,
+    "test_coverage": 0.9303333333333335,
+    "same_situation_after": 0.892367939017672
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8160000000000001,
+    "questions_per_person": 4.373333333333333,
+    "test_speak_share": 0.5523333333333333,
+    "test_speak_accuracy": 0.9408394870499954,
+    "test_coverage": 0.9414999999999999,
+    "same_situation_after": 0.8525142072163705
+   }
+  },
+  "2": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7926666666666666,
+    "questions_per_person": 14.0,
+    "test_speak_share": 0.8564999999999999,
+    "test_speak_accuracy": 0.8447418090488045,
+    "test_coverage": 0.8476666666666667,
+    "same_situation_after": 0.8254660592017796
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9098333333333333,
+    "questions_per_person": 8.280000000000001,
+    "test_speak_share": 0.8146666666666667,
+    "test_speak_accuracy": 0.9548461875538623,
+    "test_coverage": 0.9478333333333333,
+    "same_situation_after": 0.9143892627613998
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8400000000000001,
+    "questions_per_person": 4.846666666666667,
+    "test_speak_share": 0.5973333333333333,
+    "test_speak_accuracy": 0.9409435838821996,
+    "test_coverage": 0.9455,
+    "same_situation_after": 0.8595135315010299
+   }
+  },
+  "3": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7973333333333332,
+    "questions_per_person": 21.0,
+    "test_speak_share": 0.9066666666666666,
+    "test_speak_accuracy": 0.8332280368189984,
+    "test_coverage": 0.8348333333333333,
+    "same_situation_after": 0.8186096110096747
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9166666666666667,
+    "questions_per_person": 8.996666666666666,
+    "test_speak_share": 0.8281666666666666,
+    "test_speak_accuracy": 0.9626177987610814,
+    "test_coverage": 0.9526666666666668,
+    "same_situation_after": 0.9198270330122632
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8375,
+    "questions_per_person": 4.906666666666666,
+    "test_speak_share": 0.6046666666666668,
+    "test_speak_accuracy": 0.9336430985853985,
+    "test_coverage": 0.9380000000000001,
+    "same_situation_after": 0.8559328616532925
+   }
+  },
+  "4": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.8098333333333333,
+    "questions_per_person": 28.0,
+    "test_speak_share": 0.9266666666666665,
+    "test_speak_accuracy": 0.8415743107814716,
+    "test_coverage": 0.8411666666666667,
+    "same_situation_after": 0.8218975990081047
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9201666666666666,
+    "questions_per_person": 8.936666666666666,
+    "test_speak_share": 0.8385,
+    "test_speak_accuracy": 0.9609823924609382,
+    "test_coverage": 0.9543333333333333,
+    "same_situation_after": 0.9202066901712278
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8408333333333335,
+    "questions_per_person": 4.943333333333333,
+    "test_speak_share": 0.5968333333333333,
+    "test_speak_accuracy": 0.9364872999762008,
+    "test_coverage": 0.943,
+    "same_situation_after": 0.8511952549110609
+   }
+  }
+ },
+ "spread": {
+  "1/False": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7506666666666666,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7340000000000001,
+    "test_speak_accuracy": 0.8450905750469986,
+    "test_coverage": 0.8553333333333333,
+    "same_situation_after": 0.840059099621735
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8631666666666667,
+    "questions_per_person": 5.993333333333333,
+    "test_speak_share": 0.7175,
+    "test_speak_accuracy": 0.937992272571565,
+    "test_coverage": 0.9303333333333335,
+    "same_situation_after": 0.892367939017672
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8160000000000001,
+    "questions_per_person": 4.373333333333333,
+    "test_speak_share": 0.5523333333333333,
+    "test_speak_accuracy": 0.9408394870499954,
+    "test_coverage": 0.9414999999999999,
+    "same_situation_after": 0.8525142072163705
+   }
+  },
+  "1/True": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7506666666666666,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7340000000000001,
+    "test_speak_accuracy": 0.8450905750469986,
+    "test_coverage": 0.8553333333333333,
+    "same_situation_after": 0.840059099621735
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.829,
+    "questions_per_person": 5.073333333333334,
+    "test_speak_share": 0.6781666666666666,
+    "test_speak_accuracy": 0.923805355525311,
+    "test_coverage": 0.914,
+    "same_situation_after": 0.8851936042916876
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8021666666666667,
+    "questions_per_person": 3.81,
+    "test_speak_share": 0.5158333333333334,
+    "test_speak_accuracy": 0.9307129793837842,
+    "test_coverage": 0.9236666666666669,
+    "same_situation_after": 0.8564767764792117
+   }
+  },
+  "2/False": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7926666666666666,
+    "questions_per_person": 14.0,
+    "test_speak_share": 0.8564999999999999,
+    "test_speak_accuracy": 0.8447418090488045,
+    "test_coverage": 0.8476666666666667,
+    "same_situation_after": 0.8254660592017796
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9098333333333333,
+    "questions_per_person": 8.280000000000001,
+    "test_speak_share": 0.8146666666666667,
+    "test_speak_accuracy": 0.9548461875538623,
+    "test_coverage": 0.9478333333333333,
+    "same_situation_after": 0.9143892627613998
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8400000000000001,
+    "questions_per_person": 4.846666666666667,
+    "test_speak_share": 0.5973333333333333,
+    "test_speak_accuracy": 0.9409435838821996,
+    "test_coverage": 0.9455,
+    "same_situation_after": 0.8595135315010299
+   }
+  },
+  "2/True": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7926666666666666,
+    "questions_per_person": 14.0,
+    "test_speak_share": 0.8564999999999999,
+    "test_speak_accuracy": 0.8447418090488045,
+    "test_coverage": 0.8476666666666667,
+    "same_situation_after": 0.8254660592017796
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9065,
+    "questions_per_person": 7.993333333333334,
+    "test_speak_share": 0.7975,
+    "test_speak_accuracy": 0.9583751866047482,
+    "test_coverage": 0.9541666666666668,
+    "same_situation_after": 0.9069894866205495
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8363333333333334,
+    "questions_per_person": 4.760000000000001,
+    "test_speak_share": 0.595,
+    "test_speak_accuracy": 0.945359792763454,
+    "test_coverage": 0.9490000000000001,
+    "same_situation_after": 0.8585145162918645
+   }
+  }
+ },
+ "fast_changes": {
+  "1/False": {
+   "never": {
+    "test_accuracy": 0.4990833333333334,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.0745,
+    "test_speak_accuracy": 0.8018374388663763,
+    "test_coverage": 0.9105000000000001,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7435833333333333,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7210833333333333,
+    "test_speak_accuracy": 0.8407469024882783,
+    "test_coverage": 0.8465,
+    "same_situation_after": 0.8329467471279601
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8746666666666666,
+    "questions_per_person": 6.5,
+    "test_speak_share": 0.7425,
+    "test_speak_accuracy": 0.9449901234820295,
+    "test_coverage": 0.93825,
+    "same_situation_after": 0.8983336985543919
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.81875,
+    "questions_per_person": 5.046666666666667,
+    "test_speak_share": 0.6085833333333333,
+    "test_speak_accuracy": 0.9305369534165626,
+    "test_coverage": 0.9380833333333334,
+    "same_situation_after": 0.8376963430057505
+   }
+  },
+  "1/True": {
+   "never": {
+    "test_accuracy": 0.4990833333333334,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.0745,
+    "test_speak_accuracy": 0.8018374388663763,
+    "test_coverage": 0.9105000000000001,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7435833333333333,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7210833333333333,
+    "test_speak_accuracy": 0.8407469024882783,
+    "test_coverage": 0.8465,
+    "same_situation_after": 0.8329467471279601
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8497499999999999,
+    "questions_per_person": 5.8100000000000005,
+    "test_speak_share": 0.71275,
+    "test_speak_accuracy": 0.9340670048933676,
+    "test_coverage": 0.9269166666666667,
+    "same_situation_after": 0.8895722951690759
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8190833333333334,
+    "questions_per_person": 4.316666666666666,
+    "test_speak_share": 0.5395833333333333,
+    "test_speak_accuracy": 0.9354785644121382,
+    "test_coverage": 0.9438333333333333,
+    "same_situation_after": 0.8533778009866193
+   }
+  },
+  "2/False": {
+   "never": {
+    "test_accuracy": 0.4990833333333334,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.0745,
+    "test_speak_accuracy": 0.8018374388663763,
+    "test_coverage": 0.9105000000000001,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7857500000000001,
+    "questions_per_person": 14.0,
+    "test_speak_share": 0.8568333333333333,
+    "test_speak_accuracy": 0.8407308496389415,
+    "test_coverage": 0.845,
+    "same_situation_after": 0.822650859237313
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9352499999999999,
+    "questions_per_person": 10.203333333333333,
+    "test_speak_share": 0.86075,
+    "test_speak_accuracy": 0.971146661356469,
+    "test_coverage": 0.9631666666666666,
+    "same_situation_after": 0.9316970582752034
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8526666666666667,
+    "questions_per_person": 5.953333333333333,
+    "test_speak_share": 0.645,
+    "test_speak_accuracy": 0.950953761990285,
+    "test_coverage": 0.9510833333333334,
+    "same_situation_after": 0.8564084287404908
+   }
+  },
+  "2/True": {
+   "never": {
+    "test_accuracy": 0.4990833333333334,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.0745,
+    "test_speak_accuracy": 0.8018374388663763,
+    "test_coverage": 0.9105000000000001,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7857500000000001,
+    "questions_per_person": 14.0,
+    "test_speak_share": 0.8568333333333333,
+    "test_speak_accuracy": 0.8407308496389415,
+    "test_coverage": 0.845,
+    "same_situation_after": 0.822650859237313
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9309166666666666,
+    "questions_per_person": 9.693333333333332,
+    "test_speak_share": 0.84375,
+    "test_speak_accuracy": 0.9726469476266297,
+    "test_coverage": 0.96075,
+    "same_situation_after": 0.9300941184617505
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8564999999999999,
+    "questions_per_person": 5.756666666666666,
+    "test_speak_share": 0.6665,
+    "test_speak_accuracy": 0.9455419483380896,
+    "test_coverage": 0.9456666666666667,
+    "same_situation_after": 0.863248268200631
+   }
+  }
+ },
+ "longer_calibration": {
+  "7d/1": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7506666666666666,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7340000000000001,
+    "test_speak_accuracy": 0.8450905750469986,
+    "test_coverage": 0.8553333333333333,
+    "same_situation_after": 0.840059099621735
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8631666666666667,
+    "questions_per_person": 5.993333333333333,
+    "test_speak_share": 0.7175,
+    "test_speak_accuracy": 0.937992272571565,
+    "test_coverage": 0.9303333333333335,
+    "same_situation_after": 0.892367939017672
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8160000000000001,
+    "questions_per_person": 4.373333333333333,
+    "test_speak_share": 0.5523333333333333,
+    "test_speak_accuracy": 0.9408394870499954,
+    "test_coverage": 0.9414999999999999,
+    "same_situation_after": 0.8525142072163705
+   }
+  },
+  "14d/0.5": {
+   "never": {
+    "test_accuracy": 0.5050000000000001,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07183333333333333,
+    "test_speak_accuracy": 0.8359834995394289,
+    "test_coverage": 0.905,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7533333333333334,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7404999999999999,
+    "test_speak_accuracy": 0.847162977943265,
+    "test_coverage": 0.8508333333333333,
+    "same_situation_after": 0.85410215420459
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8663333333333334,
+    "questions_per_person": 5.9399999999999995,
+    "test_speak_share": 0.7330000000000001,
+    "test_speak_accuracy": 0.9427450793297355,
+    "test_coverage": 0.9301666666666666,
+    "same_situation_after": 0.8949691289076174
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8218333333333334,
+    "questions_per_person": 4.3533333333333335,
+    "test_speak_share": 0.5733333333333334,
+    "test_speak_accuracy": 0.9321591382856151,
+    "test_coverage": 0.9378333333333334,
+    "same_situation_after": 0.8535849587213746
+   }
+  },
+  "28d/0.25": {
+   "never": {
+    "test_accuracy": 0.49833333333333335,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.072,
+    "test_speak_accuracy": 0.8241500845008994,
+    "test_coverage": 0.9119999999999999,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7493333333333334,
+    "questions_per_person": 7.0,
+    "test_speak_share": 0.7475,
+    "test_speak_accuracy": 0.840923859029488,
+    "test_coverage": 0.8435,
+    "same_situation_after": 0.8602504129197728
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8606666666666667,
+    "questions_per_person": 5.960000000000001,
+    "test_speak_share": 0.6956666666666667,
+    "test_speak_accuracy": 0.9483508774147535,
+    "test_coverage": 0.9385000000000001,
+    "same_situation_after": 0.878262697545372
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8125,
+    "questions_per_person": 4.286666666666667,
+    "test_speak_share": 0.5593333333333333,
+    "test_speak_accuracy": 0.9373234813178687,
+    "test_coverage": 0.9393333333333332,
+    "same_situation_after": 0.855744702268642
+   }
+  },
+  "14d/1": {
+   "never": {
+    "test_accuracy": 0.5050000000000001,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07183333333333333,
+    "test_speak_accuracy": 0.8359834995394289,
+    "test_coverage": 0.905,
+    "same_situation_after": NaN
+   },
+   "random/closed": {
+    "test_accuracy": 0.7863333333333333,
+    "questions_per_person": 14.0,
+    "test_speak_share": 0.8631666666666667,
+    "test_speak_accuracy": 0.8436920746045805,
+    "test_coverage": 0.8425,
+    "same_situation_after": 0.8330604264762289
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9236666666666666,
+    "questions_per_person": 9.86,
+    "test_speak_share": 0.8494999999999999,
+    "test_speak_accuracy": 0.9641083192230037,
+    "test_coverage": 0.9564999999999999,
+    "same_situation_after": 0.915991945373284
+   },
+   "ambiguous_new/closed": {
+    "test_accuracy": 0.8408333333333333,
+    "questions_per_person": 5.819999999999999,
+    "test_speak_share": 0.6468333333333333,
+    "test_speak_accuracy": 0.9374758399177786,
+    "test_coverage": 0.9375,
+    "same_situation_after": 0.8465760673610481
+   }
+  }
+ }
+}

@@ -24,6 +24,7 @@ The options are 2–3 plausible states, always with "none of these" and "somethi
   makes later readings of the same situation correct about 9 times in 10 (0.892 vs 0.497 without questions), and
   ambiguous timing beats random timing (0.863 vs 0.751) with fewer questions. → [[20-recurring-situations]]
 - The claim must still be tested on real people (E3, E15, E20).
+- How many questions, when, and personalization speed: → [[23-question-budget]]
 
 ## What to ask (the options)
 

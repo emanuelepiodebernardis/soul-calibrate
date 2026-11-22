@@ -24,6 +24,7 @@ all its state in a small JSON file on the phone.
 | Explanation: evidence per channel for each reading | `Decision.contributions` | [[14-reading-audit]] |
 | SOUL-Bench ladder B0–B6, within-person metrics | `bench.soul_bench` | [[08-evaluation-soul-bench]] |
 | Quality gate: no question from body signals alone | `EngineConfig.ask_needs_expression` | [[15-labels-and-consent]] |
+| Personalization speed presets, chosen hours, free notes | `PRESETS`, `EngineConfig.question_hours`, `SoulEngine.note` | [[23-question-budget]] |
 | Personal pattern graph with statistical guardrails | `patterns.find_patterns`, `patterns.to_graph` | below |
 | Reflection layer (moon phase, moon sign, sun sign) | `astro` | below |
 
@@ -42,7 +43,7 @@ eng.save("user-42.json")                     # stays on the device
 
 ```bash
 cd engine
-python -m pytest tests -q                    # 13 tests
+python -m pytest tests -q                    # 15 tests
 python -m soulcal bench --readings my_readings.csv   # SOUL-Bench ladder
 python -m soulcal demo --out examples/demo_out
 python -m soulcal run --readings my_readings.csv --out results   # CSV format in soulcal/schema.py
@@ -125,6 +126,6 @@ The graph is written in the project-map format, so the same viewer draws it:
 
 ## Check
 
-- `python -m pytest engine/tests -q` passes (13 tests, including "the loop beats today's generic reading" and
+- `python -m pytest engine/tests -q` passes (15 tests, including "the loop beats today's generic reading" and
   "no supported moon pattern when none is planted").
 - On real data: `python -m soulcal run` on a pilot export, then SOUL-Bench metrics per user ([[08-evaluation-soul-bench]]).

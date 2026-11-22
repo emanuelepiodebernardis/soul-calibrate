@@ -37,7 +37,8 @@ class EngineConfig:
     alpha: float = 0.10                       # conformal miscoverage: sets hold the true state ~90% of the time
     thresholds: list[float] = field(default_factory=lambda: [0.80] * N_STATES)  # population calibration (see calibrate_thresholds)
     aci_step: float = 0.05                    # adaptive conformal step on the person's own answers
-    max_questions_per_day: int = 1
+    max_questions_per_day: float = 1          # below 1 = one question every few days (0.5 = every other day)
+    question_hours: tuple | None = None       # the user's chosen window, e.g. (18, 23); None = any time
     max_options: int = 3
     incongruence_z: float = 2.0               # personal z-score above which words and expression disagree
     incongruence_min: float = 0.15            # and the raw disagreement (Jensen-Shannon, bits) above this
@@ -47,7 +48,12 @@ class EngineConfig:
     head_lr: float = 0.05
     head_shrink: float = 0.05
     ask_needs_expression: bool = True         # quality gate: never ask from body signals alone
+    note_weight: float = 0.7                  # weight of a free note read on the phone into a state
     personal: bool = True                     # False = today's generic reading: population norms, no personal correction
+
+
+# Personalization speed presets the user can pick (docs/23-question-budget.md)
+PRESETS = {"light": 0.5, "standard": 1, "fast": 2}
 
 
 # Population norms used only when personal=False (a generic, non-personal reading)
@@ -89,6 +95,7 @@ class SoulEngine:
         self.incongruence = EMA(0.05)
         self.delta = 0.0                       # personal shift of the conformal thresholds
         self.questions_by_day: dict[str, int] = {}
+        self.first_day: str | None = None
         self._pending: dict[int, dict] = {}    # recent readings that can still be answered or corrected
         self.n_readings = 0
         self.drift_events = 0
@@ -134,7 +141,11 @@ class SoulEngine:
         inc_z, inc_pair = self._incongruence(f)
 
         day = r.timestamp.date().isoformat()
-        budget_left = self.questions_by_day.get(day, 0) < self.cfg.max_questions_per_day
+        budget_left = self.questions_by_day.get(day, 0) < self._allowance(r)
+        if self.cfg.question_hours is not None:
+            start, end = self.cfg.question_hours
+            if not start <= r.timestamp.hour < end:
+                budget_left = False   # outside the times the user chose for questions
         if self.cfg.ask_needs_expression and not any(r.channel(c) is not None for c in ("face", "voice", "text")):
             budget_left = False   # nothing the person said or showed: a question would be a guess
         if inc_pair and budget_left:
@@ -168,6 +179,17 @@ class SoulEngine:
                         proba={s: float(proba[k]) for k, s in enumerate(STATES)}, contributions=contrib,
                         incongruence=inc_z, reason=reason, reading_index=idx)
 
+    def _allowance(self, r: Reading) -> int:
+        """Questions allowed today; a budget below 1 a day becomes one question every few days."""
+        b = self.cfg.max_questions_per_day
+        if b >= 1:
+            return int(b)
+        from datetime import date
+        if self.first_day is None:
+            self.first_day = r.timestamp.date().isoformat()
+        d = (r.timestamp.date() - date.fromisoformat(self.first_day)).days
+        return int(np.floor((d + 1) * b)) - int(np.floor(d * b))
+
     def _learn(self, index: int, state: str, weight: float) -> None:
         item = self._pending.get(index)
         if item is None:
@@ -186,6 +208,12 @@ class SoulEngine:
         """A one-tap "not quite" on a spoken reading, with the state the user names."""
         self._learn(index, state, self.cfg.correction_weight)
 
+    def note(self, index: int, state: str) -> None:
+        """A free note the user left about a reading ("I trained this morning", "I got angry about...").
+        The text is read on the phone by any text model into a state; only that state is learned here,
+        and nothing leaves the device. Notes do not use the question budget."""
+        self._learn(index, state, self.cfg.note_weight)
+
     def channel_trust(self) -> dict[str, float]:
         return self.head.channel_trust()
 
@@ -196,7 +224,7 @@ class SoulEngine:
                              "consent_level": self.profile.consent_level},
                  "config": self.cfg.__dict__, "baseline": self.baseline.to_dict(), "head": self.head.to_dict(),
                  "memory": self.memory.to_dict(), "incongruence": self.incongruence.to_dict(),
-                 "delta": self.delta, "questions_by_day": self.questions_by_day,
+                 "delta": self.delta, "questions_by_day": self.questions_by_day, "first_day": self.first_day,
                  "n_readings": self.n_readings, "drift_events": self.drift_events}
         Path(path).write_text(json.dumps(state), encoding="utf-8")
 
@@ -212,5 +240,8 @@ class SoulEngine:
         e.memory = SituationMemory.from_dict(d["memory"])
         e.incongruence = EMA.from_dict(d["incongruence"])
         e.delta, e.questions_by_day = d["delta"], d["questions_by_day"]
+        e.first_day = d.get("first_day")
+        if isinstance(e.cfg.question_hours, list):
+            e.cfg.question_hours = tuple(e.cfg.question_hours)
         e.n_readings, e.drift_events = d["n_readings"], d["drift_events"]
         return e

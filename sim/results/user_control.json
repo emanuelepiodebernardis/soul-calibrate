@@ -1,0 +1,266 @@
+{
+ "preferences": {
+  "1 a day, any time": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8631666666666667,
+    "questions_per_person": 5.993333333333333,
+    "test_speak_share": 0.7175,
+    "test_speak_accuracy": 0.937992272571565,
+    "test_coverage": 0.9303333333333335
+   }
+  },
+  "1 a day, evenings only (readings 2-3)": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8094999999999999,
+    "questions_per_person": 4.91,
+    "test_speak_share": 0.6441666666666667,
+    "test_speak_accuracy": 0.9253170767729463,
+    "test_coverage": 0.9105000000000001
+   }
+  },
+  "2 a day, any time": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9098333333333333,
+    "questions_per_person": 8.280000000000001,
+    "test_speak_share": 0.8146666666666667,
+    "test_speak_accuracy": 0.9548461875538623,
+    "test_coverage": 0.9478333333333333
+   }
+  },
+  "2 a day, evenings only": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8626666666666667,
+    "questions_per_person": 6.026666666666666,
+    "test_speak_share": 0.7406666666666667,
+    "test_speak_accuracy": 0.9497526656364755,
+    "test_coverage": 0.9335000000000001
+   }
+  },
+  "as many as needed (up to 4 a day)": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9201666666666666,
+    "questions_per_person": 8.936666666666666,
+    "test_speak_share": 0.8385,
+    "test_speak_accuracy": 0.9609823924609382,
+    "test_coverage": 0.9543333333333333
+   }
+  }
+ },
+ "notes": {
+  "0% of readings": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8631666666666667,
+    "questions_per_person": 5.993333333333333,
+    "test_speak_share": 0.7175,
+    "test_speak_accuracy": 0.937992272571565,
+    "test_coverage": 0.9303333333333335
+   }
+  },
+  "10% of readings": {
+   "never": {
+    "test_accuracy": 0.6566666666666667,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.4445,
+    "test_speak_accuracy": 0.8492101897234784,
+    "test_coverage": 0.8731666666666668
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8648333333333333,
+    "questions_per_person": 5.573333333333333,
+    "test_speak_share": 0.7731666666666668,
+    "test_speak_accuracy": 0.9339560268978788,
+    "test_coverage": 0.9286666666666668
+   }
+  },
+  "25% of readings": {
+   "never": {
+    "test_accuracy": 0.7428333333333333,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.659,
+    "test_speak_accuracy": 0.8515414801643251,
+    "test_coverage": 0.8608333333333332
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8598333333333332,
+    "questions_per_person": 5.066666666666667,
+    "test_speak_share": 0.8383333333333333,
+    "test_speak_accuracy": 0.9157133265237395,
+    "test_coverage": 0.9085000000000001
+   }
+  }
+ },
+ "notes_only": {
+  "no questions, notes on 10%": {
+   "never": {
+    "test_accuracy": 0.6566666666666667,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.4445,
+    "test_speak_accuracy": 0.8492101897234784,
+    "test_coverage": 0.8731666666666668
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.6391666666666665,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.4496666666666666,
+    "test_speak_accuracy": 0.8240801223600183,
+    "test_coverage": 0.8543333333333333
+   }
+  },
+  "no questions, notes on 25%": {
+   "never": {
+    "test_accuracy": 0.7428333333333333,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.659,
+    "test_speak_accuracy": 0.8515414801643251,
+    "test_coverage": 0.8608333333333332
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.7293333333333335,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.6533333333333333,
+    "test_speak_accuracy": 0.8590462524585272,
+    "test_coverage": 0.8651666666666668
+   }
+  }
+ },
+ "robust": {
+  "0.05/False": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.9098333333333333,
+    "questions_per_person": 8.280000000000001,
+    "test_speak_share": 0.8146666666666667,
+    "test_speak_accuracy": 0.9548461875538623,
+    "test_coverage": 0.9478333333333333
+   }
+  },
+  "0.05/True": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.8346666666666666,
+    "questions_per_person": 7.586666666666668,
+    "test_speak_share": 0.8376666666666667,
+    "test_speak_accuracy": 0.8915050866770919,
+    "test_coverage": 0.8781666666666667
+   }
+  },
+  "0.2/False": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.818,
+    "questions_per_person": 10.413333333333334,
+    "test_speak_share": 0.6723333333333333,
+    "test_speak_accuracy": 0.9130620215290497,
+    "test_coverage": 0.914
+   }
+  },
+  "0.2/True": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.7173333333333334,
+    "questions_per_person": 9.193333333333333,
+    "test_speak_share": 0.7849999999999999,
+    "test_speak_accuracy": 0.787477967533975,
+    "test_coverage": 0.7915
+   }
+  },
+  "0.35/False": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.675,
+    "questions_per_person": 12.313333333333333,
+    "test_speak_share": 0.4753333333333332,
+    "test_speak_accuracy": 0.8098415789943433,
+    "test_coverage": 0.8616666666666667
+   }
+  },
+  "0.35/True": {
+   "never": {
+    "test_accuracy": 0.504,
+    "questions_per_person": 0.0,
+    "test_speak_share": 0.07466666666666666,
+    "test_speak_accuracy": 0.8178385936904071,
+    "test_coverage": 0.9178333333333333
+   },
+   "ambiguous/closed": {
+    "test_accuracy": 0.5806666666666667,
+    "questions_per_person": 10.213333333333335,
+    "test_speak_share": 0.7496666666666666,
+    "test_speak_accuracy": 0.6381028835093957,
+    "test_coverage": 0.6798333333333333
+   }
+  }
+ }
+}

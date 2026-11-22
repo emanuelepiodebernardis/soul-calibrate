@@ -70,6 +70,11 @@ class SituationConfig:
     covered_weight: float = 0.5    # "ambiguous + new" skips moments already this covered
     public_shift: float = 0.0      # how much public training data differ from the product's users
     aci_gamma: float = 0.0         # adaptive conformal step on the person's own answers (0 = off)
+    questions_per_day: float = 1.0 # question budget; below 1 = one question every few days
+    spread: bool = False           # spread questions over the day instead of using the first chances
+    allowed_slots: tuple | None = None  # the user's chosen times for questions (reading indices of the day); None = any
+    note_p: float = 0.0            # chance the user leaves an unprompted note at a reading ("I trained", "I got angry")
+    trust_memory: bool = False     # answers that agree with their neighbours gain weight, isolated contradictions lose it
 
 
 @dataclass
@@ -141,7 +146,7 @@ class Memory:
     """Answers stored with their signals; evidence spreads to similar signals."""
 
     def __init__(self, bandwidth: float, reliability: float = 0.9, half_life_days: float | None = None,
-                 contradiction_reset: bool = False):
+                 contradiction_reset: bool = False, trust: bool = False):
         self.h = bandwidth
         self.X: list[np.ndarray] = []
         self.a: list[int] = []
@@ -149,6 +154,7 @@ class Memory:
         self.now = 0.0
         self.half_life = half_life_days
         self.reset = contradiction_reset
+        self.trust = trust
         self.strength: list[float] = []
         self.llr = float(np.log(reliability / ((1 - reliability) / (N_STATES - 1))))
 
@@ -176,6 +182,27 @@ class Memory:
         return p / p.sum()
 
     def add(self, x: np.ndarray, a: int) -> None:
+        if self.trust and self.X:
+            # consensus: each answer is weighed by the answers around it. Agreeing neighbours reinforce each
+            # other; a lone contradiction loses weight instead of erasing what many answers agree on.
+            w = self.weights(x)
+            agree = sum(wi for wi, ai in zip(w, self.a) if ai == a)
+            disagree = sum(wi for wi, ai in zip(w, self.a) if ai != a)
+            for i, (wi, ai) in enumerate(zip(w, self.a)):
+                if wi < 0.2:
+                    continue
+                if ai == a:
+                    self.strength[i] = min(2.0, self.strength[i] + 0.5 * wi)
+                elif agree < disagree:
+                    pass   # the newcomer is the outlier: old consensus stays
+                else:
+                    self.strength[i] = max(0.2, self.strength[i] - 0.5 * wi)
+            new = 1.0 + 0.5 * agree - 0.5 * max(0.0, disagree - agree)
+            self.strength.append(float(np.clip(new, 0.2, 2.0)))
+            self.X.append(x)
+            self.a.append(a)
+            self.t.append(self.now)
+            return
         if self.reset and self.X:
             # a new answer that contradicts nearby old ones weakens them, locally:
             # the situation may have changed its meaning, the rest of memory is untouched
@@ -205,14 +232,24 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
     s_all, X_all, y_all = stream
     days = cfg.calib_days + cfg.test_days
     mem = Memory(bandwidth, reliability=1 - (cfg.closed_error if qtype == "closed" else cfg.open_error),
-                 half_life_days=half_life_days, contradiction_reset=contradiction_reset)
+                 half_life_days=half_life_days, contradiction_reset=contradiction_reset, trust=cfg.trust_memory)
     asked_situations: set[int] = set()
     delta = 0.0   # personal shift of the conformal thresholds, learned from the person's own answers
     log = []
     for day in range(days):
         idx = range(day * cfg.moments_per_day, (day + 1) * cfg.moments_per_day)
-        asked_today = False
+        allowance = (int(np.floor((day + 1) * cfg.questions_per_day)) - int(np.floor(day * cfg.questions_per_day))
+                     if cfg.questions_per_day < 1 else int(cfg.questions_per_day))
+        n_today = 0
+        windows_used: set[int] = set()
+        asked_today = allowance == 0
         random_pick = int(rng.integers(0, cfg.moments_per_day))
+        if allowance == 1:
+            random_picks = {random_pick}
+        elif allowance > 1:
+            random_picks = set(rng.choice(cfg.moments_per_day, size=min(allowance, cfg.moments_per_day), replace=False).tolist())
+        else:
+            random_picks = set()
         explore_today = explore_p > 0 and rng.random() < explore_p
         for j, t in enumerate(idx):
             mem.now = day + j / cfg.moments_per_day
@@ -227,6 +264,10 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
             seen_before = s in asked_situations
             log.append({"day": day, "s": s, "correct": pred == y, "size": size,
                         "in_set": bool(st[y]), "after_asked": seen_before, "test": day >= cfg.calib_days})
+            if cfg.note_p and day < cfg.calib_days and rng.random() < cfg.note_p:
+                # an unprompted note from the user: free text read on the phone into a state, no budget used
+                mem.add(x, answer(y, None, cfg, rng))
+                log[-1]["noted"] = True
             if correct_p and size == 1 and pred != y and rng.random() < correct_p:
                 # a user-initiated correction of a confident reading: an open answer
                 mem.add(x, answer(y, None, cfg, rng))
@@ -237,11 +278,21 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
             if explore_today and j == random_pick:
                 ask = True
             elif policy == "random":
-                ask = j == random_pick
+                ask = j in random_picks
             elif policy == "ambiguous":
                 ask = 2 <= size <= 3
             elif policy == "ambiguous_new":
                 ask = 2 <= size <= 3 and mem.coverage_weight(x) < cfg.covered_weight
+            if ask and cfg.allowed_slots is not None and j not in cfg.allowed_slots:
+                ask = False
+            if ask and cfg.spread and policy != "random":
+                if allowance == 1:
+                    ask = j >= day % cfg.moments_per_day          # rotating start: every slot gets its turn
+                else:
+                    w = j * allowance // cfg.moments_per_day       # at most one question per window of the day
+                    ask = w not in windows_used
+                    if ask:
+                        windows_used.add(w)
             if ask:
                 offered = st if (qtype == "closed" and size <= 3) else None
                 a = answer(y, offered, cfg, rng)
@@ -250,7 +301,8 @@ def run_person(cfg: SituationConfig, model, thresholds, person: Person, stream, 
                     delta += cfg.aci_gamma * ((0.0 if st[a] else 1.0) - cfg.alpha)
                 mem.add(x, a)
                 asked_situations.add(s)
-                asked_today = True
+                n_today += 1
+                asked_today = n_today >= allowance
                 log[-1]["asked"] = True
     return {"log": log, "n_asked": len(mem.a)}
 

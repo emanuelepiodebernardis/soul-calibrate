@@ -29,6 +29,9 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E21 | Words vs expression | public multimodal sets + cohort | incongruent moments are where generic models fail and where one question gains most | no gap between congruent and incongruent moments ([[21-text-face-incongruence]]) |
 | E22 | Coverage after personalization | cohort | per-user coverage stays near 90% with adaptive conformal thresholds | coverage below 85% for many users ([[20-recurring-situations]]) |
 | E23 | Life change | cohort, follow-up | one-tap corrections recover changed situations faster without hurting the others | no faster recovery ([[20-recurring-situations]]) |
+| E24 | Personalization speed | cohort, randomised presets | Light, Standard and Fast reach the same accuracy, Fast sooner | no difference in speed, or a lower ceiling for Light ([[23-question-budget]]) |
+| E25 | Burden by preset | cohort | answer rate and drop-out stay acceptable for Standard and Fast | drop-out rises sharply with the budget ([[23-question-budget]]) |
+| E26 | Free notes | cohort | notes replace questions at the same accuracy | notes add nothing ([[23-question-budget]]) |
 
 ## Before the interview (done)
 

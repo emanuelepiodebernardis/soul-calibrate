@@ -70,6 +70,16 @@ The same experiments surface two new problems, coverage after personalization an
 
 ![Recurring situations](sim/results/fig5_recurring_situations.png)
 
+### How many questions? The user picks the speed
+
+Every budget reaches about the same accuracy; more questions only get there sooner. To reach 0.90 the system
+needs about 10–12 answers: about 3 weeks at one question every other day, 11 days at 1 a day, 8 days at 2 a day,
+7 at 4 a day. Two a day is the sweet spot, because the system only asks when it is torn and runs out of
+ambiguous moments. Users choose the speed, the hours, and can leave free notes instead.
+→ [docs/23-question-budget.md](docs/23-question-budget.md)
+
+![Personalization speed](sim/results/fig6_personalization_speed.png)
+
 When words and face or voice disagree, the disagreement becomes a reason to ask, read against the person's own
 baseline. → [docs/21-text-face-incongruence.md](docs/21-text-face-incongruence.md)
 
@@ -98,7 +108,7 @@ cd engine && python -m pytest tests -q && python -m soulcal demo --out examples/
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/22` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/23` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `engine/` | the `soulcal` package: usable engine, command line, demo outputs and tests |
@@ -116,8 +126,11 @@ pip install -r requirements.txt
 python -m pytest -q tests                      # 15 tests
 python run_simulation.py --seeds 5 --out results
 python run_situations.py --seeds 5 --out results
+python run_budget.py --seeds 5 --out results   # question budget, timing, spreading
+python run_speed.py --seeds 5 --out results    # personalization speed
+python run_user_control.py --seeds 5 --out results
 cd ../engine
-python -m pytest -q tests                      # 13 tests
+python -m pytest -q tests                      # 15 tests
 python -m soulcal demo --out examples/demo_out
 ```
 
