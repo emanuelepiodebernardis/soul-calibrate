@@ -5,8 +5,8 @@ authors:
   - family-names: "De Bernardis"
     given-names: "Emanuele"
     email: "emanuelepio.debernardis@gmail.com"
-date-released: 2026-11-21
-version: "0.1.0"
+date-released: 2026-11-22
+version: "0.2.0"
 license: MIT
 repository-code: "https://github.com/emanuelepiodebernardis/soul-calibrate"
 keywords:

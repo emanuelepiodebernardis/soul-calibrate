@@ -27,6 +27,16 @@ repository records the date of each part.
 10. **The `soulcal` engine:** a usable implementation of the whole loop on multimodal device readings, with a
    personal pattern graph whose reflection layer (astrology) is held to the same statistical guardrails as the
    measured signals. → `engine/`, `docs/22`
+11. **Question budget and personalization speed:** the user chooses how fast the system learns them (light,
+   standard, fast), at which hours, and can leave free notes; every budget reaches the same level. → `docs/23`
+12. **What "precise" means, and eight states:** agreement with the person's own label; wide questions when more
+   than three states are plausible. → `docs/24`
+13. **Coarse to fine:** fine questions from day one, each reading shown at the level the model is sure of; and a
+   path from personal calibration to learning from a consenting cohort, with an archetype prototype. → `docs/25`,
+   `engine/soulcal/detail.py`, `engine/soulcal/archetypes.py`
+14. **When the bracelet pulses:** the pulse follows the reading's decision (pulse when sure of tension, offer when
+   unsure, nothing otherwise), with held-out moments to measure its effect and a rhythm learned per person.
+   → `docs/26`, `engine/soulcal/support.py`
 
 ## Credits
 
