@@ -5,7 +5,7 @@ simulation code and results in `sim/`, and the engine in `engine/soulcal/` with 
 
 | File | What it is |
 | --- | --- |
-| `overview.png` | one picture of the areas and how they connect (in the main README); rebuilt by `build_overview.py` |
+| `overview.png` | one picture of the areas and how they connect (in the main README): every area with its two strongest links, plus the strongest overall; rebuilt by `build_overview.py` |
 | `map.html` | interactive map: open it in any browser, works offline |
 | `GRAPH_REPORT.md` | most connected concepts, surprising links, weakly connected nodes (possible gaps), suggested questions |
 | `graph.json` | the graph data (nodes, links, communities) |

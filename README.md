@@ -282,6 +282,8 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
   generated audio; it needs a machine with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 - **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
   voice check-ins (E33) and the tuning of the rhythm (E34); signatures and whether seeing them helps (E35, E36).
+- **One join in code.** The signature model (`anchors.py`) works and is tested on its own; its per-state
+  probabilities still have to be passed into the engine's voice channel, and E31 does not yet use signatures.
 - **Still on paper:** the enrollment screens in the app (the logic is in `anchors.py`), the reading audit batteries, the cohort pilot, the
   micro-randomised trials, support for "low", and an engine with more than four states (`detail.py` works on top).
 
@@ -289,7 +291,9 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 
 The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,111 concepts and
 3,337 links across documents and code, grouped into areas. Read left to right: where an idea comes from
-(evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code.
+(evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code. Each circle is an
+area, each line the links between two areas (thicker = more); every area's two strongest links are drawn, so none is
+left without a line, and arcs on the left of a column join areas of the same group.
 
 ![How the project's ideas connect](graph/overview.png)
 
@@ -345,7 +349,7 @@ python run_user_control.py --seeds 5 --out results  # chosen hours, free notes, 
 python run_states.py --seeds 5 --out results        # four vs eight states
 python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                           # 22 tests
+python -m pytest -q tests                           # 23 tests
 python -m soulcal demo --out examples/demo_out      # today vs the engine
 python -m soulcal archetypes --out examples/demo_out
 python -m soulcal support --out examples/demo_out   # when the bracelet pulses
@@ -356,7 +360,7 @@ python -m soulcal bench --readings my.csv           # SOUL-Bench on your own rea
 cd ../sim && python plot_support.py && python plot_channels.py && python plot_anchors.py   # figures 8-10
 cd .. && python -m pytest -q realvoice/tests            # E31 protocol, no download
 python realvoice/e31_real_voice.py --data path/to/RAVDESS --encoder emotion2vec   # E31 on real voice
-cd .. && python graph/build_overview.py             # graph overview image
+python graph/build_overview.py                      # graph overview image
 ```
 
 ## Author and license

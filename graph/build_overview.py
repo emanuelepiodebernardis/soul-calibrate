@@ -15,6 +15,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import networkx as nx  # noqa: E402
+from matplotlib.patches import PathPatch  # noqa: E402
+from matplotlib.path import Path  # noqa: E402
 
 # areas grouped into a few themes, so the picture reads at a glance
 THEMES = {
@@ -72,28 +74,40 @@ def main(src: str, out: str) -> None:
         for j, c in enumerate(cols[t]):
             pos[c] = (i * 1.0, 0.5 - j / max(n - 1, 1) if n > 1 else 0.0)
     fig, ax = plt.subplots(figsize=(17, 11))
-    top = sorted(w.values(), reverse=True)
-    cut = top[min(len(top) - 1, 55)] if top else 0
-    for (a, b), k in w.items():
-        if k >= cut:
-            (x1, y1), (x2, y2) = pos[a], pos[b]
-            xs = [x1 + (x2 - x1) * u for u in (0, 0.5, 1)]
-            bend = 0.08 if x1 == x2 else 0.0
-            ys = [y1, (y1 + y2) / 2, y2]
-            xs[1] += bend
-            ax.plot(xs, ys, color="#b9b2a5", linewidth=0.4 + 0.1 * k, alpha=0.5, zorder=1)
+    # which links to draw: every area's two strongest links, so none is left without a line, plus the strongest overall
+    shown = set(sorted(w, key=lambda p: -w[p])[:40])
+    for c in G.nodes:
+        mine = sorted((p for p in w if c in p), key=lambda p: -w[p])
+        shown.update(mine[:2])
+    kmax = max(w.values()) if w else 1
+    for (a, b) in sorted(shown, key=lambda p: w[p]):      # strongest drawn last, on top
+        k = w[(a, b)]
+        (x1, y1), (x2, y2) = pos[a], pos[b]
+        if x1 == x2:                                       # same column: an arc to the left of the circles
+            bulge = 0.06 + 0.22 * abs(y1 - y2)
+            verts = [(x1, y1), (x1 - bulge, y1), (x1 - bulge, y2), (x2, y2)]
+        else:                                              # across columns: a smooth S curve
+            if x1 > x2:
+                (x1, y1), (x2, y2) = (x2, y2), (x1, y1)
+            dx = (x2 - x1) * 0.45
+            verts = [(x1, y1), (x1 + dx, y1), (x2 - dx, y2), (x2, y2)]
+        path = Path(verts, [Path.MOVETO, Path.CURVE4, Path.CURVE4, Path.CURVE4])
+        lw = 0.6 + 3.2 * (k / kmax) ** 0.7
+        ax.add_patch(PathPatch(path, fc="none", ec="#8f8879", lw=lw, alpha=0.28 + 0.4 * (k / kmax) ** 0.5, zorder=1,
+                               capstyle="round"))
     for c in G.nodes:
         t = THEMES.get(c, "eval")
         ax.scatter(*pos[c], s=28 * size[c], color=COLORS[t], alpha=0.9, edgecolor="white", linewidth=1.5, zorder=2)
         ax.text(pos[c][0] + 0.035, pos[c][1], f"{c} ({size[c]})", ha="left", va="center", fontsize=10,
-                color="#2b2925", zorder=3, bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.75))
+                color="#2b2925", zorder=3, bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.85))
     for i, t in enumerate(order):
         ax.text(i * 1.0, 0.62, NAMES[t], ha="left", fontsize=13, color=COLORS[t], weight="bold")
     n_nodes, n_links = len(g["nodes"]), len(g.get("links", g.get("edges", [])))
     ax.set_title(f"How the project's ideas connect: {len(keep)} areas, {n_nodes} concepts, {n_links} links "
-                 "(circle = area, number = concepts in it, line = links between areas; the strongest links shown)", loc="left",
+                 "\n(circle = area, number = concepts in it; line = links between two areas, thicker = more links; "
+                 f"each area's two strongest links shown, {len(shown)} of {len(w)})", loc="left",
                  fontsize=13, color="#2b2925", pad=12)
-    ax.set_xlim(-0.1, 3.75)
+    ax.set_xlim(-0.32, 3.75)
     ax.set_ylim(-0.56, 0.68)
     ax.axis("off")
     fig.tight_layout()

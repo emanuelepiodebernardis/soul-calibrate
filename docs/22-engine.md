@@ -53,7 +53,7 @@ eng.save("user-42.json")                     # stays on the device
 
 ```bash
 cd engine
-python -m pytest tests -q                    # 22 tests
+python -m pytest tests -q                    # 23 tests
 python -m soulcal channels --out examples/demo_out     # voice, words, face, body
 python -m soulcal haptics --out examples/demo_out      # tuning the pulse
 python -m soulcal support --out examples/demo_out      # when to pulse, synthetic
@@ -140,6 +140,6 @@ The graph is written in the project-map format, so the same viewer draws it:
 
 ## Check
 
-- `python -m pytest engine/tests -q` passes (22 tests, including "the loop beats today's generic reading" and
+- `python -m pytest engine/tests -q` passes (23 tests, including "the loop beats today's generic reading" and
   "no supported moon pattern when none is planted").
 - On real data: `python -m soulcal run` on a pilot export, then SOUL-Bench metrics per user ([[08-evaluation-soul-bench]]).
