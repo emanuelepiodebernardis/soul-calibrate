@@ -6,3 +6,6 @@ __pycache__/
 graph/.graphify_*
 graph/cache/
 graphify-out/
+
+realvoice/results/
+data/

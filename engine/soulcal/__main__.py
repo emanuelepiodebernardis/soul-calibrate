@@ -179,9 +179,10 @@ def support_demo(out: Path, seeds: int) -> None:
 
 
 def channels_demo(out: Path, seeds: int) -> None:
-    from .channels_sim import app_use_check, checkin_check, sources_check
+    from .channels_sim import app_use_check, checkin_check, frontend_check, sources_check
     out.mkdir(parents=True, exist_ok=True)
     a, b, c = sources_check(seeds=seeds), app_use_check(seeds=seeds), checkin_check(seeds=seeds)
+    d = frontend_check(seeds=seeds)
     f = lambda v: "–" if v != v else f"{v:.2f}"  # noqa: E731
     t = ["# Voice, words, face and body (synthetic people)", "",
          f"Engine demo people, {seeds} seeds x 20 people, up to 1 question a day, 6 weeks; scored on weeks 5-6, before learning.", "",
@@ -203,8 +204,15 @@ def channels_demo(out: Path, seeds: int) -> None:
     for k, v in c.items():
         t.append(f"| {k} | {f(v['accuracy_body_only_moments'])} | {v['tense_reached']:.0%} | {v['pulse_precision']:.0%} | "
                  f"{v['invitations_per_week']:.1f} |")
+    t += ["", "## D. Stronger speech front ends (open speech-recognition and speech-emotion models)", "",
+          "How clearly voice and words show the state is multiplied; each person's habits (flat voice, serious face, "
+          "saying 'fine' when tense) stay the same.", "",
+          "| Front end | Generic reading | With personal calibration | Gain |", "| --- | --- | --- | --- |"]
+    for k, v in d.items():
+        t.append(f"| {k} | {f(v['generic'])} | {f(v['calibrated'])} | {v['calibrated'] - v['generic']:+.2f} |")
     (out / "CHANNELS.md").write_text("\n".join(t) + "\n", encoding="utf-8")
-    (out / "channels.json").write_text(json.dumps({"sources": a, "app_use": b, "checkin": c}, indent=1), encoding="utf-8")
+    (out / "channels.json").write_text(json.dumps({"sources": a, "app_use": b, "checkin": c, "frontend": d}, indent=1),
+                                       encoding="utf-8")
     print("\n".join(t))
 
 

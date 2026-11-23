@@ -167,3 +167,35 @@ def checkin_check(seeds: int = 3, people: int = 20, weeks: int = 6, app_p: float
                      "pulse_precision": true / max(pulses, 1), "pulse_on_excitement": excite / max(pulses, 1),
                      "invitations_per_week": invites / n_pw}
     return res
+
+
+FRONTENDS = {
+    "Today's generic models": 1.0,
+    "Stronger open models (x1.5)": 1.5,
+    "Much stronger (x2)": 2.0,
+    "Near-perfect on the words and the voice (x3)": 3.0,
+}
+
+
+def frontend_check(seeds: int = 3, people: int = 20, weeks: int = 6) -> dict:
+    """D. Better speech front ends (e.g. open speech-recognition and speech-emotion models): how clearly voice and
+    words show the state is multiplied, while each person's habits (flat voice, serious face, saying 'fine' when
+    tense) stay the same, because they belong to the person, not to the model."""
+    from dataclasses import replace as dreplace
+    out = {}
+    for name, k in FRONTENDS.items():
+        rows_g, rows_e = [], []
+        for s in range(seeds):
+            rng = np.random.default_rng(s)
+            for i in range(people):
+                p, _ = _person(rng, i)
+                p = dreplace(p, voice_strength=p.voice_strength * k, text_strength=p.text_strength * k)
+                r, y, m = generate(days=7 * weeks, seed=int(rng.integers(1e9)), person=p)
+                rows_g.append(_score(run_stream(r, y, Profile(p.user_id), EngineConfig(personal=False, max_questions_per_day=0),
+                                                seed=i).decisions))
+                rows_e.append(_score(run_stream(r, y, Profile(p.user_id), EngineConfig(), seed=i).decisions))
+        out[name] = {"generic": float(np.mean([r["accuracy"] for r in rows_g])),
+                     "calibrated": float(np.mean([r["accuracy"] for r in rows_e])),
+                     "generic_speak_accuracy": float(np.nanmean([r["speak_accuracy"] for r in rows_g])),
+                     "calibrated_speak_accuracy": float(np.nanmean([r["speak_accuracy"] for r in rows_e]))}
+    return out

@@ -1,0 +1,9 @@
+numpy
+scikit-learn
+librosa
+soundfile
+# for the emotion2vec encoder (downloads the model on first use):
+funasr
+modelscope
+torch
+torchaudio

@@ -186,6 +186,16 @@ always-on listening (Amazon's always-listening band was criticised and discontin
 
 ![Voice and body](sim/results/fig9_voice_and_body.png)
 
+### Listening well from day one: open speech models
+
+Voice is an input: the person talks to the app, the bracelet does not speak. One voice note gives two signals:
+the words (speech recognition: Whisper, Parakeet, as in the open-source Handy app, or SenseVoice) and the way they
+are said (speech emotion: emotion2vec+, SenseVoice), both on the phone and both swappable. In a synthetic check,
+stronger front ends raise the generic reading from 0.62 to 0.82 and beyond, and personal calibration still adds
+on top (+0.16 today, +0.08 with much stronger models), because masking and personal habits belong to the person,
+not to the model. The first check on real voice is ready to run: `realvoice/e31_real_voice.py` (RAVDESS,
+emotion2vec+, leave one speaker out). → [docs/28-speech-front-end.md](docs/28-speech-front-end.md)
+
 ### Tuning the pulse to each person
 
 Products that calm with vibration are triggered on demand (doppel, TouchPoints, Apollo) or automatically against a
@@ -249,8 +259,8 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 
 ## 7. What is not done yet
 
-- **Real data.** Everything is synthetic. The first experiment on real audio (E31): a pretrained speech model on
-  a public multi-speaker emotion dataset, generic vs per-speaker baseline vs a few answers per speaker.
+- **Real data.** Everything is synthetic. The first experiment on real audio (E31) is written and tested on
+  generated audio; it needs a machine with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 - **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
   voice check-ins (E33) and the tuning of the rhythm (E34).
 - **Still on paper:** the session anchor and enrollment flow, the reading audit batteries, the cohort pilot, the
@@ -258,8 +268,8 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 
 ## 8. How the ideas connect: knowledge graph
 
-The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 980 concepts and
-2,910 links across documents and code, grouped into areas. Read left to right: where an idea comes from
+The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,049 concepts and
+3,135 links across documents and code, grouped into areas. Read left to right: where an idea comes from
 (evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code.
 
 ![How the project's ideas connect](graph/overview.png)
@@ -275,10 +285,11 @@ connected documents, because they are where the reading, the budget and the eval
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/27` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/28` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `engine/` | the `soulcal` package: engine, command line, demo outputs and tests |
+| `realvoice/` | E31, the first check on real voice with an open speech-emotion model (runs where models can be downloaded) |
 | `graph/` | knowledge graph: overview image, interactive map, report and data |
 | `AUTHORS.md` | authorship and original contributions |
 
@@ -296,6 +307,7 @@ connected documents, because they are where the reading, the budget and the eval
 | [07 Fusion](docs/07-fusion.md) | [16 Experiment plan](docs/16-experiments.md) | [25 Coarse to fine and archetypes](docs/25-coarse-to-fine-and-archetypes.md) |
 | [08 SOUL-Bench](docs/08-evaluation-soul-bench.md) | [17 Roadmap and governance](docs/17-roadmap-and-governance.md) | [26 When to pulse](docs/26-when-to-pulse.md) |
 | | | [27 Voice and vibration](docs/27-voice-and-vibration.md) |
+| | | [28 Speech front end](docs/28-speech-front-end.md) |
 
 Start with `docs/00-problem.md`, then follow the links, or start from the map.
 
@@ -321,6 +333,8 @@ python -m soulcal channels --out examples/demo_out  # voice, words, face and bod
 python -m soulcal haptics --out examples/demo_out   # tuning the pulse
 python -m soulcal bench --readings my.csv           # SOUL-Bench on your own readings
 cd ../sim && python plot_support.py && python plot_channels.py   # figures 8 and 9
+cd .. && python -m pytest -q realvoice/tests            # E31 protocol, no download
+python realvoice/e31_real_voice.py --data path/to/RAVDESS --encoder emotion2vec   # E31 on real voice
 cd .. && python graph/build_overview.py             # graph overview image
 ```
 

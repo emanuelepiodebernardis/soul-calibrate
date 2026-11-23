@@ -84,5 +84,31 @@
    "pulse_on_excitement": 0.0772626931567329,
    "invitations_per_week": 1.89
   }
+ },
+ "frontend": {
+  "Today's generic models": {
+   "generic": 0.6181649245063879,
+   "calibrated": 0.7748199767711964,
+   "generic_speak_accuracy": 0.8670062927268809,
+   "calibrated_speak_accuracy": 0.9189901693836866
+  },
+  "Stronger open models (x1.5)": {
+   "generic": 0.7400929152148664,
+   "calibrated": 0.8490592334494775,
+   "generic_speak_accuracy": 0.9383022662213872,
+   "calibrated_speak_accuracy": 0.9363126551449525
+  },
+  "Much stronger (x2)": {
+   "generic": 0.8193902439024392,
+   "calibrated": 0.9009233449477353,
+   "generic_speak_accuracy": 0.9656043785804604,
+   "calibrated_speak_accuracy": 0.9529649983722455
+  },
+  "Near-perfect on the words and the voice (x3)": {
+   "generic": 0.9062253193960512,
+   "calibrated": 0.9566666666666666,
+   "generic_speak_accuracy": 0.9879583917019326,
+   "calibrated_speak_accuracy": 0.9865118395437668
+  }
  }
 }

@@ -30,3 +30,14 @@ At a body-only moment, body aroused and tension possible: a 5-second voice note 
 | --- | --- | --- | --- | --- |
 | no invitation | 0.62 | 28% | 85% | 0.0 |
 | voice check-in | 0.64 | 46% | 88% | 1.9 |
+
+## D. Stronger speech front ends (open speech-recognition and speech-emotion models)
+
+How clearly voice and words show the state is multiplied; each person's habits (flat voice, serious face, saying 'fine' when tense) stay the same.
+
+| Front end | Generic reading | With personal calibration | Gain |
+| --- | --- | --- | --- |
+| Today's generic models | 0.62 | 0.77 | +0.16 |
+| Stronger open models (x1.5) | 0.74 | 0.85 | +0.11 |
+| Much stronger (x2) | 0.82 | 0.90 | +0.08 |
+| Near-perfect on the words and the voice (x3) | 0.91 | 0.96 | +0.05 |

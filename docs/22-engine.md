@@ -32,6 +32,8 @@ all its state in a small JSON file on the phone.
 | Pulse tuned to the person: heartbeat at 80% of the live heart rate (never above 90%), breathing at the learned resonance rate | `SupportConfig.heartbeat_ratio`, `learn_resonance` | [[27-voice-and-vibration]] |
 | Body-only moment, body aroused, tension possible: invite a 5-second voice note, at most once a day | `SupportPolicy.decide` → `invite` | [[27-voice-and-vibration]] |
 | Synthetic checks of sources (voice, words, face, body), app use, voice check-ins, pulse tuning | `channels_sim`, `haptics_sim` | [[27-voice-and-vibration]] |
+| Stronger speech front ends: how much calibration still adds | `channels_sim.frontend_check` | [[28-speech-front-end]] |
+| Real-voice check with an open speech-emotion model (E31), outside the engine | `realvoice/e31_real_voice.py` | [[28-speech-front-end]] |
 | Personal pattern graph with statistical guardrails | `patterns.find_patterns`, `patterns.to_graph` | below |
 | Reflection layer (moon phase, moon sign, sun sign) | `astro` | below |
 

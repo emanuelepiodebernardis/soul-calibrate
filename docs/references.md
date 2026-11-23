@@ -86,6 +86,15 @@ Compiled by Emanuele De Bernardis, November 2026. Grouped by the module that use
 - Amazon Halo Tone: always-on voice tone analysis; microphones removed from Halo View; line discontinued in 2023. [MacRumors](https://www.macrumors.com/2023/04/26/amazon-discontinuing-halo-wristband/), [Mozilla Privacy Not Included](https://foundation.mozilla.org/privacynotincluded/amazon-halo-view/)
 - Mazur, Costantino, Tom, Wilson, Thompson (2025). Evaluation of an AI-based voice biomarker tool to detect signals consistent with moderate to severe depression. *Annals of Family Medicine* 23(1):60–65. [doi:10.1370/afm.240091](https://doi.org/10.1370/afm.240091)
 
+## Speech front end — [[28-speech-front-end]]
+
+- Ma, Zheng, Ye, Li, Gao, Zhang, Chen (2024). emotion2vec: self-supervised pre-training for speech emotion representation. *Findings of ACL 2024*. [arXiv:2312.15185](https://arxiv.org/abs/2312.15185), [code](https://github.com/ddlBoJack/emotion2vec)
+- An et al., Tongyi Speech Team (2024). FunAudioLLM: voice understanding and generation foundation models (SenseVoice, CosyVoice). [arXiv:2407.04051](https://arxiv.org/abs/2407.04051), [SenseVoice](https://github.com/FunAudioLLM/SenseVoice)
+- Radford et al. (2023). Robust speech recognition via large-scale weak supervision (Whisper). *ICML*. [arXiv:2212.04356](https://arxiv.org/abs/2212.04356)
+- Handy: free, open-source, offline speech-to-text app (MIT). [github.com/cjpais/Handy](https://github.com/cjpais/Handy)
+- ElevenLabs Scribe: speech to text in 90+ languages with audio-event tagging. [docs](https://elevenlabs.io/docs/overview/capabilities/speech-to-text)
+- Livingstone, Russo (2018). The Ryerson Audio-Visual Database of Emotional Speech and Song (RAVDESS). *PLoS ONE* 13(5):e0196391. [doi:10.1371/journal.pone.0196391](https://doi.org/10.1371/journal.pone.0196391)
+
 ## Recurring situations and incongruence — [[20-recurring-situations]], [[21-text-face-incongruence]]
 
 - Stacchio, Ubaldi, Mauri, Gaggioli, Galdelli, Frontoni. Empathic Prompting: Non-Verbal Context Integration for Multimodal LLM Conversations. [arXiv:2510.20743](https://arxiv.org/abs/2510.20743)

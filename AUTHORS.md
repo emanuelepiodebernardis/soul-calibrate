@@ -40,6 +40,8 @@ repository records the date of each part.
 15. **The body triggers, the voice decides, the vibration acts:** voice moments teach the body-only moments; a
    voice check-in when the body suggests tension; a pulse tied to the live heart rate and to the person's
    resonance breathing rate. → `docs/27`, `engine/soulcal/channels_sim.py`, `engine/soulcal/haptics_sim.py`
+16. **Strong open speech models as the front end, calibration on top:** words and voice from open models on the
+   phone, the personal layer measured on real voice by a ready-to-run experiment. → `docs/28`, `realvoice/`
 
 ## Credits
 
