@@ -28,6 +28,10 @@ person's voice moves with content.
 - The same sentence for months is boring → rotate a set of equivalent sentences. → [[10-risks]]
 - Training and on-device feature code must be identical. → train/serve parity in [[13-ideas-from-prior-work]]
 
+## In code
+
+`engine/soulcal/anchors.py` (`SignatureModel.set_anchor`), with enrollment and tagged readings. → [[29-voice-signatures]]
+
 ## Check
 
 Test–retest stability of anchor features on "ordinary" days, and correlation between anchor deviation and

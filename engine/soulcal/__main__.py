@@ -5,6 +5,9 @@
     python -m soulcal bench --readings my.csv        SOUL-Bench ladder B0-B6 against the self_report column
     python -m soulcal archetypes --out demo_out      future phase: archetypes from a synthetic cohort
     python -m soulcal support --out demo_out         when and how the bracelet should pulse (synthetic)
+    python -m soulcal channels --out demo_out        voice, words, face and body; stronger speech front ends (synthetic)
+    python -m soulcal haptics --out demo_out         how the pulse is tuned to each person (synthetic)
+    python -m soulcal anchors --out demo_out         personal voice-and-body signatures from a fixed sentence (synthetic)
                           [--birth-date 1990-05-17]  only for the optional reflection layer
 """
 
@@ -230,6 +233,32 @@ def haptics_demo(out: Path, seeds: int) -> None:
     print("\n".join(t))
 
 
+def anchors_demo(out: Path, seeds: int) -> None:
+    from .anchors_sim import anchors_check
+    out.mkdir(parents=True, exist_ok=True)
+    r = anchors_check(seeds=seeds)
+    t = ["# Personal voice-and-body signatures from a fixed sentence (synthetic people)", "",
+         f"{seeds} seeds x 40 people; 6 prosodic features and 3 body signals; enrollment 7 days x 3 neutral readings; "
+         "tagged readings in days 8-21 when the person is in that state; scored on free voice notes in days 22-42 "
+         "(4 states, chance 25%).", "", "| Reference | Accuracy on free voice notes |", "| --- | --- |"]
+    t += [f"| {k} | {v:.2f} |" for k, v in r.items()]
+    from .anchors import seconds_per_week
+    from .anchors_sim import modes_check
+    md = modes_check(seeds=seeds)
+    t += ["", "## Voluntary modes: how fast each learns the person", "",
+          "Week 1 enrollment, then the evening anchor and the optional tagged sentences of each mode. Accuracy on "
+          "free voice notes, by week.", "",
+          "| Mode | Enrollment / day (week 1) | Anchors / week | Tagged sentences / week | Week 2 | Week 3 | Week 4 | Week 5 | Week 6 |",
+          "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    for k, v in md.items():
+        t.append(f"| {k} | {v['enroll_pd']} | {v['anchors_pw']} | {v['tagged_pw']} | " + " | ".join(f"{x:.2f}" for x in v["weekly"]) + " |")
+    t += ["", "Estimated time a week (anchor 5 s, tagged sentence 10 s, question 3 s): " +
+          ", ".join(f"{m} {seconds_per_week(m) / 60:.1f} min" for m in ("light", "standard", "fast")) + "."]
+    (out / "ANCHORS.md").write_text("\n".join(t) + "\n", encoding="utf-8")
+    (out / "anchors.json").write_text(json.dumps({"ladder": r, "modes": md}, indent=1), encoding="utf-8")
+    print("\n".join(t))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="soulcal")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -256,9 +285,14 @@ def main() -> None:
     hp = sub.add_parser("haptics")
     hp.add_argument("--out", default="demo_out")
     hp.add_argument("--seeds", type=int, default=5)
+    an = sub.add_parser("anchors")
+    an.add_argument("--out", default="demo_out")
+    an.add_argument("--seeds", type=int, default=5)
     a = ap.parse_args()
     if a.cmd == "demo":
         demo(Path(a.out), a.people, a.weeks)
+    elif a.cmd == "anchors":
+        anchors_demo(Path(a.out), a.seeds)
     elif a.cmd == "channels":
         channels_demo(Path(a.out), a.seeds)
     elif a.cmd == "haptics":

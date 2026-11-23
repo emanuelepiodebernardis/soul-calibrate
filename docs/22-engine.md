@@ -33,6 +33,7 @@ all its state in a small JSON file on the phone.
 | Body-only moment, body aroused, tension possible: invite a 5-second voice note, at most once a day | `SupportPolicy.decide` → `invite` | [[27-voice-and-vibration]] |
 | Synthetic checks of sources (voice, words, face, body), app use, voice check-ins, pulse tuning | `channels_sim`, `haptics_sim` | [[27-voice-and-vibration]] |
 | Stronger speech front ends: how much calibration still adds | `channels_sim.frontend_check` | [[28-speech-front-end]] |
+| Voice-and-body signatures: enrollment, daily anchor, tagged readings of a fixed sentence; what changes in the person | `anchors.SignatureModel`, `.difference()` | [[29-voice-signatures]] |
 | Real-voice check with an open speech-emotion model (E31), outside the engine | `realvoice/e31_real_voice.py` | [[28-speech-front-end]] |
 | Personal pattern graph with statistical guardrails | `patterns.find_patterns`, `patterns.to_graph` | below |
 | Reflection layer (moon phase, moon sign, sun sign) | `astro` | below |
@@ -52,7 +53,7 @@ eng.save("user-42.json")                     # stays on the device
 
 ```bash
 cd engine
-python -m pytest tests -q                    # 21 tests
+python -m pytest tests -q                    # 22 tests
 python -m soulcal channels --out examples/demo_out     # voice, words, face, body
 python -m soulcal haptics --out examples/demo_out      # tuning the pulse
 python -m soulcal support --out examples/demo_out      # when to pulse, synthetic
@@ -139,6 +140,6 @@ The graph is written in the project-map format, so the same viewer draws it:
 
 ## Check
 
-- `python -m pytest engine/tests -q` passes (21 tests, including "the loop beats today's generic reading" and
+- `python -m pytest engine/tests -q` passes (22 tests, including "the loop beats today's generic reading" and
   "no supported moon pattern when none is planted").
 - On real data: `python -m soulcal run` on a pilot export, then SOUL-Bench metrics per user ([[08-evaluation-soul-bench]]).

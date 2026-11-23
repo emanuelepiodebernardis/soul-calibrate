@@ -40,6 +40,8 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E32 | When to pulse | cohort, micro-randomised | pulses at moments the engine is sure are tense improve HRV and heart-rate recovery and "did it help?" over held-out moments, with fewer false pulses than pulses triggered by the body alone | no recovery gain, or people turn pulses off ([[26-when-to-pulse]]) |
 | E33 | Voice check-in | cohort | at body-only moments with an aroused body, an invited 5-second voice note raises the tense moments the pulse can reach without feeling intrusive | low response, or invitations felt as intrusive ([[27-voice-and-vibration]]) |
 | E34 | Tuning the pulse | cohort, micro-randomised | a heartbeat tied to the live heart rate beats a fixed rate, and learned resonance breathing beats 6 a minute, on HRV and heart-rate recovery | no difference in recovery ([[27-voice-and-vibration]]) |
+| E35 | Voice-and-body signatures | cohort | baseline, daily anchor and 1–2 tagged readings per state each improve accuracy on free voice notes | no gain from tagged readings, or people do not make them ([[29-voice-signatures]]) |
+| E36 | Seeing one's own signature | cohort, randomised | showing the person their own voice-and-body difference improves emotional awareness after four weeks | no difference in self-report or interoceptive measures ([[29-voice-signatures]]) |
 
 ## Before the interview (done)
 

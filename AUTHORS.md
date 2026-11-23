@@ -42,6 +42,9 @@ repository records the date of each part.
    resonance breathing rate. → `docs/27`, `engine/soulcal/channels_sim.py`, `engine/soulcal/haptics_sim.py`
 16. **Strong open speech models as the front end, calibration on top:** words and voice from open models on the
    phone, the personal layer measured on real voice by a ready-to-run experiment. → `docs/28`, `realvoice/`
+17. **Voice-and-body signatures:** one fixed sentence for enrollment, the daily anchor and tagged readings in a
+   state, so each person's own way of showing a state is learned, and shown back to them. → `docs/29`,
+   `engine/soulcal/anchors.py`
 
 ## Credits
 

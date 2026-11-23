@@ -63,7 +63,8 @@ same kind of moment. The language model only writes the words of a reading; it n
 
 ## 2. The solution: a closed personal loop
 
-1. **Enrollment** (3–7 days): fixed sentences, resting physiology, two sliders and one word.
+1. **Enrollment** (3–7 days): fixed sentences, resting physiology, two sliders and one word; later, the same
+   sentence read in a clear state becomes the person's voice-and-body signature.
 2. **Session anchor** (5 seconds): one neutral sentence + resting heart rate, so only the voice changes.
 3. **Rolling personal baseline:** every signal is read against the person's own norm, with a drift trigger.
 4. **Decision with a guarantee:** a conformal set of plausible states → **speak** (one state), **ask** (2–3
@@ -196,6 +197,22 @@ on top (+0.16 today, +0.08 with much stronger models), because masking and perso
 not to the model. The first check on real voice is ready to run: `realvoice/e31_real_voice.py` (RAVDESS,
 emotion2vec+, leave one speaker out). → [docs/28-speech-front-end.md](docs/28-speech-front-end.md)
 
+### Your voice, your body, your signature
+
+One fixed sentence, three uses: read in a normal tone in the first week (the person's usual voice and body), once
+each evening (today's microphone and room), and, when the person feels a clear state, read again while they say
+how they feel. Same words, so only the voice and the body differ: the difference becomes **their own signature**
+of that state, in pitch, energy, speech rate, pauses, heart rate, HRV and skin temperature. In a synthetic check,
+accuracy on free voice notes climbs from 0.44 (generic) to 0.68 with the baseline, 0.74 with the daily anchor and
+0.82 with two tagged readings per state; voice and body together beat either alone (0.69 and 0.65). The app can
+show the signature back ("when you're tense, your voice gets faster and your heart rate rises by 12"): the person
+learns themselves too. All of it is voluntary: in the light mode (about 1 minute a week: the 5-second evening
+anchor, one sentence a week, a question every other day) the signature reads 0.74 after six weeks; standard
+(1.5 minutes) 0.82; fast (2.5 minutes, a sentence a day) 0.82 in week 3 and 0.86 by week 6. The evening anchor is
+the cheapest, most valuable feedback. → [docs/29-voice-signatures.md](docs/29-voice-signatures.md)
+
+![Voice signatures](sim/results/fig10_voice_signatures.png)
+
 ### Tuning the pulse to each person
 
 Products that calm with vibration are triggered on demand (doppel, TouchPoints, Apollo) or automatically against a
@@ -222,6 +239,7 @@ in a JSON file on the phone.
 | `archetypes` | prototype: archetypes from a consenting cohort, new people matched after 4 days | [25](docs/25-coarse-to-fine-and-archetypes.md) |
 | `support.SupportPolicy` | when and how the bracelet pulses; held-out moments; rhythm, live-heart-rate heartbeat and resonance breathing learned per person | [26](docs/26-when-to-pulse.md), [27](docs/27-voice-and-vibration.md) |
 | `channels_sim`, `haptics_sim` | synthetic checks: voice, words, face and body; voice check-ins; tuning the pulse | [27](docs/27-voice-and-vibration.md) |
+| `anchors.SignatureModel` | voice-and-body signatures from one fixed sentence: enrollment, daily anchor, tagged readings; what changes in the person | [29](docs/29-voice-signatures.md) |
 
 | Engine demo, 20 synthetic people | Accuracy, week 6 | Accuracy when speaking |
 | --- | --- | --- |
@@ -242,7 +260,8 @@ eng.save("user-42.json")                     # stays on the device
 
 Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/examples/demo_out/PATTERNS.md) ·
 [ARCHETYPES](engine/examples/demo_out/ARCHETYPES.md) · [SUPPORT](engine/examples/demo_out/SUPPORT.md) ·
-[CHANNELS](engine/examples/demo_out/CHANNELS.md) · [HAPTICS](engine/examples/demo_out/HAPTICS.md).
+[CHANNELS](engine/examples/demo_out/CHANNELS.md) · [HAPTICS](engine/examples/demo_out/HAPTICS.md) ·
+[ANCHORS](engine/examples/demo_out/ANCHORS.md).
 → [docs/22-engine.md](docs/22-engine.md)
 
 ## 6. How it is evaluated and tested
@@ -255,21 +274,21 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 - **Reading audit:** the language model writes the reading but never decides it. → [docs/14](docs/14-reading-audit.md)
 - **Privacy and regulation:** personal learning on the device, shared training only with separate consent;
   emotion recognition is high-risk under the EU AI Act. → [docs/09](docs/09-privacy-and-regulation.md)
-- **Experiment plan:** E1–E34, each with what would prove it wrong. → [docs/16](docs/16-experiments.md)
+- **Experiment plan:** E1–E36, each with what would prove it wrong. → [docs/16](docs/16-experiments.md)
 
 ## 7. What is not done yet
 
 - **Real data.** Everything is synthetic. The first experiment on real audio (E31) is written and tested on
   generated audio; it needs a machine with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 - **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
-  voice check-ins (E33) and the tuning of the rhythm (E34).
-- **Still on paper:** the session anchor and enrollment flow, the reading audit batteries, the cohort pilot, the
+  voice check-ins (E33) and the tuning of the rhythm (E34); signatures and whether seeing them helps (E35, E36).
+- **Still on paper:** the enrollment screens in the app (the logic is in `anchors.py`), the reading audit batteries, the cohort pilot, the
   micro-randomised trials, support for "low", and an engine with more than four states (`detail.py` works on top).
 
 ## 8. How the ideas connect: knowledge graph
 
-The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,049 concepts and
-3,135 links across documents and code, grouped into areas. Read left to right: where an idea comes from
+The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,111 concepts and
+3,337 links across documents and code, grouped into areas. Read left to right: where an idea comes from
 (evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code.
 
 ![How the project's ideas connect](graph/overview.png)
@@ -285,7 +304,7 @@ connected documents, because they are where the reading, the budget and the eval
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/28` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/29` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `engine/` | the `soulcal` package: engine, command line, demo outputs and tests |
@@ -308,6 +327,7 @@ connected documents, because they are where the reading, the budget and the eval
 | [08 SOUL-Bench](docs/08-evaluation-soul-bench.md) | [17 Roadmap and governance](docs/17-roadmap-and-governance.md) | [26 When to pulse](docs/26-when-to-pulse.md) |
 | | | [27 Voice and vibration](docs/27-voice-and-vibration.md) |
 | | | [28 Speech front end](docs/28-speech-front-end.md) |
+| | | [29 Voice signatures](docs/29-voice-signatures.md) |
 
 Start with `docs/00-problem.md`, then follow the links, or start from the map.
 
@@ -325,14 +345,15 @@ python run_user_control.py --seeds 5 --out results  # chosen hours, free notes, 
 python run_states.py --seeds 5 --out results        # four vs eight states
 python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                           # 21 tests
+python -m pytest -q tests                           # 22 tests
 python -m soulcal demo --out examples/demo_out      # today vs the engine
 python -m soulcal archetypes --out examples/demo_out
 python -m soulcal support --out examples/demo_out   # when the bracelet pulses
 python -m soulcal channels --out examples/demo_out  # voice, words, face and body
 python -m soulcal haptics --out examples/demo_out   # tuning the pulse
+python -m soulcal anchors --out examples/demo_out   # voice-and-body signatures
 python -m soulcal bench --readings my.csv           # SOUL-Bench on your own readings
-cd ../sim && python plot_support.py && python plot_channels.py   # figures 8 and 9
+cd ../sim && python plot_support.py && python plot_channels.py && python plot_anchors.py   # figures 8-10
 cd .. && python -m pytest -q realvoice/tests            # E31 protocol, no download
 python realvoice/e31_real_voice.py --data path/to/RAVDESS --encoder emotion2vec   # E31 on real voice
 cd .. && python graph/build_overview.py             # graph overview image

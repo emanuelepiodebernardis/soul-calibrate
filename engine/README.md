@@ -9,7 +9,7 @@ personal pattern graph with statistical guardrails (including the astrology refl
 
 ```bash
 pip install -e .                       # or just run from this folder
-python -m pytest tests -q              # 21 tests
+python -m pytest tests -q              # 22 tests
 python -m soulcal bench --readings my_readings.csv
 python -m soulcal demo --out examples/demo_out
 python -m soulcal run --readings my_readings.csv --out results [--birth-date 1990-05-17]

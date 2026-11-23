@@ -1,0 +1,70 @@
+{
+ "ladder": {
+  "Generic (no personal reference)": 0.44238095238095243,
+  "+ voice-and-body baseline (enrollment)": 0.6766666666666665,
+  "+ daily 5-second anchor": 0.7421428571428571,
+  "+ 1 tagged readings per state": 0.7992857142857142,
+  "+ 2 tagged readings per state": 0.8178571428571428,
+  "+ 4 tagged readings per state": 0.8257142857142856,
+  "Voice only, + 2 tagged readings": 0.6932142857142857,
+  "Body only, + 2 tagged readings": 0.654047619047619
+ },
+ "modes": {
+  "Light": {
+   "weekly": [
+    0.7300000000000001,
+    0.7221428571428571,
+    0.7303571428571428,
+    0.725,
+    0.745
+   ],
+   "days_to_two_per_state": 42.0,
+   "tagged_by_day_42": 5.0,
+   "enroll_pd": 1,
+   "anchors_pw": 7,
+   "tagged_pw": 1
+  },
+  "Standard": {
+   "weekly": [
+    0.7367857142857144,
+    0.7457142857142858,
+    0.7664285714285715,
+    0.777142857142857,
+    0.8182142857142857
+   ],
+   "days_to_two_per_state": 42.0,
+   "tagged_by_day_42": 15.0,
+   "enroll_pd": 1,
+   "anchors_pw": 7,
+   "tagged_pw": 3
+  },
+  "Fast": {
+   "weekly": [
+    0.7789285714285714,
+    0.8200000000000001,
+    0.8428571428571427,
+    0.8660714285714286,
+    0.8564285714285714
+   ],
+   "days_to_two_per_state": 22.0,
+   "tagged_by_day_42": 35.0,
+   "enroll_pd": 2,
+   "anchors_pw": 7,
+   "tagged_pw": 7
+  },
+  "Anchor less than daily (3 a week, 2 tagged)": {
+   "weekly": [
+    0.6460714285714287,
+    0.6403571428571428,
+    0.6457142857142857,
+    0.6789285714285714,
+    0.6957142857142857
+   ],
+   "days_to_two_per_state": 42.0,
+   "tagged_by_day_42": 10.0,
+   "enroll_pd": 1,
+   "anchors_pw": 3,
+   "tagged_pw": 2
+  }
+ }
+}

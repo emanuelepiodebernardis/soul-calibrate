@@ -233,3 +233,37 @@ def test_body_only_moment_invites_a_voice_note_once_a_day():
     talking = Reading("u", datetime(2026, 9, 8, 15, 0), heart_rate=82.0, motion=0.2,
                       voice={"calm": 0.25, "energized": 0.25, "tense": 0.25, "low": 0.25})
     assert sp.decide(unsure, talking, resting_hr=65.0).action != INVITE   # voice already there
+
+
+def test_signature_from_tagged_readings_reads_the_person_and_shows_the_difference():
+    import numpy as np
+    from soulcal.anchors import SignatureModel
+    rng = np.random.default_rng(0)
+    pop = np.array([[0, 0, 0], [1, 1, 0], [1, 0, 1], [-1, -1, 0]], float)
+    base = np.array([10.0, -5.0, 3.0])
+    own = {"calm": np.zeros(3), "energized": np.array([0.0, 2.0, 0.0]),          # this person: tension shows in
+           "tense": np.array([0.0, 0.0, 2.5]), "low": np.array([-2.0, 0.0, 0.0])}  # feature 3 only
+    m = SignatureModel(n_features=3, population=pop, shrink=1.0)
+    for _ in range(10):
+        m.add_enrollment(base + rng.normal(0, 0.3, 3))
+    for s, v in own.items():
+        for _ in range(3):
+            m.add_tagged(s, base + v + rng.normal(0, 0.3, 3), use_anchor=False)
+    p = m.proba(base + own["tense"], use_anchor=False)
+    assert max(p, key=p.get) == "tense"
+    assert m.difference("tense", ["pitch", "energy", "jitter"])[0][0] == "jitter"
+    m.set_anchor(base + np.array([1.0, 1.0, 1.0]))      # today's microphone adds +1 everywhere
+    p = m.proba(base + np.array([1.0, 1.0, 1.0]) + own["low"])
+    assert max(p, key=p.get) == "low"
+
+
+def test_modes_ask_little_and_spread_the_sentences():
+    from soulcal.anchors import MODES, offer_tagged_today, seconds_per_week
+    assert seconds_per_week("light") < seconds_per_week("standard") < seconds_per_week("fast") < 4 * 60
+    offers = []
+    done = 0
+    for day in range(7):
+        o = offer_tagged_today("standard", done, 7 - day)
+        offers.append(o)
+        done += o
+    assert done == MODES["standard"]["tagged_per_week"] and not all(offers)

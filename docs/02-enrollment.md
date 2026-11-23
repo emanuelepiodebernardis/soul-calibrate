@@ -9,7 +9,8 @@ answers anchor the model's first readings, instead of trusting a generic model f
 
 During the first 3–7 days Nightlet builds the person's reference profile:
 
-- **Voice:** three fixed sentences read each day (same words every time) → personal prosody reference.
+- **Voice:** three fixed sentences read each day (same words every time) → personal prosody reference; later, the
+  same sentence read in a clear state becomes the person's signature. → [[29-voice-signatures]]
 - **Body:** resting heart rate, overnight heart-rate variability, skin temperature (bracelet, Apple Health or Health Connect).
 - **Face (optional, explicit consent only):** a short neutral capture with the phone camera.
 - **Self-report:** two sliders (valence: negative–positive; arousal: calm–activated) plus one free word.
