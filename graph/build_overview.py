@@ -18,17 +18,18 @@ import networkx as nx  # noqa: E402
 
 # areas grouped into a few themes, so the picture reads at a glance
 THEMES = {
-    "Problem and evidence": "why", "Clinical practice": "why", "Pulse evidence: alarms, biofeedback, haptic rhythms": "why",
-    "Architecture, privacy and analogous systems": "why",
-    "Active questions and decision rule": "loop", "Enrollment, risks and experiments": "loop",
-    "Recurring situations and question budget risks": "loop", "Question budget, speed and eight states": "loop",
-    "Coarse to fine, cohort and archetypes": "loop", "When and how the bracelet pulses": "loop",
-    "Incongruence and masking": "loop", "Fusion of sources": "loop", "README, closed loop and real-voice step": "loop",
-    "Evaluation, SOUL-Bench and pattern graph": "eval", "Authorship, inspiration and prior work": "eval",
+    "Problem and evidence": "why", "Clinical practice": "why", "Vibration products and rhythms": "why",
+    "When the bracelet pulses: evidence": "why", "Architecture and regulation": "why", "Session anchor and voice quality": "why",
+    "Active questions and decision rule": "loop", "Enrollment, risks and eight states": "loop", "Enrollment details": "loop",
+    "Recurring situations and question budget": "loop", "What precise means, consent and archetype path": "loop",
+    "Pulse tuned to the person": "loop", "Voice and body: body triggers, voice decides": "loop",
+    "Incongruence and masking": "loop", "Fusion of sources": "loop", "README: the loop, real voice and the voice question": "loop",
+    "Personal head and situation memory": "loop", "Cold start and measurement reactivity": "loop",
+    "Evaluation: SOUL-Bench": "eval", "Authorship, inspiration and prior work": "eval",
     "Simulation scripts and question budget results": "code", "First simulation code": "code",
-    "Engine I/O and the when-to-pulse check": "code", "Engine fusion model": "code", "Engine personal baseline": "code",
-    "Engine concept-to-code map": "code", "Pattern graph code": "code", "Words vs expression and engine state": "code",
-    "Synthetic device stream": "code",
+    "Engine I/O and synthetic checks": "code", "Engine fusion model": "code", "Engine personal baseline": "code",
+    "Engine concept-to-code map": "code", "Engine overview, SOUL-Bench and pattern graph": "code", "Archetype prototype": "code",
+    "Engine input and package": "code", "Haptic tuning check": "code", "Engine commands and tests": "code",
 }
 COLORS = {"why": "#2f7d8c", "loop": "#c4622d", "eval": "#6b5ca5", "code": "#8a8478"}
 NAMES = {"why": "Evidence and context", "loop": "The loop: decide, ask, learn, pulse", "eval": "Evaluation and authorship",

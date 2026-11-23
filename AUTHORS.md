@@ -37,6 +37,9 @@ repository records the date of each part.
 14. **When the bracelet pulses:** the pulse follows the reading's decision (pulse when sure of tension, offer when
    unsure, nothing otherwise), with held-out moments to measure its effect and a rhythm learned per person.
    → `docs/26`, `engine/soulcal/support.py`
+15. **The body triggers, the voice decides, the vibration acts:** voice moments teach the body-only moments; a
+   voice check-in when the body suggests tension; a pulse tied to the live heart rate and to the person's
+   resonance breathing rate. → `docs/27`, `engine/soulcal/channels_sim.py`, `engine/soulcal/haptics_sim.py`
 
 ## Credits
 

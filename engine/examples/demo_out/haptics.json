@@ -1,0 +1,38 @@
+{
+ "hb_fixed": {
+  "label": "Slow heartbeat, fixed at 60 a minute",
+  "effect": 0.529076799717079,
+  "effect_last8": 0.5273688234515612,
+  "faster_than_heart": 0.033
+ },
+ "hb_rest": {
+  "label": "Slow heartbeat, 80% of the resting heart rate",
+  "effect": 0.35144546596255394,
+  "effect_last8": 0.3531595724426591,
+  "faster_than_heart": 0.0
+ },
+ "hb_live": {
+  "label": "Slow heartbeat, 80% of the heart rate right now",
+  "effect": 0.7238122625113625,
+  "effect_last8": 0.7238122625113625,
+  "faster_than_heart": 0.0
+ },
+ "br_fixed": {
+  "label": "Breathing pacer, fixed at 6 a minute",
+  "effect": 0.7124425427205151,
+  "effect_last8": 0.7124425427205151,
+  "faster_than_heart": 0.0
+ },
+ "br_learned": {
+  "label": "Breathing pacer, the person's resonance rate learned",
+  "effect": 0.7261752446544084,
+  "effect_last8": 0.8078151896419298,
+  "faster_than_heart": 0.0
+ },
+ "both_learned": {
+  "label": "Rhythm and rate learned per person (live heartbeat or resonance breathing)",
+  "effect": 0.7263655774702088,
+  "effect_last8": 0.8056358791779292,
+  "faster_than_heart": 0.0
+ }
+}

@@ -38,6 +38,8 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E30 | Archetypes | cohort, new users | matching a new person to an archetype beats one head pooled over the cohort in the first week (synthetic: the pooled head already gives +3 to +5 points, archetypes add nothing) | no gain over the pooled head, or worse for people who fit no archetype ([[25-coarse-to-fine-and-archetypes]]) |
 | E31 | First check on real voice | public multi-speaker emotion speech, pretrained speech model (PyTorch) | a per-speaker baseline and a few answers per speaker beat the generic model, scored on held-out recordings of each speaker | no gain over the generic model on real audio ([[00-problem]], [[06-personal-model]]) |
 | E32 | When to pulse | cohort, micro-randomised | pulses at moments the engine is sure are tense improve HRV and heart-rate recovery and "did it help?" over held-out moments, with fewer false pulses than pulses triggered by the body alone | no recovery gain, or people turn pulses off ([[26-when-to-pulse]]) |
+| E33 | Voice check-in | cohort | at body-only moments with an aroused body, an invited 5-second voice note raises the tense moments the pulse can reach without feeling intrusive | low response, or invitations felt as intrusive ([[27-voice-and-vibration]]) |
+| E34 | Tuning the pulse | cohort, micro-randomised | a heartbeat tied to the live heart rate beats a fixed rate, and learned resonance breathing beats 6 a minute, on HRV and heart-rate recovery | no difference in recovery ([[27-voice-and-vibration]]) |
 
 ## Before the interview (done)
 

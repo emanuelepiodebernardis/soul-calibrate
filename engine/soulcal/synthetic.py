@@ -53,8 +53,14 @@ class Person:
 
 
 def generate(days: int = 42, seed: int = 0, person: Person | None = None,
-             start: datetime = datetime(2026, 9, 7)) -> tuple[list[Reading], list[str], list[bool]]:
-    """Return readings (with no self-report), the true states, and whether the person was masking."""
+             start: datetime = datetime(2026, 9, 7), face_p: float = 0.6, voice_p: float = 0.9,
+             text_p: float = 0.7, bracelet_p: float = 0.8,
+             app_p: float = 1.0) -> tuple[list[Reading], list[str], list[bool]]:
+    """Return readings (with no self-report), the true states, and whether the person was masking.
+
+    ``face_p``, ``voice_p``, ``text_p``, ``bracelet_p``: how often each source is present at a moment.
+    ``app_p``: share of moments in which the person uses the app at all (talks or types); in the others only
+    the bracelet is there. The defaults reproduce the published demo exactly."""
     p = person or Person()
     rng = np.random.default_rng(seed)
     readings, truth, masking = [], [], []
@@ -75,17 +81,20 @@ def generate(days: int = 42, seed: int = 0, person: Person | None = None,
                 return {s: float(v) for s, v in zip(STATES, e / e.sum())}
 
             masked = y == "tense" and rng.random() < p.mask_prob
-            face = probs(p.face_strength, p.face_bias, p.channel_noise) if rng.random() < 0.6 else None
-            voice = probs(p.voice_strength, p.voice_bias, p.channel_noise) if rng.random() < 0.9 else None
+            in_app = app_p >= 1.0 or rng.random() < app_p
+            face = probs(p.face_strength, p.face_bias, p.channel_noise) if rng.random() < face_p else None
+            voice = probs(p.voice_strength, p.voice_bias, p.channel_noise) if rng.random() < voice_p else None
             text = None
-            if rng.random() < 0.7:
+            if rng.random() < text_p:
                 text = probs(p.text_strength, (0, 0, 0, 0), p.channel_noise)
                 if masked:
                     text = probs(p.text_strength, (1.6, 0, -1.6, 0), p.channel_noise)   # "I'm fine"
             gym = key in GYM
             arousal = {"calm": -0.5, "energized": 1.0, "tense": 1.0, "low": -0.8}[y]
             neg = {"calm": 0.0, "energized": 0.0, "tense": 1.0, "low": 0.5}[y]
-            bracelet = rng.random() < 0.8
+            if not in_app:
+                face = voice = text = None
+            bracelet = rng.random() < bracelet_p
             readings.append(Reading(
                 user_id=p.user_id, timestamp=ts, face=face, voice=voice, text=text,
                 heart_rate=float(p.hr_rest + 6 * arousal + (22 if gym else 0) + rng.normal(0, 3)) if bracelet else None,

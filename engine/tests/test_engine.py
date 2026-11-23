@@ -194,10 +194,42 @@ def test_pulse_only_when_sure_of_tension_and_never_while_moving():
     s = sp.decide(tense, still, resting_hr=60.0)
     assert s.action == PULSE and s.screen_text and s.voice_text is None
     if s.pattern == "slow_heartbeat":
-        assert s.rate_per_minute == 48.0            # 80% of the resting heart rate
+        assert s.rate_per_minute == 64.0            # 80% of the heart rate right now (80), never faster
+    else:
+        assert s.rate_per_minute == 6.0             # breathing starts at 6 a minute, then learns the resonance rate
     assert sp.decide(tense, Reading("u", ts.replace(hour=20), heart_rate=80.0, motion=0.2)).reason == "cooldown"
     sp2 = SupportPolicy(SupportConfig(hold_out=0.0))
     assert sp2.decide(tense, Reading("u", ts, heart_rate=120.0, motion=1.6)).action == NONE      # gym
     assert sp2.decide(Decision("speak", "energized", [], {}), still).action == NONE             # excitement
     assert sp2.decide(Decision("ask", None, ["tense", "energized"], {}), still).action == OFFER
     sp2.record_outcome(0, 40.0, 50.0)                                                            # unknown id: ignored
+
+
+def test_breathing_rate_learns_the_person_resonance():
+    from datetime import datetime, timedelta
+    from soulcal.schema import Decision, Reading
+    from soulcal.support import SupportConfig, SupportPolicy
+    sp = SupportPolicy(SupportConfig(hold_out=0.0, cooldown_minutes=0, max_per_day=99), seed=1)
+    sp._pattern = lambda: "breathing"
+    tense = Decision(action="speak", state="tense", options=[], proba={})
+    t0 = datetime(2026, 9, 7, 12, 0)
+    for k in range(120):
+        s = sp.decide(tense, Reading("u", t0 + timedelta(hours=k), heart_rate=80.0, motion=0.1))
+        gain = 10 * (1.0 - abs(s.rate_per_minute - 5.0))          # this person's resonance: 5 a minute
+        sp.record_outcome(s.support_id, 0.0, gain)
+    assert sp.effect_report()["resonance_rate"] == 5.0
+
+
+def test_body_only_moment_invites_a_voice_note_once_a_day():
+    from datetime import datetime
+    from soulcal.schema import Decision, Reading
+    from soulcal.support import INVITE, SupportConfig, SupportPolicy
+    sp = SupportPolicy(SupportConfig(hold_out=0.0))
+    unsure = Decision(action="quiet", state=None, options=[], proba={"tense": 0.4, "energized": 0.4, "calm": 0.1, "low": 0.1})
+    body = Reading("u", datetime(2026, 9, 7, 15, 0), heart_rate=82.0, motion=0.2)
+    assert sp.decide(unsure, body, resting_hr=65.0).action == INVITE
+    assert sp.decide(unsure, Reading("u", datetime(2026, 9, 7, 18, 0), heart_rate=84.0, motion=0.2),
+                     resting_hr=65.0).action != INVITE          # at most once a day
+    talking = Reading("u", datetime(2026, 9, 8, 15, 0), heart_rate=82.0, motion=0.2,
+                      voice={"calm": 0.25, "energized": 0.25, "tense": 0.25, "low": 0.25})
+    assert sp.decide(unsure, talking, resting_hr=65.0).action != INVITE   # voice already there

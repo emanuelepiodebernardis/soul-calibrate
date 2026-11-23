@@ -178,6 +178,50 @@ def support_demo(out: Path, seeds: int) -> None:
     print("\n".join(text))
 
 
+def channels_demo(out: Path, seeds: int) -> None:
+    from .channels_sim import app_use_check, checkin_check, sources_check
+    out.mkdir(parents=True, exist_ok=True)
+    a, b, c = sources_check(seeds=seeds), app_use_check(seeds=seeds), checkin_check(seeds=seeds)
+    f = lambda v: "–" if v != v else f"{v:.2f}"  # noqa: E731
+    t = ["# Voice, words, face and body (synthetic people)", "",
+         f"Engine demo people, {seeds} seeds x 20 people, up to 1 question a day, 6 weeks; scored on weeks 5-6, before learning.", "",
+         "## A. One set of sources at a time, present at every moment", "",
+         "| Sources | Accuracy | Speaks | Right when it speaks |", "| --- | --- | --- | --- |"]
+    for k, v in a.items():
+        t.append(f"| {k} | {f(v['accuracy'])} | {v['speak_share']:.0%} | {f(v['speak_accuracy'])} |")
+    t += ["", "## B. The bracelet is always on; the app is used in a share of moments", "",
+          "| Moments with the app | Accuracy, all | With the app | Body-only moments | Tense moments reached (pulse or offer) | Pulses at tense moments |",
+          "| --- | --- | --- | --- | --- | --- |"]
+    for k, v in b.items():
+        t.append(f"| {float(k):.0%} | {f(v['accuracy_all'])} | {f(v['accuracy_app'])} | {f(v['accuracy_body_only'])} | "
+                 f"{v['tense_reached']:.0%} | {v['pulse_precision']:.0%} |")
+    t += ["", "## C. The body triggers, the voice decides (app used in 25% of moments)", "",
+          "At a body-only moment, body aroused and tension possible: a 5-second voice note is invited (at most 1 a day; "
+          "half of the invitations answered).", "",
+          "| Policy | Accuracy, body-only moments | Tense moments reached | Pulses at tense moments | Invitations per week |",
+          "| --- | --- | --- | --- | --- |"]
+    for k, v in c.items():
+        t.append(f"| {k} | {f(v['accuracy_body_only_moments'])} | {v['tense_reached']:.0%} | {v['pulse_precision']:.0%} | "
+                 f"{v['invitations_per_week']:.1f} |")
+    (out / "CHANNELS.md").write_text("\n".join(t) + "\n", encoding="utf-8")
+    (out / "channels.json").write_text(json.dumps({"sources": a, "app_use": b, "checkin": c}, indent=1), encoding="utf-8")
+    print("\n".join(t))
+
+
+def haptics_demo(out: Path, seeds: int) -> None:
+    from .haptics_sim import haptics_check
+    out.mkdir(parents=True, exist_ok=True)
+    r = haptics_check(seeds=seeds)
+    t = ["# Tuning the pulse to each person (synthetic; the effects are assumptions from the literature)", "",
+         f"{seeds} seeds x 200 people, 24 tense moments each. Effect = calming effect of one pulse (1.0 = full).", "",
+         "| Rhythm | Mean effect | Effect, last 8 moments | Heartbeat pulses faster than the heart |", "| --- | --- | --- | --- |"]
+    for v in r.values():
+        t.append(f"| {v['label']} | {v['effect']:.2f} | {v['effect_last8']:.2f} | {v['faster_than_heart']:.1%} |")
+    (out / "HAPTICS.md").write_text("\n".join(t) + "\n", encoding="utf-8")
+    (out / "haptics.json").write_text(json.dumps(r, indent=1), encoding="utf-8")
+    print("\n".join(t))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(prog="soulcal")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -198,9 +242,19 @@ def main() -> None:
     su = sub.add_parser("support")
     su.add_argument("--out", default="demo_out")
     su.add_argument("--seeds", type=int, default=5)
+    ch = sub.add_parser("channels")
+    ch.add_argument("--out", default="demo_out")
+    ch.add_argument("--seeds", type=int, default=5)
+    hp = sub.add_parser("haptics")
+    hp.add_argument("--out", default="demo_out")
+    hp.add_argument("--seeds", type=int, default=5)
     a = ap.parse_args()
     if a.cmd == "demo":
         demo(Path(a.out), a.people, a.weeks)
+    elif a.cmd == "channels":
+        channels_demo(Path(a.out), a.seeds)
+    elif a.cmd == "haptics":
+        haptics_demo(Path(a.out), a.seeds)
     elif a.cmd == "support":
         support_demo(Path(a.out), a.seeds)
     elif a.cmd == "archetypes":

@@ -21,7 +21,7 @@ users are; the first checks on real data are E31 (real voice) and E32 (the pulse
 2. [The problem](#1-the-problem)
 3. [The solution: a closed personal loop](#2-the-solution-a-closed-personal-loop)
 4. [What the simulations show](#3-what-the-simulations-show)
-5. [When the bracelet pulses](#4-when-the-bracelet-pulses)
+5. [Voice, body and the bracelet](#4-voice-body-and-the-bracelet)
 6. [Code Nightlet can run: `engine/soulcal`](#5-code-nightlet-can-run-enginesoulcal)
 7. [How it is evaluated and tested](#6-how-it-is-evaluated-and-tested)
 8. [What is not done yet](#7-what-is-not-done-yet)
@@ -38,16 +38,18 @@ flowchart LR
     D -- one state --> S[Speak:<br/>'you seem tense']
     D -- 2 or 3 states --> Q[Ask: 'tense or tired?'<br/>within a daily budget]
     D -- too many --> N[Stay quiet]
-    S -- sure of tension --> P[Bracelet pulse:<br/>slow rhythm, 1-3 min]
+    S -- sure of tension --> P[Bracelet pulse:<br/>tied to heart and breath, 1-3 min]
     Q -- maybe tense --> O[Offer: 'want a calm minute?']
     Q -- answer --> L[Label]
-    S -- 'not quite' --> L
+    S -.-> L
     L --> C
     P -- recovery of HR and HRV --> R[Learn which rhythm calms<br/>this person]
+    B -- body aroused, no voice --> V[Invite a 5-second<br/>voice note]
+    V --> C
 ```
 
-Every answer improves the next reading of the same person and the same kind of moment. The language model
-only writes the words of a reading; it never decides what the reading is.
+Every answer, and every one-tap "not quite" (dotted line), improves the next reading of the same person and the
+same kind of moment. The language model only writes the words of a reading; it never decides what the reading is.
 
 ## 1. The problem
 
@@ -68,7 +70,8 @@ only writes the words of a reading; it never decides what the reading is.
    states, offered as the options), or **stay quiet**.
 5. **Personal head and situation memory:** each answer updates a small per-user model on the device, and every
    later reading of the same kind of moment.
-6. **Support:** the bracelet pulses only when the reading is sure the person is tense.
+6. **Support:** the bracelet pulses only when the reading is sure the person is tense, tuned to their heart and
+   breathing; when the person is not talking, the body can invite a 5-second voice note.
 
 → [docs/01-architecture.md](docs/01-architecture.md)
 
@@ -145,13 +148,17 @@ face) add nothing on top of it yet, so the pooled cohort comes first. → [docs/
 The disagreement becomes a reason to ask, read against the person's own baseline: in the engine demo, questions
 triggered by disagreement hit real masking 48% of the time (base rate 9%). → [docs/21](docs/21-text-face-incongruence.md)
 
-## 4. When the bracelet pulses
+## 4. Voice, body and the bracelet
+
+**The body triggers, the voice decides, the vibration acts.**
+
+### When the bracelet pulses
 
 The pulse is where the reading becomes help, so it follows the same rule as the reading.
 
 | The engine | The bracelet | Why |
 | --- | --- | --- |
-| Sure the person is tense, against their own baseline | **Pulse:** 1–3 minutes of a slow heartbeat below their resting rate, or a breathing pacer at about 6 a minute; a line on screen; a calm voice only if the user turned it on | This is the moment it is for |
+| Sure the person is tense, against their own baseline | **Pulse:** 1–3 minutes of a slow heartbeat at 80% of their heart rate right now, or a breathing pacer at their own resonance rate (learned, from 6 a minute); a line on screen; a calm voice only if the user turned it on | This is the moment it is for |
 | Unsure, tense is possible | **Offer:** one soft tap, "Want a calm minute?"; the answer is also a label | An imposed pulse on a wrong reading costs trust |
 | Calm, excited, low, or moving | Nothing | Excitement looks like stress to the body; exercise raises heart rate |
 
@@ -165,6 +172,29 @@ In this synthetic check, **the effect of a pulse is an assumption**; what is mea
 Pulses triggered by the body alone land on excitement half the time and reach 3% of tense moments; the calibrated
 decision reaches 56% with 88% of pulses at tense moments. The better the reading, the more often the pulse can
 help without false alarms. → [docs/26-when-to-pulse.md](docs/26-when-to-pulse.md)
+
+### Voice and body: which matters?
+
+They answer different questions. The bracelet is always on and says how much and when; voice and words come in
+short moments and say which way. Alone, the body reads 0.52 and never dares to speak, voice and words 0.69; together
+0.81, and the engine speaks almost twice as often. Voice moments also teach the body-only moments: when half the
+moments have voice, the body-only ones are read at 0.67, against 0.52 for a bracelet that never hears the person.
+The less the person talks, the fewer tense moments the pulse can reach (76% → 13%), so at a body-only moment with
+an aroused body and possible tension the app invites a 5-second voice note, at most once a day: about two
+invitations a week raise the tense moments reached from 28% to 46%. Voice stays episodic and chosen, never
+always-on listening (Amazon's always-listening band was criticised and discontinued).
+
+![Voice and body](sim/results/fig9_voice_and_body.png)
+
+### Tuning the pulse to each person
+
+Products that calm with vibration are triggered on demand (doppel, TouchPoints, Apollo) or automatically against a
+personal threshold (NightWare, FDA-authorised for PTSD nightmares; Lief). SOUL-Calibrate keeps both, with the
+reading as the automatic trigger. The heartbeat is tied to the heart rate right now (80%, never above 90%), because
+a heartbeat faster than one's own raises anxiety and a fixed 60 a minute is sometimes faster; the breathing pacer
+learns the person's resonance rate (between 4.5 and 7 a minute). In a synthetic check with effects taken from the
+literature, the live-heart-rate heartbeat beats a fixed one (0.72 vs 0.53) and learned breathing reaches 0.81 after
+a few weeks (0.71 at a fixed 6 a minute). → [docs/27-voice-and-vibration.md](docs/27-voice-and-vibration.md)
 
 ## 5. Code Nightlet can run: `engine/soulcal`
 
@@ -180,7 +210,8 @@ in a JSON file on the phone.
 | `patterns` | personal pattern graph (context, body, expression, astrology) with false-discovery correction and replication | [22](docs/22-engine.md) |
 | `detail.level_of_detail` | shows a main state until the fine one is sure, on top of any model with finer labels | [25](docs/25-coarse-to-fine-and-archetypes.md) |
 | `archetypes` | prototype: archetypes from a consenting cohort, new people matched after 4 days | [25](docs/25-coarse-to-fine-and-archetypes.md) |
-| `support.SupportPolicy` | when and how the bracelet pulses; held-out moments; rhythm learned per person | [26](docs/26-when-to-pulse.md) |
+| `support.SupportPolicy` | when and how the bracelet pulses; held-out moments; rhythm, live-heart-rate heartbeat and resonance breathing learned per person | [26](docs/26-when-to-pulse.md), [27](docs/27-voice-and-vibration.md) |
+| `channels_sim`, `haptics_sim` | synthetic checks: voice, words, face and body; voice check-ins; tuning the pulse | [27](docs/27-voice-and-vibration.md) |
 
 | Engine demo, 20 synthetic people | Accuracy, week 6 | Accuracy when speaking |
 | --- | --- | --- |
@@ -200,7 +231,8 @@ eng.save("user-42.json")                     # stays on the device
 ```
 
 Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/examples/demo_out/PATTERNS.md) ·
-[ARCHETYPES](engine/examples/demo_out/ARCHETYPES.md) · [SUPPORT](engine/examples/demo_out/SUPPORT.md).
+[ARCHETYPES](engine/examples/demo_out/ARCHETYPES.md) · [SUPPORT](engine/examples/demo_out/SUPPORT.md) ·
+[CHANNELS](engine/examples/demo_out/CHANNELS.md) · [HAPTICS](engine/examples/demo_out/HAPTICS.md).
 → [docs/22-engine.md](docs/22-engine.md)
 
 ## 6. How it is evaluated and tested
@@ -213,28 +245,29 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 - **Reading audit:** the language model writes the reading but never decides it. → [docs/14](docs/14-reading-audit.md)
 - **Privacy and regulation:** personal learning on the device, shared training only with separate consent;
   emotion recognition is high-risk under the EU AI Act. → [docs/09](docs/09-privacy-and-regulation.md)
-- **Experiment plan:** E1–E32, each with what would prove it wrong. → [docs/16](docs/16-experiments.md)
+- **Experiment plan:** E1–E34, each with what would prove it wrong. → [docs/16](docs/16-experiments.md)
 
 ## 7. What is not done yet
 
 - **Real data.** Everything is synthetic. The first experiment on real audio (E31): a pretrained speech model on
   a public multi-speaker emotion dataset, generic vs per-speaker baseline vs a few answers per speaker.
-- **The pulse's effect.** It is assumed in the check; it has to be measured on a consenting cohort (E32).
+- **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
+  voice check-ins (E33) and the tuning of the rhythm (E34).
 - **Still on paper:** the session anchor and enrollment flow, the reading audit batteries, the cohort pilot, the
   micro-randomised trials, support for "low", and an engine with more than four states (`detail.py` works on top).
 
 ## 8. How the ideas connect: knowledge graph
 
-The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 894 concepts and
-2,570 links across documents and code, grouped into areas. Read left to right: where an idea comes from
+The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 980 concepts and
+2,910 links across documents and code, grouped into areas. Read left to right: where an idea comes from
 (evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code.
 
 ![How the project's ideas connect](graph/overview.png)
 
 Each round of the graph pointed at the next fix: active questions turned out to be the bridge of the whole system
 (so answer rate is the first metric); the situation memory and the personal head were joined; the coarse-to-fine
-question and the glucose-monitor idea got code and a test; the pulse became one of the most connected documents,
-because it is where the reading, the budget and the evaluation meet. **Open the interactive map
+question and the glucose-monitor idea got code and a test; the pulse and then voice and vibration became among the most
+connected documents, because they are where the reading, the budget and the evaluation meet. **Open the interactive map
 [`graph/map.html`](graph/map.html)** (works offline) to follow any concept to its sources and its code.
 → [graph/README.md](graph/README.md), [graph/GRAPH_REPORT.md](graph/GRAPH_REPORT.md)
 
@@ -242,7 +275,7 @@ because it is where the reading, the budget and the evaluation meet. **Open the 
 
 | Path | What it holds |
 | --- | --- |
-| `docs/00`–`docs/26` | one module per component, each ending with a **Check** |
+| `docs/00`–`docs/27` | one module per component, each ending with a **Check** |
 | `docs/references.md` | every source, grouped by module |
 | `sim/` | simulation code, tests, results and figures |
 | `engine/` | the `soulcal` package: engine, command line, demo outputs and tests |
@@ -262,6 +295,7 @@ because it is where the reading, the budget and the evaluation meet. **Open the 
 | [06 Personal model](docs/06-personal-model.md) | [15 Labels and consent](docs/15-labels-and-consent.md) | [24 What precise means](docs/24-what-precise-means.md) |
 | [07 Fusion](docs/07-fusion.md) | [16 Experiment plan](docs/16-experiments.md) | [25 Coarse to fine and archetypes](docs/25-coarse-to-fine-and-archetypes.md) |
 | [08 SOUL-Bench](docs/08-evaluation-soul-bench.md) | [17 Roadmap and governance](docs/17-roadmap-and-governance.md) | [26 When to pulse](docs/26-when-to-pulse.md) |
+| | | [27 Voice and vibration](docs/27-voice-and-vibration.md) |
 
 Start with `docs/00-problem.md`, then follow the links, or start from the map.
 
@@ -279,12 +313,14 @@ python run_user_control.py --seeds 5 --out results  # chosen hours, free notes, 
 python run_states.py --seeds 5 --out results        # four vs eight states
 python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                           # 19 tests
+python -m pytest -q tests                           # 21 tests
 python -m soulcal demo --out examples/demo_out      # today vs the engine
 python -m soulcal archetypes --out examples/demo_out
 python -m soulcal support --out examples/demo_out   # when the bracelet pulses
+python -m soulcal channels --out examples/demo_out  # voice, words, face and body
+python -m soulcal haptics --out examples/demo_out   # tuning the pulse
 python -m soulcal bench --readings my.csv           # SOUL-Bench on your own readings
-cd ../sim && python plot_support.py                 # figure 8
+cd ../sim && python plot_support.py && python plot_channels.py   # figures 8 and 9
 cd .. && python graph/build_overview.py             # graph overview image
 ```
 

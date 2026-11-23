@@ -29,6 +29,9 @@ all its state in a small JSON file on the phone.
 | Level of detail per reading (main state until the fine one is sure), for any model with finer labels | `detail.level_of_detail` | [[25-coarse-to-fine-and-archetypes]] |
 | Archetypes from a consenting cohort, new people matched after a few days (future phase, prototype) | `archetypes.fit`, `ArchetypeModel.start_engine` | [[25-coarse-to-fine-and-archetypes]] |
 | When and how the bracelet pulses: pulse when sure of tension, offer when unsure, gates, rhythm learned per person with held-out moments | `support.SupportPolicy` | [[26-when-to-pulse]] |
+| Pulse tuned to the person: heartbeat at 80% of the live heart rate (never above 90%), breathing at the learned resonance rate | `SupportConfig.heartbeat_ratio`, `learn_resonance` | [[27-voice-and-vibration]] |
+| Body-only moment, body aroused, tension possible: invite a 5-second voice note, at most once a day | `SupportPolicy.decide` → `invite` | [[27-voice-and-vibration]] |
+| Synthetic checks of sources (voice, words, face, body), app use, voice check-ins, pulse tuning | `channels_sim`, `haptics_sim` | [[27-voice-and-vibration]] |
 | Personal pattern graph with statistical guardrails | `patterns.find_patterns`, `patterns.to_graph` | below |
 | Reflection layer (moon phase, moon sign, sun sign) | `astro` | below |
 
@@ -47,7 +50,9 @@ eng.save("user-42.json")                     # stays on the device
 
 ```bash
 cd engine
-python -m pytest tests -q                    # 19 tests
+python -m pytest tests -q                    # 21 tests
+python -m soulcal channels --out examples/demo_out     # voice, words, face, body
+python -m soulcal haptics --out examples/demo_out      # tuning the pulse
 python -m soulcal support --out examples/demo_out      # when to pulse, synthetic
 python -m soulcal archetypes --out examples/demo_out   # future phase, synthetic cohort
 python -m soulcal bench --readings my_readings.csv   # SOUL-Bench ladder
@@ -132,6 +137,6 @@ The graph is written in the project-map format, so the same viewer draws it:
 
 ## Check
 
-- `python -m pytest engine/tests -q` passes (19 tests, including "the loop beats today's generic reading" and
+- `python -m pytest engine/tests -q` passes (21 tests, including "the loop beats today's generic reading" and
   "no supported moon pattern when none is planted").
 - On real data: `python -m soulcal run` on a pilot export, then SOUL-Bench metrics per user ([[08-evaluation-soul-bench]]).

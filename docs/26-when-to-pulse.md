@@ -17,7 +17,7 @@ disclaimer adds that no outcome is guaranteed, which is a reason to measure the 
 
 | The engine's decision | The pulse | Why |
 | --- | --- | --- |
-| Speaks "tense" (sure, against the person's baseline) | **Pulse**: a slow rhythm for 1–3 minutes, a line on screen, a calm voice only if the user turned it on | This is the moment it is for |
+| Speaks "tense" (sure, against the person's baseline) | **Pulse**: a slow rhythm tied to their heart or breathing for 1–3 minutes, a line on screen, a calm voice only if the user turned it on | This is the moment it is for |
 | Asks, and "tense" is among the options | **Offer**: one soft tap and "Want a calm minute?"; the answer is also a label ([[05-active-questions]]) | A pulse imposed on a wrong reading costs trust; an offer does not |
 | Speaks "calm" | Nothing | There is nothing to regulate; the user can always start a calm minute themselves |
 | Speaks "energized" | Nothing | Heart rate and skin conductance rise with excitement as with anxiety ([[00-problem]]): calming someone who is excited is a false alarm |
@@ -34,7 +34,8 @@ and it knows when it is unsure.
 
 ## How: two rhythms from the literature, chosen per person
 
-- **Slow heartbeat:** a heartbeat-like vibration below the person's own resting heart rate (80% by default). In a
+- **Slow heartbeat:** a heartbeat-like vibration at 80% of the person's heart rate at that moment, never faster
+  (why, and the tuning of both rhythms: [[27-voice-and-vibration]]). In a
   single-blind study (Azevedo et al., 2017, *Scientific Reports*), people anticipating a public speech with the
   device on showed smaller rises in skin conductance and reported less anxiety than those with it off.
 - **Breathing pacer:** a vibration that rises and fades at about 6 breaths a minute, the slow pace used in HRV

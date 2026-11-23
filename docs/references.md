@@ -71,6 +71,21 @@ Compiled by Emanuele De Bernardis, November 2026. Grouped by the module that use
 - The effectiveness and user preferences of two tactile breathing devices in reducing stress in stressed individuals (2025). *International Journal of Clinical and Health Psychology*. [doi:10.1016/j.ijchp.2025.100603](https://doi.org/10.1016/j.ijchp.2025.100603)
 - Suh, Howe, Lewis, Hernandez, Saha, Althoff et al. (2024). Toward tailoring just-in-time adaptive intervention systems for workplace stress reduction. *JMIR Mental Health*. [link](https://mental.jmir.org/2024/1/e48974)
 
+## Voice and vibration — [[27-voice-and-vibration]]
+
+- Costa, Adams, Jung, Guimbretière, Choudhury (2017). EmotionCheck: a wearable device to regulate anxiety through false heart rate feedback. *GetMobile*. [PMC6435301](https://pmc.ncbi.nlm.nih.gov/articles/PMC6435301)
+- MacDonald, Brewster, Pollick et al. (2023). The impact of presenting fast heartbeats via vibration and sound on anxiety and heart rate. *ICMI '23*. [doi:10.1145/3577190.3614161](https://doi.org/10.1145/3577190.3614161)
+- Keio University (2021). Smartwatch-delivered artificial heartbeat stimulation reduces anxiety; effects depend on individual interoceptive ability. [press release](https://www.keio.ac.jp/en/press-release/20210827-2/)
+- Shaffer, Meehan (2020). A practical guide to resonance frequency assessment for heart rate variability biofeedback. *Frontiers in Neuroscience* 14:570400. [doi:10.3389/fnins.2020.570400](https://doi.org/10.3389/fnins.2020.570400)
+- Steffen, Austin, DeBarros, Brown (2017). The impact of resonance frequency breathing on measures of heart rate variability, blood pressure, and mood. *Frontiers in Public Health* 5:222. [doi:10.3389/fpubh.2017.00222](https://doi.org/10.3389/fpubh.2017.00222)
+- FDA De Novo DEN200033: NightWare, vibrotactile feedback from heart rate and motion during sleep, personalised threshold. [summary](https://510k.innolitics.com/device/DEN200033)
+- Chung, Gevirtz, Gharbo, Thiam, Ginsberg (2021). Pilot study on reducing symptoms of anxiety with a heart rate variability biofeedback wearable (Lief Smart Patch) and remote stress management coach. *Applied Psychophysiology and Biofeedback* 46:347–358. [doi:10.1007/s10484-021-09519-x](https://doi.org/10.1007/s10484-021-09519-x)
+- Apollo Neuroscience: double-blind placebo-controlled crossover trials on HRV (University of Pittsburgh). [studies](https://apolloneuro.com/pages/studies-roundup)
+- TouchPoints: bilateral alternating stimulation in tactile form (BLAST). [research deck](https://cdn.shopify.com/s/files/1/1529/9657/files/Research_Deck.pdf)
+- Garmin: stress level from HRV and relax reminders. [manual](https://www8.garmin.com/manuals/webhelp/GUID-C3225F6F-DF15-4404-9E20-05C4FDCD1207/EN-US/GUID-9282196F-D969-404D-B678-F48A13D8D0CB.html)
+- Amazon Halo Tone: always-on voice tone analysis; microphones removed from Halo View; line discontinued in 2023. [MacRumors](https://www.macrumors.com/2023/04/26/amazon-discontinuing-halo-wristband/), [Mozilla Privacy Not Included](https://foundation.mozilla.org/privacynotincluded/amazon-halo-view/)
+- Mazur, Costantino, Tom, Wilson, Thompson (2025). Evaluation of an AI-based voice biomarker tool to detect signals consistent with moderate to severe depression. *Annals of Family Medicine* 23(1):60–65. [doi:10.1370/afm.240091](https://doi.org/10.1370/afm.240091)
+
 ## Recurring situations and incongruence — [[20-recurring-situations]], [[21-text-face-incongruence]]
 
 - Stacchio, Ubaldi, Mauri, Gaggioli, Galdelli, Frontoni. Empathic Prompting: Non-Verbal Context Integration for Multimodal LLM Conversations. [arXiv:2510.20743](https://arxiv.org/abs/2510.20743)
