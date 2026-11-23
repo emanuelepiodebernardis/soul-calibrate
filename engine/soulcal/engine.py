@@ -25,6 +25,7 @@ from pathlib import Path
 
 import numpy as np
 
+from .anchors import DEFAULT_POPULATION, SignatureModel
 from .baseline import EMA, PersonalBaseline
 from .model import FusionHead, SituationMemory, context_vector, feature_vector
 from .schema import N_STATES, STATES, Decision, Profile, Reading
@@ -51,6 +52,13 @@ class EngineConfig:
     ask_needs_expression: bool = True         # quality gate: never ask from body signals alone
     note_weight: float = 0.7                  # weight of a free note read on the phone into a state
     personal: bool = True                     # False = today's generic reading: population norms, no personal correction
+    signature: bool = True                    # use the person's voice-and-body signature in the voice channel (docs/29)
+    signature_weight: float = 1.0             # weight of the signature's evidence in the voice channel
+    signature_temperature: float = 4.0        # >1 softens the signature's evidence to the scale of the other channels
+    signature_replaces_voice: bool = True     # the signature replaces the generic voice reading (both read the same voice)
+    signature_min_enrollment: int = 3         # neutral readings of the fixed sentence before the signature is used
+    signature_has_body: bool = True           # the signature already holds the body: drop the body's z-scores then
+    signature_learns_from_answers: bool = True   # answered voice notes also become tagged readings (docs/29)
 
 
 # Personalization speed presets the user can pick (docs/23-question-budget.md)
@@ -100,6 +108,43 @@ class SoulEngine:
         self._pending: dict[int, dict] = {}    # recent readings that can still be answered or corrected
         self.n_readings = 0
         self.drift_events = 0
+        self.signature: SignatureModel | None = None
+
+    # ------------------------------------------------------------------ voice-and-body signature (docs/29)
+    def _sig(self, x) -> SignatureModel:
+        if self.signature is None:
+            n = len(x)
+            pop = DEFAULT_POPULATION if n == DEFAULT_POPULATION.shape[1] else np.zeros((N_STATES, n))
+            self.signature = SignatureModel(n_features=n, population=pop)
+        return self.signature
+
+    def enroll(self, features) -> None:
+        """The fixed sentence read in a normal tone (first week): the person's usual voice and body."""
+        self._sig(features).add_enrollment(np.asarray(features, float))
+
+    def anchor(self, features) -> None:
+        """Today's 5-second reading of the fixed sentence: today's microphone, room and day."""
+        self._sig(features).set_anchor(np.asarray(features, float))
+
+    def tag(self, state: str, features) -> None:
+        """The fixed sentence read while the person says how they feel: their own signature of that state."""
+        if state not in STATES:
+            raise ValueError(f"unknown state {state!r}; expected one of {STATES}")
+        self._sig(features).add_tagged(state, np.asarray(features, float))
+
+    def signature_difference(self, state: str, names: list[str] | None = None) -> list[tuple[str, float]]:
+        """What changes in this person in ``state``, largest first: what the app can show them."""
+        if self.signature is None:
+            return []
+        from .anchors import DEFAULT_FEATURES
+        names = names or (DEFAULT_FEATURES if self.signature.n_features == len(DEFAULT_FEATURES)
+                          else [f"feature {i}" for i in range(self.signature.n_features)])
+        return self.signature.difference(state, names)
+
+    def _use_signature(self, r: Reading) -> bool:
+        return (self.cfg.signature and self.cfg.personal and r.voice_features is not None
+                and self.signature is not None and self.signature.ready(self.cfg.signature_min_enrollment)
+                and len(r.voice_features) == self.signature.n_features)
 
     # ------------------------------------------------------------------------------------------
     def _features(self, r: Reading):
@@ -110,6 +155,17 @@ class SoulEngine:
             logits = {c: np.log(np.maximum([r.channel(c)[s] for s in STATES], 1e-4)) - np.log(1 / N_STATES)
                       for c in ("face", "voice", "text") if r.channel(c) is not None}
             z = {k: (v - POPULATION_NORMS[k][0]) / POPULATION_NORMS[k][1] for k, v in r.physio().items()}
+        if self._use_signature(r):
+            sig = self.signature.proba(np.asarray(r.voice_features, float))
+            lp = np.log(np.maximum([sig[s] for s in STATES], 1e-9)) / self.cfg.signature_temperature
+            sig_logits = self.cfg.signature_weight * (lp - lp.mean())
+            logits = dict(logits)
+            if "voice" in logits and not self.cfg.signature_replaces_voice:
+                logits["voice"] = logits["voice"] + sig_logits
+            else:
+                logits["voice"] = sig_logits
+            if self.cfg.signature_has_body:
+                z = {k: v for k, v in z.items() if k == "motion"}   # the body is already in the signature
         f = feature_vector(logits, z)
         ctx = context_vector(r.timestamp.hour + r.timestamp.minute / 60, r.timestamp.weekday())
         return f, self.memory.key(_softmax(self.head.logits(f)), ctx), logits
@@ -147,7 +203,8 @@ class SoulEngine:
             start, end = self.cfg.question_hours
             if not start <= r.timestamp.hour < end:
                 budget_left = False   # outside the times the user chose for questions
-        if self.cfg.ask_needs_expression and not any(r.channel(c) is not None for c in ("face", "voice", "text")):
+        if self.cfg.ask_needs_expression and not (any(r.channel(c) is not None for c in ("face", "voice", "text"))
+                                                  or self._use_signature(r)):
             budget_left = False   # nothing the person said or showed: a question would be a guess
         if inc_pair and budget_left:
             action, options = ASK, inc_pair
@@ -168,7 +225,8 @@ class SoulEngine:
 
         idx = self.n_readings
         self.n_readings += 1
-        self._pending[idx] = {"f": f, "key": key, "set": in_set.copy()}
+        self._pending[idx] = {"f": f, "key": key, "set": in_set.copy(),
+                              "vf": list(r.voice_features) if r.voice_features is not None else None}
         if len(self._pending) > 50:
             self._pending.pop(min(self._pending))
         if self.baseline.update(r):
@@ -201,6 +259,9 @@ class SoulEngine:
         k = STATES.index(state)
         self.head.update(item["f"], k, weight)
         self.memory.add(item["key"], k)
+        if (self.cfg.signature_learns_from_answers and item.get("vf") is not None and self.signature is not None
+                and self.signature.ready(self.cfg.signature_min_enrollment)):
+            self.signature.add_tagged(state, np.asarray(item["vf"], float))
         miss = 0.0 if item["set"][k] else 1.0
         self.delta += self.cfg.aci_step * (miss - self.cfg.alpha)
 
@@ -229,7 +290,8 @@ class SoulEngine:
                  "config": self.cfg.__dict__, "baseline": self.baseline.to_dict(), "head": self.head.to_dict(),
                  "memory": self.memory.to_dict(), "incongruence": self.incongruence.to_dict(),
                  "delta": self.delta, "questions_by_day": self.questions_by_day, "first_day": self.first_day,
-                 "n_readings": self.n_readings, "drift_events": self.drift_events}
+                 "n_readings": self.n_readings, "drift_events": self.drift_events,
+                 "signature": self.signature.to_dict() if self.signature is not None else None}
         Path(path).write_text(json.dumps(state), encoding="utf-8")
 
     @classmethod
@@ -248,4 +310,6 @@ class SoulEngine:
         if isinstance(e.cfg.question_hours, list):
             e.cfg.question_hours = tuple(e.cfg.question_hours)
         e.n_readings, e.drift_events = d["n_readings"], d["drift_events"]
+        if d.get("signature"):
+            e.signature = SignatureModel.from_dict(d["signature"])
         return e

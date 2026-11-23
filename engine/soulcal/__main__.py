@@ -254,8 +254,17 @@ def anchors_demo(out: Path, seeds: int) -> None:
         t.append(f"| {k} | {v['enroll_pd']} | {v['anchors_pw']} | {v['tagged_pw']} | " + " | ".join(f"{x:.2f}" for x in v["weekly"]) + " |")
     t += ["", "Estimated time a week (anchor 5 s, tagged sentence 10 s, question 3 s): " +
           ", ".join(f"{m} {seconds_per_week(m) / 60:.1f} min" for m in ("light", "standard", "fast")) + "."]
+    from .anchors_sim import engine_check
+    en = engine_check()
+    t += ["", "## The signature inside the engine", "",
+          "The full SoulEngine on two free voice notes a day: a generic speech model reads the voice channel, the "
+          "bracelet the body; one question a day, answered truthfully. With the signature, the person's voice-and-body "
+          "signature reads the voice channel instead (softened to the scale of the other channels) and the body is not "
+          "counted twice: voice and body become one reading of the person's state. Scored on days 22-42, 4 seeds x 25 people not used to choose the settings.", "",
+          "| Engine | Most likely state right | Speaks | Right when it speaks |", "| --- | --- | --- | --- |"]
+    t += [f"| {k} | {v['accuracy']:.2f} | {v['spoken_share']:.0%} | {v['spoken_correct']:.0%} |" for k, v in en.items()]
     (out / "ANCHORS.md").write_text("\n".join(t) + "\n", encoding="utf-8")
-    (out / "anchors.json").write_text(json.dumps({"ladder": r, "modes": md}, indent=1), encoding="utf-8")
+    (out / "anchors.json").write_text(json.dumps({"ladder": r, "modes": md, "engine": en}, indent=1), encoding="utf-8")
     print("\n".join(t))
 
 

@@ -30,6 +30,10 @@ Built nine times while the project grew; each round pointed at the next fix.
 | 8 (+ speech front end) | docs/28 links 11 areas (32 links); E31, open since round 5, now has code (`realvoice/`) linked to the evidence that the speaker dominates the voice, to SOUL-Bench and to the voice channel of the engine. New gaps: the real-voice check runs beside the engine (embeddings and a linear head), not through it; the next step is to feed emotion2vec+ scores into the engine's voice channel on real recordings | `realvoice/e31_real_voice.py`, `channels_sim.frontend_check` |
 | 9 (+ voice-and-body signatures) | docs/29 links 12 areas (37 links) and turns the enrollment sentences and the 5-second session anchor, on paper since round 1, into code, joined with tagged readings in one area; voluntary modes connect it to the question budget. New gaps: the signature model sits beside the engine (its probabilities still have to be passed into the voice channel), and the real-voice check (E31) does not yet use signatures: emotion2vec+ features are the natural input | `anchors.SignatureModel`, `anchors.MODES`, E35–E36 |
 
+After round 9 both gaps were closed in code: the signature is the engine's voice channel (`SoulEngine.enroll`,
+`anchor`, `tag`, `Reading.voice_features`; 0.57 → 0.81 in the engine check) and E31 has signature arms on RAVDESS's
+repeated sentences.
+
 Still only on paper (no code yet): the session anchor and the enrollment flow, the reading audit batteries, the
 private cohort pilot, the measured effect and tuning of the pulse (E32, E34), voice check-ins on real people
 (E33), signatures on real people (E35, E36), the micro-randomised trials, and running the real-voice check (E31,

@@ -209,7 +209,10 @@ show the signature back ("when you're tense, your voice gets faster and your hea
 learns themselves too. All of it is voluntary: in the light mode (about 1 minute a week: the 5-second evening
 anchor, one sentence a week, a question every other day) the signature reads 0.74 after six weeks; standard
 (1.5 minutes) 0.82; fast (2.5 minutes, a sentence a day) 0.82 in week 3 and 0.86 by week 6. The evening anchor is
-the cheapest, most valuable feedback. → [docs/29-voice-signatures.md](docs/29-voice-signatures.md)
+the cheapest, most valuable feedback. Voice and body end up in **one reading** of the person's state: the signature is
+the engine's voice channel. In the full loop (two voice notes a day, one question a day) the reading goes from
+0.41 with today's public approach (generic speech model, population body norms) and 0.57 for the engine without the
+signature to 0.81, and from 52% and 61% to 88% right when it speaks. → [docs/29-voice-signatures.md](docs/29-voice-signatures.md)
 
 ![Voice signatures](sim/results/fig10_voice_signatures.png)
 
@@ -279,11 +282,10 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 ## 7. What is not done yet
 
 - **Real data.** Everything is synthetic. The first experiment on real audio (E31) is written and tested on
-  generated audio; it needs a machine with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
+  generated audio, signatures included (RAVDESS actors read the same sentences in every emotion); it needs a machine
+with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 - **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
   voice check-ins (E33) and the tuning of the rhythm (E34); signatures and whether seeing them helps (E35, E36).
-- **One join in code.** The signature model (`anchors.py`) works and is tested on its own; its per-state
-  probabilities still have to be passed into the engine's voice channel, and E31 does not yet use signatures.
 - **Still on paper:** the enrollment screens in the app (the logic is in `anchors.py`), the reading audit batteries, the cohort pilot, the
   micro-randomised trials, support for "low", and an engine with more than four states (`detail.py` works on top).
 
@@ -349,13 +351,13 @@ python run_user_control.py --seeds 5 --out results  # chosen hours, free notes, 
 python run_states.py --seeds 5 --out results        # four vs eight states
 python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                           # 23 tests
+python -m pytest -q tests                           # 25 tests
 python -m soulcal demo --out examples/demo_out      # today vs the engine
 python -m soulcal archetypes --out examples/demo_out
 python -m soulcal support --out examples/demo_out   # when the bracelet pulses
 python -m soulcal channels --out examples/demo_out  # voice, words, face and body
 python -m soulcal haptics --out examples/demo_out   # tuning the pulse
-python -m soulcal anchors --out examples/demo_out   # voice-and-body signatures
+python -m soulcal anchors --out examples/demo_out   # voice-and-body signatures, alone and in the engine
 python -m soulcal bench --readings my.csv           # SOUL-Bench on your own readings
 cd ../sim && python plot_support.py && python plot_channels.py && python plot_anchors.py   # figures 8-10
 cd .. && python -m pytest -q realvoice/tests            # E31 protocol, no download

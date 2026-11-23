@@ -15,4 +15,6 @@ On Windows PowerShell the same commands work with `\` in paths. The first emotio
 (`iic/emotion2vec_plus_base`, change it with `--model`); features are cached in `realvoice/results/cache`.
 
 Output: `realvoice/results/E31_<encoder>.md` with accuracy and balanced accuracy for zero-shot, generic head,
-+ personal baseline and + 2, 4, 8, 16 answers per speaker, leave one speaker out.
++ personal baseline, + 2, 4, 8, 16 answers per speaker and the voice signature (neutral clips as enrollment, then
+1, 2, 4 tagged clips per state; RAVDESS actors read the same two sentences in every emotion, as in docs/29),
+leave one speaker out.

@@ -43,8 +43,9 @@ repository records the date of each part.
 16. **Strong open speech models as the front end, calibration on top:** words and voice from open models on the
    phone, the personal layer measured on real voice by a ready-to-run experiment. → `docs/28`, `realvoice/`
 17. **Voice-and-body signatures:** one fixed sentence for enrollment, the daily anchor and tagged readings in a
-   state, so each person's own way of showing a state is learned, and shown back to them. → `docs/29`,
-   `engine/soulcal/anchors.py`
+   state, so each person's own way of showing a state is learned, and shown back to them; wired into the engine
+   as its voice channel (softened, replacing the generic voice reading, the body not counted twice), and into the
+   real-voice check. → `docs/29`, `engine/soulcal/anchors.py`, `engine/soulcal/engine.py`
 
 ## Credits
 

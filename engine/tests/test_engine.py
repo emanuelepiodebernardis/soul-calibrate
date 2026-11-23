@@ -267,3 +267,46 @@ def test_modes_ask_little_and_spread_the_sentences():
         offers.append(o)
         done += o
     assert done == MODES["standard"]["tagged_per_week"] and not all(offers)
+
+
+def test_signature_feeds_the_voice_channel_and_is_saved(tmp_path):
+    """Enrollment, anchor and tagged sentences go into the engine; a voice note with features is read by the signature."""
+    from datetime import datetime, timedelta
+
+    import numpy as np
+
+    from soulcal.anchors import DEFAULT_POPULATION
+    from soulcal.engine import EngineConfig, SoulEngine
+    from soulcal.schema import Profile, Reading
+    rng = np.random.default_rng(0)
+    base = rng.normal(0, 3, 9)
+    eng = SoulEngine(Profile("u"), EngineConfig())
+    for _ in range(6):
+        eng.enroll(base + rng.normal(0, 0.3, 9))
+    eng.anchor(base)
+    for _ in range(3):
+        eng.tag("tense", base + DEFAULT_POPULATION[2] + rng.normal(0, 0.3, 9))
+    x = base + DEFAULT_POPULATION[2]
+    t = datetime(2026, 1, 5, 9)
+    with_sig = eng.observe(Reading("u", t, voice_features=list(x), heart_rate=80, hrv_rmssd=35))
+    assert max(with_sig.proba, key=with_sig.proba.get) == "tense"
+    assert "voice" in with_sig.contributions
+    eng.answer(with_sig.reading_index, "tense")                    # an answered voice note also teaches the signature
+    assert len(eng.signature.tagged["tense"]) == 4
+    eng.save(tmp_path / "u.json")
+    back = SoulEngine.load(tmp_path / "u.json")
+    assert len(back.signature.neutral) == 6 and len(back.signature.tagged["tense"]) == 4
+    off = SoulEngine(Profile("v"), EngineConfig(signature=False))
+    plain = off.observe(Reading("v", t + timedelta(hours=1), voice_features=list(x)))
+    assert "voice" not in plain.contributions                     # without the signature the features are ignored
+
+
+def test_signature_in_the_engine_beats_the_generic_voice_reading():
+    from soulcal.anchors_sim import engine_check
+    r = engine_check(seeds=1, people=12)
+    today = r["Our engine without the signature: generic speech model + body, personal baseline, answers"]
+    full = r["+ answered voice notes also teach the signature (default)"]
+    assert full["accuracy"] > today["accuracy"] + 0.08
+    assert full["spoken_correct"] > today["spoken_correct"]
+    public = r["Public approach today: generic speech model + population body norms, nothing personal"]
+    assert full["accuracy"] > public["accuracy"] + 0.2

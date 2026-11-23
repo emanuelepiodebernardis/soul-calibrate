@@ -21,7 +21,12 @@ test clips. Scored on the test clips only, per speaker, then averaged:
 * + personal baseline: every speaker's features normalised by their own unlabeled clips (for the held-out speaker,
   only the calibration pool, no labels);
 * + k answers: the head refit with k labeled clips of the held-out speaker from the calibration pool (k = 2, 4, 8, 16),
-  weighted up, as the user's answers would be.
+  weighted up, as the user's answers would be;
+* + signature (docs/29, the engine's SignatureModel): RAVDESS actors read the same two sentences in a neutral tone and
+  in every emotion, which is the fixed-sentence protocol. The emotion directions are learned from the other speakers
+  (a 3-dimensional discriminant projection of their features, each speaker measured against their own neutral clips);
+  the held-out speaker's neutral clips in the calibration pool are the enrollment, and j clips per state from the pool
+  are their tagged readings (j = 0, 1, 2, 4). Voice only: RAVDESS has no body signals and no daily sessions.
 """
 
 from __future__ import annotations
@@ -39,6 +44,7 @@ RAVDESS = {"01": "calm", "02": "calm", "03": "energized", "04": "low", "05": "te
 E2V_TO_STATE = {"neutral": "calm", "happy": "energized", "surprised": "energized", "angry": "tense",
                 "fearful": "tense", "disgusted": "tense", "sad": "low"}
 KS = (2, 4, 8, 16)
+SIG_JS = (0, 1, 2, 4)
 
 
 # ---------------------------------------------------------------------------------------------- data
@@ -49,14 +55,15 @@ def load_ravdess(root: Path) -> list[dict]:
     for f in sorted(root.rglob("03-01-*.wav")):
         parts = f.stem.split("-")
         if len(parts) == 7 and parts[2] in RAVDESS:
-            items.append({"path": str(f), "speaker": parts[6], "label": RAVDESS[parts[2]]})
+            items.append({"path": str(f), "speaker": parts[6], "label": RAVDESS[parts[2]], "neutral": parts[2] == "01"})
     return items
 
 
 def load_csv(path: Path) -> list[dict]:
     with open(path, newline="", encoding="utf-8") as fh:
-        return [{"path": r["path"], "speaker": r["speaker"], "label": r["label"]} for r in csv.DictReader(fh)
-                if r["label"] in STATES]
+        return [{"path": r["path"], "speaker": r["speaker"], "label": r["label"],
+                 "neutral": (r.get("neutral") or "").strip().lower() in ("1", "true", "yes")}
+                for r in csv.DictReader(fh) if r["label"] in STATES]
 
 
 # ---------------------------------------------------------------------------------------------- encoders
@@ -120,8 +127,57 @@ def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
     return {"accuracy": float(np.mean(y_true == y_pred)), "balanced": float(balanced_accuracy_score(y_true, y_pred))}
 
 
+def _signature_model():
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "engine"))
+    from soulcal.anchors import SignatureModel
+    return SignatureModel
+
+
+def _signature_arms(X, y, spk, s, pool, test, others, neutral, js) -> dict:
+    """The fixed-sentence signature for held-out speaker ``s`` (see the module docstring)."""
+    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+    SignatureModel = _signature_model()
+
+    def ref(idx):                                         # the speaker's neutral clips, or all of them if none
+        n = idx[neutral[idx]] if neutral is not None else idx[:0]
+        return n if len(n) >= 2 else idx
+
+    Xr = X.copy()
+    for o in np.unique(spk[others]):
+        idx = np.where(spk == o)[0]
+        Xr[idx] = _normalise(X[idx], X[ref(idx)])
+    lda = LinearDiscriminantAnalysis(n_components=min(3, len(STATES) - 1)).fit(Xr[others], y[others])
+    P = lda.transform(Xr)
+    # population directions in z units: each other speaker against their own neutral clips, then averaged per state
+    zs, ys = [], []
+    for o in np.unique(spk[others]):
+        idx = np.where(spk == o)[0]
+        r = ref(idx)
+        zs.append((P[idx] - P[r].mean(0)) / (P[r].std(0) + 1e-3))
+        ys.append(y[idx])
+    zs, ys = np.vstack(zs), np.concatenate(ys)
+    pop = np.array([zs[ys == k].mean(0) if np.any(ys == k) else np.zeros(P.shape[1]) for k in range(len(STATES))])
+    hp = lda.transform(_normalise(X, X[ref(pool)]))         # held-out speaker, measured against the pool only
+    enroll = ref(pool)
+    used = set(enroll.tolist())                           # a clip is either enrollment or a tagged reading
+    out = {}
+    for j in js:
+        m = SignatureModel(n_features=P.shape[1], population=pop)
+        for i in enroll:
+            m.add_enrollment(hp[i])
+        for k in range(len(STATES)):
+            tag = [i for i in pool if y[i] == k and i not in used][:j]
+            for i in tag:
+                m.add_tagged(STATES[k], hp[i], use_anchor=False)
+        pred = np.array([STATES.index(max(pr, key=pr.get)) for pr in (m.proba(hp[i], use_anchor=False) for i in test)])
+        name = "+ signature (neutral sentences)" if j == 0 else f"+ signature, {j} tagged per state"
+        out[name] = _scores(y[test], pred)
+    return out
+
+
 def evaluate(X: np.ndarray, y: np.ndarray, spk: np.ndarray, Z: np.ndarray | None = None, seed: int = 0,
-             ks=KS, answer_weight: float = 5.0) -> dict:
+             ks=KS, answer_weight: float = 5.0, neutral: np.ndarray | None = None, sig_js=SIG_JS) -> dict:
     """Leave one speaker out; returns mean and per-speaker scores for every setting."""
     rng = np.random.default_rng(seed)
     out: dict = {}
@@ -150,6 +206,8 @@ def evaluate(X: np.ndarray, y: np.ndarray, spk: np.ndarray, Z: np.ndarray | None
             h = _head()
             h.fit(Xa, ya, logisticregression__sample_weight=w)
             res[f"+ {k} answers"] = _scores(y[test], h.predict(Xn[test]))
+        if sig_js:
+            res.update(_signature_arms(X, y, spk, s, pool, test, others, neutral, sig_js))
         out[str(s)] = res
     settings = list(next(iter(out.values())).keys())
     mean = {k: {m: float(np.mean([out[s][k][m] for s in out])) for m in ("accuracy", "balanced")} for k in settings}
@@ -172,7 +230,8 @@ def main() -> None:
     X, Z = encode(items, a.encoder, out / "cache", a.model)
     y = np.array([STATES.index(it["label"]) for it in items])
     spk = np.array([it["speaker"] for it in items])
-    runs = [evaluate(X, y, spk, Z, seed=s) for s in range(a.seeds)]
+    neutral = np.array([bool(it.get("neutral")) for it in items])
+    runs = [evaluate(X, y, spk, Z, seed=s, neutral=neutral if neutral.any() else None) for s in range(a.seeds)]
     mean = {k: {m: float(np.mean([r["mean"][k][m] for r in runs])) for m in ("accuracy", "balanced")}
             for k in runs[0]["mean"]}
     lines = [f"# E31 on real voice: {a.encoder}" + ("" if a.encoder == "mfcc" else f" ({a.model})"), "",

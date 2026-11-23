@@ -78,14 +78,60 @@ signature improves self-awareness is a question for E36, not a claim.
 This is learning by the person, not reinforcement learning in the technical sense: the person chooses when to
 read, the system shows the difference, and both get better at noticing it.
 
-## 5. How it fits in the engine
+## 5. In the engine: voice and body as one reading
 
-- `SignatureModel` turns prosodic features and body signals into a probability for each state, which feeds the
-  engine's **voice** channel ([[22-engine]]); the engine keeps fusing it with words, face and situation memory.
-- When the signature already uses the body signals, the engine's own body channel should be left out for that
-  reading, so the body is not counted twice.
-- A strong open speech-emotion model ([[28-speech-front-end]]) and the signature combine: the model's embedding
-  or scores can be the features, and the signature makes them personal.
+The goal of the device is one reading of the person's state. The signature does not add a second reading beside
+it: the voice note's prosody and the bracelet's signals at that moment are one vector, read against the person's
+own signatures, and that becomes the engine's voice channel, fused with words, face and situation memory into the
+single reading the person sees.
+
+The signature is wired into `SoulEngine` ([[22-engine]]):
+
+```python
+engine.enroll(features)          # first week: the fixed sentence in a normal tone
+engine.anchor(features)          # every evening: 5 seconds
+engine.tag("tense", features)    # optional: the sentence read while saying how one feels
+engine.observe(Reading(..., voice_features=features_of_the_voice_note))
+engine.signature_difference("tense")   # what changes in this person, for the app to show
+```
+
+- Once there are three neutral readings, a voice note that carries `voice_features` is read by the signature,
+  which becomes the engine's **voice** channel; the engine still fuses it with words, face, situation memory and
+  the question budget, and the decision rule is unchanged.
+- **Three settings, chosen in a synthetic check and then confirmed on people not used to choose them:**
+  1. *The signature replaces the generic voice model's reading* rather than being added to it: both read the same
+     voice, and adding them gave 0.65 instead of 0.81.
+  2. *It is softened* (temperature 4) to the scale of the other channels. Unsoftened, its evidence is about five
+     times stronger than theirs, each answer moves the head too far and the engine speaks too often (87%) and is
+     right less often (75%).
+  3. *The body is not counted twice:* when the signature holds the body signals, the engine's own heart rate, HRV
+     and temperature are left out for that reading (movement stays).
+- **Answers teach the signature too:** a voice note the person answers ("tense") is also stored as a tagged
+  reading. It is free speech, not the fixed sentence, so it is noisier, but it comes with no extra effort.
+
+**Result** (4 seeds × 25 synthetic people, two free voice notes a day, one question a day, scored on days 22–42;
+`python -m soulcal anchors`):
+
+| Engine | Most likely state right | Speaks | Right when it speaks |
+| --- | --- | --- | --- |
+| Public approach today: generic speech model + population body norms, nothing personal | 0.41 | 38% | 52% |
+| Our engine without the signature: generic speech model + body, personal baseline, answers | 0.57 | 69% | 61% |
+| + signature, enrollment and evening anchor only | 0.67 | 64% | 74% |
+| + 3 tagged sentences a week (standard mode) | 0.75 | 72% | 81% |
+| **+ answered voice notes also teach the signature (default)** | **0.81** | 74% | **88%** |
+| Same, signature added to the generic voice reading instead | 0.65 | 78% | 70% |
+| Same, not softened (temperature 1) | 0.71 | 87% | 75% |
+
+Against today's public approach (a generic speech model and population norms for the body), the single
+voice-and-body reading is right about twice as often on free voice notes (0.81 vs 0.41), and right 88% of the times
+it speaks instead of 52%. The first wiring, without these settings, made the engine *worse* (0.54 vs 0.60): the reason is recorded here so
+the settings are not taken as arbitrary. The generic voice model in this check is weak (it reads raw features); with
+a strong open model (emotion2vec+, [[28-speech-front-end]]) whether to add or replace has to be measured again, and
+the model's embedding can be the signature's input.
+
+- **Real voice:** E31 now includes the signature (`realvoice/`). RAVDESS actors read the same two sentences in a
+  neutral tone and in every emotion, which is this protocol: neutral clips as enrollment, 1, 2 or 4 clips per state
+  as tagged readings, emotion directions learned from the other speakers. Voice only (no body, no daily sessions).
 - **Blood pressure:** if the bracelet measures it, it is one more body feature in the signature; the method does
   not change. It is not assumed here.
 - Privacy: only features, never raw audio, leave the moment of recording ([[09-privacy-and-regulation]]).
@@ -93,6 +139,9 @@ read, the system shows the difference, and both get better at noticing it.
 ## Check
 
 - E35: on the cohort, accuracy on free voice notes with baseline, + daily anchor, + 1/2/4 tagged readings per
-  state; and how many people actually make tagged readings.
+  state; and how many people actually make tagged readings. Before the cohort, on public data: the signature arms of
+  E31.
+- `python -m pytest engine/tests -q` includes "the signature feeds the voice channel and is saved" and "the
+  signature in the engine beats the generic voice reading".
 - E36: does seeing one's own signature improve emotional awareness (self-report and interoceptive measures) after
   four weeks, compared with not seeing it?

@@ -36,3 +36,11 @@ def test_zero_shot_scores_are_used_when_given():
     Z = np.eye(4)[y] * 0.6 + 0.1
     m = evaluate(X, y, spk, Z=Z, seed=0, ks=(2,))["mean"]
     assert m["zero-shot"]["accuracy"] == 1.0
+
+
+def test_signature_from_neutral_and_tagged_clips():
+    """The fixed-sentence signature: neutral clips as enrollment, a few tagged clips per state."""
+    X, y, spk = _data()
+    m = evaluate(X, y, spk, seed=0, ks=(2,), neutral=(y == 0))["mean"]
+    assert m["+ signature (neutral sentences)"]["accuracy"] > m["generic"]["accuracy"]
+    assert m["+ signature, 4 tagged per state"]["accuracy"] >= m["+ signature (neutral sentences)"]["accuracy"] - 0.02

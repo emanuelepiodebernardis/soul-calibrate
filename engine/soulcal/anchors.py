@@ -79,6 +79,24 @@ class SignatureModel:
         e = np.exp(logits - logits.max())
         return {s: float(v) for s, v in zip(STATES, e / e.sum())}
 
+    def ready(self, min_enrollment: int = 3) -> bool:
+        """Enough neutral readings to measure the person against themselves."""
+        return len(self.neutral) >= min_enrollment
+
+    def to_dict(self) -> dict:
+        return {"n_features": self.n_features, "population": self.population.tolist(), "shrink": self.shrink,
+                "temperature": self.temperature, "neutral": [v.tolist() for v in self.neutral],
+                "session": None if self.session is None else self.session.tolist(),
+                "tagged": {s: [v.tolist() for v in pts] for s, pts in self.tagged.items()}}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "SignatureModel":
+        m = cls(d["n_features"], np.array(d["population"]), d["shrink"], d["temperature"])
+        m.neutral = [np.array(v) for v in d["neutral"]]
+        m.session = None if d["session"] is None else np.array(d["session"])
+        m.tagged = {s: [np.array(v) for v in pts] for s, pts in d["tagged"].items()}
+        return m
+
     def difference(self, state: str, names: list[str]) -> list[tuple[str, float]]:
         """What changes in this person when they are in `state`, largest first: what the app can show them."""
         if state not in self.tagged:
@@ -86,6 +104,17 @@ class SignatureModel:
         delta = np.mean(self.tagged[state], 0) - (np.mean(self.tagged["calm"], 0) if "calm" in self.tagged else 0)
         order = np.argsort(-np.abs(delta))
         return [(names[i], float(delta[i])) for i in order]
+
+
+# Default features of the fixed sentence: prosody from the voice note, body from the bracelet at that moment.
+# The population directions are a starting point in z units, replaced by the person's own as they tag readings.
+DEFAULT_FEATURES = ["pitch", "pitch range", "energy", "speech rate", "jitter", "pause share",
+                    "heart rate", "HRV", "skin temperature"]
+#                               pitch range energy rate jitter pause |  HR   HRV  temp
+DEFAULT_POPULATION = 1.5 * np.array([[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],          # calm
+                                     [1.0, 1.0, 1.0, 0.8, 0.0, -0.5, 1.0, -0.5, 0.0],        # energized
+                                     [1.0, 0.2, 0.8, 0.8, 1.0, -0.2, 1.0, -1.0, -0.6],       # tense
+                                     [-0.8, -0.8, -0.8, -0.8, 0.2, 0.9, -0.5, 0.2, 0.0]])    # low
 
 
 # Voluntary adaptation modes: the user chooses how fast the system learns them; each mode asks for the minimum

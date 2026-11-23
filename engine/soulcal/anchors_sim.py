@@ -166,3 +166,77 @@ def modes_check(seeds: int = 5, people: int = 40, days: int = 42) -> dict:
                      "tagged_by_day_42": float(np.mean(tagged_total)),
                      "enroll_pd": enroll_pd, "anchors_pw": anchors_pw, "tagged_pw": tagged_pw}
     return out
+
+
+# --------------------------------------------------------------------------- the signature inside the engine
+def _to_reading(uid, ts, x, generic_voice: dict, with_features: bool):
+    from .schema import Reading
+    # body features in the simulation are z-like units: map them to plausible bracelet values
+    return Reading(user_id=uid, timestamp=ts, voice=generic_voice,
+                   heart_rate=72 + 6 * x[6], hrv_rmssd=max(5.0, 42 + 8 * x[7]), skin_temp=33.5 + 0.4 * x[8], motion=0.2,
+                   voice_features=list(x) if with_features else None)
+
+
+ENGINE_CONDITIONS = {
+    # name: (config overrides, tagged sentences a week in days 8-21)
+    "Public approach today: generic speech model + population body norms, nothing personal": ({"signature": False, "personal": False, "head_lr": 0.0}, 0),
+    "Our engine without the signature: generic speech model + body, personal baseline, answers": ({"signature": False}, 0),
+    "+ signature, enrollment and evening anchor only": ({"signature_learns_from_answers": False}, 0),
+    "+ 3 tagged sentences a week (standard mode)": ({"signature_learns_from_answers": False}, 3),
+    "+ answered voice notes also teach the signature (default)": ({}, 3),
+    "Same, signature added to the generic voice reading instead of replacing it": ({"signature_replaces_voice": False}, 3),
+    "Same, signature not softened (temperature 1)": ({"signature_temperature": 1.0}, 3),
+}
+
+
+def engine_check(seeds: int = 4, people: int = 25, days: int = 42) -> dict:
+    """The full SoulEngine on free voice notes, with and without the person's signature in its voice channel.
+    Week 1: enrollment (3 neutral sentences a day); every evening the 5-second anchor; two free voice notes a day,
+    each read by a generic speech model (voice channel) and the bracelet (body); the engine speaks, asks (one
+    question a day, answered truthfully) or stays quiet. Scored on days 22-42: accuracy of the most likely state,
+    and of what the engine actually says."""
+    from datetime import datetime, timedelta
+
+    from .engine import EngineConfig, SoulEngine
+    from .schema import Profile
+    generic = SignatureModel(n_features=6, population=POP[:, :6] * 1.5)
+    out: dict = {}
+    for name, (over, tagged_pw) in ENGINE_CONDITIONS.items():
+        acc, spoken_ok, spoken = [], 0, 0
+        for s in range(seeds):
+            rng = np.random.default_rng(200 + s)          # seeds 100-101 were used to choose the defaults
+            for i in range(people):
+                p = _person(rng)
+                sessions = [np.concatenate([rng.normal(0, 1.0, 6), rng.normal(0, 0.5, 3)]) for _ in range(days)]
+                st = [int(rng.choice(4, p=P_STATE)) for _ in range(days)]
+                notes = [[st[d], st[d]] for d in range(days)]
+                eng = SoulEngine(Profile(f"p{i}"), EngineConfig(**over))
+                t0 = datetime(2026, 1, 5, 9)
+                tagged_left = 0
+                for d in range(days):
+                    if d < 7:
+                        for _ in range(3):
+                            eng.enroll(_reading(rng, p, 0, sessions[d], True))
+                    eng.anchor(_reading(rng, p, 0, sessions[d], True))
+                    if d % 7 == 0:
+                        tagged_left = tagged_pw if 7 <= d < 21 else 0
+                    if tagged_left and rng.random() < tagged_pw / 7 + 0.15:
+                        eng.tag(STATES[st[d]], _reading(rng, p, st[d], sessions[d], True))
+                        tagged_left -= 1
+                    for j, k in enumerate(notes[d]):
+                        x = _reading(rng, p, k, sessions[d], False)
+                        gv = generic.proba(x[:6], personal=False)
+                        r = _to_reading(f"p{i}", t0 + timedelta(days=d, hours=10 * j), x, gv, True)
+                        dec = eng.observe(r)
+                        if d >= 21:
+                            acc.append(max(dec.proba, key=dec.proba.get) == STATES[k])
+                            if dec.action == "speak":
+                                spoken += 1
+                                spoken_ok += dec.state == STATES[k]
+                        if dec.action == "ask" and STATES[k] in dec.options:
+                            eng.answer(dec.reading_index, STATES[k])
+                        elif dec.action == "ask":
+                            eng.correct(dec.reading_index, STATES[k])
+        out[name] = {"accuracy": float(np.mean(acc)), "spoken_share": spoken / max(len(acc), 1),
+                     "spoken_correct": spoken_ok / max(spoken, 1)}
+    return out

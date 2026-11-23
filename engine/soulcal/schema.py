@@ -61,6 +61,7 @@ class Reading:
     skin_temp: float | None = None
     motion: float | None = None
     self_report: str | None = None
+    voice_features: list[float] | None = None   # prosody of the voice note (+ body at that moment), for signatures
 
     def channel(self, name: str) -> dict[str, float] | None:
         return getattr(self, name)

@@ -66,5 +66,42 @@
    "anchors_pw": 3,
    "tagged_pw": 2
   }
+ },
+ "engine": {
+  "Public approach today: generic speech model + population body norms, nothing personal": {
+   "accuracy": 0.4126190476190476,
+   "spoken_share": 0.37523809523809526,
+   "spoken_correct": 0.5184010152284264
+  },
+  "Our engine without the signature: generic speech model + body, personal baseline, answers": {
+   "accuracy": 0.5695238095238095,
+   "spoken_share": 0.6876190476190476,
+   "spoken_correct": 0.606994459833795
+  },
+  "+ signature, enrollment and evening anchor only": {
+   "accuracy": 0.6695238095238095,
+   "spoken_share": 0.6383333333333333,
+   "spoken_correct": 0.7396493845580008
+  },
+  "+ 3 tagged sentences a week (standard mode)": {
+   "accuracy": 0.7461904761904762,
+   "spoken_share": 0.7221428571428572,
+   "spoken_correct": 0.8120672601384767
+  },
+  "+ answered voice notes also teach the signature (default)": {
+   "accuracy": 0.8085714285714286,
+   "spoken_share": 0.7409523809523809,
+   "spoken_correct": 0.8836760925449871
+  },
+  "Same, signature added to the generic voice reading instead of replacing it": {
+   "accuracy": 0.6469047619047619,
+   "spoken_share": 0.78,
+   "spoken_correct": 0.6959706959706959
+  },
+  "Same, signature not softened (temperature 1)": {
+   "accuracy": 0.705952380952381,
+   "spoken_share": 0.871904761904762,
+   "spoken_correct": 0.7457673402512288
+  }
  }
 }
