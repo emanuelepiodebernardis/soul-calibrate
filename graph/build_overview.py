@@ -35,6 +35,9 @@ THEMES = {
     "SOUL-Bench code": "code", "Engine personal baseline": "code", "Personal pattern graph": "code",
     "Archetype prototype": "code", "Haptic tuning check": "code", "Astrology utilities": "code", "Engine commands": "code",
     "Pulse tuning code": "code", "Engine fusion code": "code",
+    "Voice, vibration and the pulse": "loop", "Architecture and the closed loop": "loop", "README: voice and body": "loop",
+    "README: the project at a glance": "loop", "Cohort pilot and archetype path": "why",
+    "Engine overview and commands": "code", "Signature checks (code)": "code", "Engine baseline and conformal code": "code",
 }
 COLORS = {"why": "#2f7d8c", "loop": "#c4622d", "eval": "#6b5ca5", "code": "#8a8478"}
 NAMES = {"why": "Evidence and context", "loop": "The loop: decide, ask, learn, pulse", "eval": "Evaluation and authorship",

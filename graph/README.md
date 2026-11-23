@@ -11,8 +11,8 @@ simulation code and results in `sim/`, and the engine in `engine/soulcal/` with 
 | `graph.json` | the graph data (nodes, links, communities) |
 | `build_map.py` | rebuilds `map.html` from `graph.json` with a precomputed layout |
 
-At the last build: 1111 nodes, 3337 links, 45 communities (42 with three or more nodes), from 48 documents and
-35 code files: the docs, the simulation and the `soulcal` engine.
+At the last build (round 10): 1169 nodes, 3430 links, 35 communities (32 with three or more nodes), from 49 documents
+and 35 code files: the docs, the simulation and the `soulcal` engine.
 
 ## What the graph found
 
@@ -29,12 +29,9 @@ Built nine times while the project grew; each round pointed at the next fix.
 | 7 (+ voice and vibration) | docs/27 becomes the fourth most connected document (51 links, 15 areas), joining fusion, situation memory, clinical practice, the pulse and the products that calm with vibration; it answers two open questions: what the voice is for when the bracelet is always on (voice moments teach body-only moments) and how the pulse should be tuned (live heart rate, resonance breathing). The voice check-in existed only in the simulation, so it moved into the support policy (`invite`). New gaps: every effect of the pulse is assumed until E32–E34; whether invitations feel intrusive (E33); real voice (E31) | `SupportPolicy.decide` → `invite`, E33–E34 |
 | 8 (+ speech front end) | docs/28 links 11 areas (32 links); E31, open since round 5, now has code (`realvoice/`) linked to the evidence that the speaker dominates the voice, to SOUL-Bench and to the voice channel of the engine. New gaps: the real-voice check runs beside the engine (embeddings and a linear head), not through it; the next step is to feed emotion2vec+ scores into the engine's voice channel on real recordings | `realvoice/e31_real_voice.py`, `channels_sim.frontend_check` |
 | 9 (+ voice-and-body signatures) | docs/29 links 12 areas (37 links) and turns the enrollment sentences and the 5-second session anchor, on paper since round 1, into code, joined with tagged readings in one area; voluntary modes connect it to the question budget. New gaps: the signature model sits beside the engine (its probabilities still have to be passed into the voice channel), and the real-voice check (E31) does not yet use signatures: emotion2vec+ features are the natural input | `anchors.SignatureModel`, `anchors.MODES`, E35–E36 |
+| 10 (+ one reading: the signature in the engine) | Both round-9 gaps closed: `SoulEngine.enroll`, `anchor` and `tag` and the engine check sit with the signature code, `_use_signature` joins the engine's personal baseline, and docs/29 now has 100 links into 20 areas (from 37 into 12), so the signature is no longer beside the engine but one of its bridges. E31's signature arms tie the real-voice check to the fixed-sentence protocol. Still open: everything is synthetic; with a strong speech model, whether the signature should replace or add to the generic voice reading has to be measured again | `SoulEngine.enroll/anchor/tag`, `Reading.voice_features`, `anchors_sim.engine_check`, E31 signature arms |
 
-After round 9 both gaps were closed in code: the signature is the engine's voice channel (`SoulEngine.enroll`,
-`anchor`, `tag`, `Reading.voice_features`; 0.57 → 0.81 in the engine check) and E31 has signature arms on RAVDESS's
-repeated sentences.
-
-Still only on paper (no code yet): the session anchor and the enrollment flow, the reading audit batteries, the
+Still only on paper (no code yet): the enrollment and anchor screens in the app (their logic is in `anchors.py`), the reading audit batteries, the
 private cohort pilot, the measured effect and tuning of the pulse (E32, E34), voice check-ins on real people
 (E33), signatures on real people (E35, E36), the micro-randomised trials, and running the real-voice check (E31,
 ready in `realvoice/`). Most need real users or Nightlet's app; E31 only needs public speech data and a GPU.

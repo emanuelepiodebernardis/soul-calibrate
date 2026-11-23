@@ -291,8 +291,8 @@ with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 
 ## 8. How the ideas connect: knowledge graph
 
-The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,111 concepts and
-3,337 links across documents and code, grouped into areas. Read left to right: where an idea comes from
+The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,169 concepts and
+3,430 links across documents and code, grouped into areas. Read left to right: where an idea comes from
 (evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code. Each circle is an
 area, each line the links between two areas (thicker = more); every area's two strongest links are drawn, so none is
 left without a line, and arcs on the left of a column join areas of the same group.
@@ -302,7 +302,8 @@ left without a line, and arcs on the left of a column join areas of the same gro
 Each round of the graph pointed at the next fix: active questions turned out to be the bridge of the whole system
 (so answer rate is the first metric); the situation memory and the personal head were joined; the coarse-to-fine
 question and the glucose-monitor idea got code and a test; the pulse and then voice and vibration became among the most
-connected documents, because they are where the reading, the budget and the evaluation meet. **Open the interactive map
+connected documents, because they are where the reading, the budget and the evaluation meet; in the last round the
+voice-and-body signature moved from beside the engine to one of its bridges (docs/29: 100 links into 20 areas). **Open the interactive map
 [`graph/map.html`](graph/map.html)** (works offline) to follow any concept to its sources and its code.
 → [graph/README.md](graph/README.md), [graph/GRAPH_REPORT.md](graph/GRAPH_REPORT.md)
 

@@ -5374,7 +5374,16 @@
     "bandwidth": null,
     "covered_weight": 0.5,
     "public_shift": 0.0,
-    "aci_gamma": 0.0
+    "circumplex": false,
+    "radius": 1.0,
+    "max_options": 3,
+    "ask_wide": false,
+    "aci_gamma": 0.0,
+    "questions_per_day": 1.0,
+    "spread": false,
+    "allowed_slots": null,
+    "note_p": 0.0,
+    "trust_memory": false
   },
   "seeds": [
     0,
