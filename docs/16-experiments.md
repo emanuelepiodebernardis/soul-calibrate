@@ -42,6 +42,13 @@ Each experiment states the result that would prove the idea wrong. E11–E18 clo
 | E34 | Tuning the pulse | cohort, micro-randomised | a heartbeat tied to the live heart rate beats a fixed rate, and learned resonance breathing beats 6 a minute, on HRV and heart-rate recovery | no difference in recovery ([[27-voice-and-vibration]]) |
 | E35 | Voice-and-body signatures | cohort | baseline, daily anchor and 1–2 tagged readings per state each improve accuracy on free voice notes | no gain from tagged readings, or people do not make them ([[29-voice-signatures]]) |
 | E36 | Seeing one's own signature | cohort, randomised | showing the person their own voice-and-body difference improves emotional awareness after four weeks | no difference in self-report or interoceptive measures ([[29-voice-signatures]]) |
+| E37 | Lens vs neutral prompts | cohort, micro-randomised | a symbolic lens (weather, seasons, astrology) raises the answer rate and the finesse of the words chosen | no difference, or worse answers with the lens ([[30-understanding-layer]]) |
+| E38 | Granularity grows | cohort, people starting low | the granularity index and emotion differentiation rise over 8 weeks | no change against self-monitoring only ([[30-understanding-layer]]) |
+| E39 | Body mirror | cohort, sham-controlled | a heartbeat-synchronised pulse at hard moments lowers disturbance and speeds recovery | no difference from a delayed (sham) pulse ([[30-understanding-layer]]) |
+| E40 | Towards people | cohort | after a bridge prompt, contact with someone within 48 hours rises while daily time in the app stays flat | time in the app rises, contact does not ([[30-understanding-layer]]) |
+| E41 | What it is like vs its name | cohort, micro-randomised, low differentiation | asking pleasant/energy instead of the name raises agreement with the reading | no difference ([[30-understanding-layer]]) |
+| E42 | Body first | cohort, sham-controlled | showing one's signal before the question raises answer agreement and heartbeat-counting accuracy | no difference from sham ([[30-understanding-layer]]) |
+| E43 | Awareness over time | cohort, high alexithymia | TAS-20 falls and differentiation rises over 16 weeks | no change against self-monitoring only ([[30-understanding-layer]]) |
 
 ## Before the interview (done)
 

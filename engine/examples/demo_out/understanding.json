@@ -1,0 +1,284 @@
+{
+ "people": 462,
+ "need_share": 0.42207792207792205,
+ "rounds": {
+  "Round 1 (effects as reported)": {
+   "No understanding layer": {
+    "need": {
+     "reading_right": 0.6787240537240536,
+     "confusion_start": 0.3022690572318651,
+     "confusion_end": 0.3022690572318651,
+     "negative_affect_change": 0.0,
+     "prompts_per_week": 0.0,
+     "layer_on_at_week_8": 0.0,
+     "bridge_offered": 0.15726495726495726
+    },
+    "well": {
+     "reading_right": 0.6808230782949884,
+     "confusion_start": 0.1829614010126663,
+     "confusion_end": 0.1829614010126663,
+     "negative_affect_change": 0.0,
+     "prompts_per_week": 0.0,
+     "layer_on_at_week_8": 0.0,
+     "bridge_offered": 0.0
+    }
+   },
+   "Layer at hard moments, for everyone": {
+    "need": {
+     "reading_right": 0.6920940170940171,
+     "confusion_start": 0.3022690572318651,
+     "confusion_end": 0.17120259077953756,
+     "negative_affect_change": -0.09694072843873888,
+     "prompts_per_week": 4.201495726495726,
+     "layer_on_at_week_8": 1.0,
+     "bridge_offered": 0.12478632478632479
+    },
+    "well": {
+     "reading_right": 0.6856607811663991,
+     "confusion_start": 0.1829614010126663,
+     "confusion_end": 0.147006331770053,
+     "negative_affect_change": -0.04388935252272515,
+     "prompts_per_week": 1.3405118601747816,
+     "layer_on_at_week_8": 1.0,
+     "bridge_offered": 0.0012484394506866417
+    }
+   },
+   "Layer by need (person-level gate)": {
+    "need": {
+     "reading_right": 0.6771367521367522,
+     "confusion_start": 0.3022690572318651,
+     "confusion_end": 0.2044096969463114,
+     "negative_affect_change": -0.06873050392684986,
+     "prompts_per_week": 3.350854700854701,
+     "layer_on_at_week_8": 0.8170940170940171,
+     "bridge_offered": 0.11452991452991453
+    },
+    "well": {
+     "reading_right": 0.6766764758337792,
+     "confusion_start": 0.1829614010126663,
+     "confusion_end": 0.16506883359545696,
+     "negative_affect_change": -0.012804108106039375,
+     "prompts_per_week": 1.3863920099875156,
+     "layer_on_at_week_8": 0.3233458177278402,
+     "bridge_offered": 0.0012484394506866417
+    }
+   }
+  },
+  "Round 2 (conservative)": {
+   "No understanding layer": {
+    "need": {
+     "reading_right": 0.6787240537240536,
+     "confusion_start": 0.3022690572318651,
+     "confusion_end": 0.3022690572318651,
+     "negative_affect_change": 0.0,
+     "prompts_per_week": 0.0,
+     "layer_on_at_week_8": 0.0,
+     "bridge_offered": 0.15726495726495726
+    },
+    "well": {
+     "reading_right": 0.6808230782949884,
+     "confusion_start": 0.1829614010126663,
+     "confusion_end": 0.1829614010126663,
+     "negative_affect_change": 0.0,
+     "prompts_per_week": 0.0,
+     "layer_on_at_week_8": 0.0,
+     "bridge_offered": 0.0
+    }
+   },
+   "Layer at hard moments, for everyone": {
+    "need": {
+     "reading_right": 0.6878205128205128,
+     "confusion_start": 0.3022690572318651,
+     "confusion_end": 0.23795607197046775,
+     "negative_affect_change": -0.04388935252272517,
+     "prompts_per_week": 4.20491452991453,
+     "layer_on_at_week_8": 1.0,
+     "bridge_offered": 0.15042735042735042
+    },
+    "well": {
+     "reading_right": 0.686641697877653,
+     "confusion_start": 0.1829614010126663,
+     "confusion_end": 0.16671836115020994,
+     "negative_affect_change": 0.0,
+     "prompts_per_week": 1.3420724094881398,
+     "layer_on_at_week_8": 1.0,
+     "bridge_offered": 0.0
+    }
+   },
+   "Layer by need (person-level gate)": {
+    "need": {
+     "reading_right": 0.6826617826617827,
+     "confusion_start": 0.3022690572318651,
+     "confusion_end": 0.25599166051294897,
+     "negative_affect_change": -0.03117876573897986,
+     "prompts_per_week": 3.375,
+     "layer_on_at_week_8": 0.8170940170940171,
+     "bridge_offered": 0.15213675213675212
+    },
+    "well": {
+     "reading_right": 0.6820938113072945,
+     "confusion_start": 0.1829614010126663,
+     "confusion_end": 0.17484599838128706,
+     "negative_affect_change": 0.0,
+     "prompts_per_week": 1.3809300873907615,
+     "layer_on_at_week_8": 0.3408239700374532,
+     "bridge_offered": 0.0
+    }
+   }
+  }
+ },
+ "real_data": {
+  "people": 462,
+  "spearman_negative_affect_vs_differentiation": -0.26883718643579585
+ },
+ "answers": {
+  "people": 462,
+  "hard_share": 0.2510822510822511,
+  "rounds": {
+   "Round 1 (effects as reported)": {
+    "Ask for the name (today)": {
+     "hard": {
+      "answers_right": 0.7548241553104357,
+      "not_sure": 0.0,
+      "reading_right": 0.6561986863711001,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.8513318726622138,
+      "not_sure": 0.0,
+      "reading_right": 0.6836808422791081,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ ask what it is like (pleasant? energy?)": {
+     "hard": {
+      "answers_right": 0.8939077437079326,
+      "not_sure": 0.06222799849796121,
+      "reading_right": 0.703407224958949,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.9245372363583961,
+      "not_sure": 0.037006099853811814,
+      "reading_right": 0.6961533168180566,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ body first (signals shown before asking)": {
+     "hard": {
+      "answers_right": 0.9241958435407808,
+      "not_sure": 0.03889513967566226,
+      "reading_right": 0.6982758620689655,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.9387166521578748,
+      "not_sure": 0.02308132694986858,
+      "reading_right": 0.6951039086154692,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ weigh answers by reliability": {
+     "hard": {
+      "answers_right": 0.9205286219850921,
+      "not_sure": 0.04005397855476185,
+      "reading_right": 0.7095135467980296,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.9394652140847624,
+      "not_sure": 0.023124660575002964,
+      "reading_right": 0.7073699421965318,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ understanding layer over 8 weeks": {
+     "hard": {
+      "answers_right": 0.9295935531288678,
+      "not_sure": 0.03149747725422181,
+      "reading_right": 0.702791461412151,
+      "confusion_end": 0.23320380074488148
+     },
+     "others": {
+      "answers_right": 0.9437203131022668,
+      "not_sure": 0.018946365248040813,
+      "reading_right": 0.6985962014863749,
+      "confusion_end": 0.13360342761327815
+     }
+    }
+   },
+   "Round 2 (conservative)": {
+    "Ask for the name (today)": {
+     "hard": {
+      "answers_right": 0.7548241553104357,
+      "not_sure": 0.0,
+      "reading_right": 0.6561986863711001,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.8513318726622138,
+      "not_sure": 0.0,
+      "reading_right": 0.6836808422791081,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ ask what it is like (pleasant? energy?)": {
+     "hard": {
+      "answers_right": 0.8231843957140772,
+      "not_sure": 0.0940469383735234,
+      "reading_right": 0.6820607553366174,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.8641809981604737,
+      "not_sure": 0.0551622043631234,
+      "reading_right": 0.6718793008532893,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ body first (signals shown before asking)": {
+     "hard": {
+      "answers_right": 0.8437566512494415,
+      "not_sure": 0.07403549757575992,
+      "reading_right": 0.6897577996715928,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.8779935584663742,
+      "not_sure": 0.045530842842447905,
+      "reading_right": 0.6803949903660886,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ weigh answers by reliability": {
+     "hard": {
+      "answers_right": 0.8432337437845999,
+      "not_sure": 0.07768550466118071,
+      "reading_right": 0.6951457307060755,
+      "confusion_end": 0.37051142934212705
+     },
+     "others": {
+      "answers_right": 0.8761456481972391,
+      "not_sure": 0.04544591983431705,
+      "reading_right": 0.6879816955684007,
+      "confusion_end": 0.18732322088701986
+     }
+    },
+    "+ understanding layer over 8 weeks": {
+     "hard": {
+      "answers_right": 0.8510900046221003,
+      "not_sure": 0.06977050424553541,
+      "reading_right": 0.6990455665024631,
+      "confusion_end": 0.30744100594494783
+     },
+     "others": {
+      "answers_right": 0.8819459530539577,
+      "not_sure": 0.04284916612886315,
+      "reading_right": 0.6846958436553813,
+      "confusion_end": 0.16247015880545504
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,62 +1,74 @@
-# Graph Report - graph-src  (2026-11-23)
+# Graph Report - graph-src  (2026-11-27)
 
 ## Corpus Check
-- 84 files · ~67,342 words
+- 105 files · ~90,430 words
 - Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 3 file(s) not represented in the graph (top: (none) 2, .cff 1)
 
 ## Summary
-- 1169 nodes · 3430 edges · 35 communities (32 shown, 3 thin omitted)
-- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 580 edges (avg confidence: 0.87)
+- 1364 nodes · 4152 edges · 46 communities (42 shown, 4 thin omitted)
+- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 695 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- Voice, vibration and the pulse
-- Risks, traps and cold start
-- Simulation scripts and question budget results
 - Speech front end and real-voice check
-- Recurring situations and question budget
-- Engine overview and commands
-- First simulation code
 - Voice-and-body signatures
+- Recurring situations and question budget
+- Voice, vibration and the pulse
 - Cohort pilot and archetype path
-- SOUL-Bench code
-- Enrollment details
-- Engine core code
+- Simulation scripts and question budget results
 - Signature checks (code)
-- Archetype and channel checks (code)
-- Problem and evidence
-- Active questions and decision rule
-- Architecture and the closed loop
+- Risks, traps and cold start
 - Engine fusion code
-- Engine baseline and conformal code
-- Archetype prototype
-- Question budget experiments
-- Clinical practice
-- Engine personal baseline
-- Privacy and regulation
-- Analogous systems
-- README: the project at a glance
+- Engine overview and commands
 - Ideas from prior work
+- Archetype and channel checks (code)
+- User control and situations
+- First simulation code
+- Engine core code
+- Clinical practice
+- SOUL-Bench code
+- Active questions and decision rule
+- Problem and evidence
+- Enrollment details
+- Understanding layer concept
+- Analogous systems
+- Question budget experiments
+- README: voice, vibration and the loop
+- Architecture and the closed loop
+- Archetype prototype
+- People who don't know what they feel
+- Understanding layer code
+- Personal head and baseline
+- Understanding results
+- Engine input and run
 - Authorship
+- Astrology reflection code
 - Incongruence and masking
 - Evaluation: SOUL-Bench
-- README: voice, vibration and the loop
-- README: voice and body
-- Misc
-- Misc
-- Misc
+- Conformal speak, ask, quiet
+- Coarse-to-fine simulation
+- Emotional granularity evidence
+- Answer reliability
+- Engine entry and commands
+- README: the project at a glance
+- Public approach comparison
+- Weekly accuracy
+- Accuracy when speaking
+- Share of speaking
+- soulcal package
 
 ## God Nodes (most connected - your core abstractions)
-1. `References` - 60 edges
-2. `22 — The engine: code Nightlet can run on its own data` - 59 edges
-3. `27 — Voice and vibration: what each is for, and how to integrate them` - 52 edges
-4. `05 Active questions` - 51 edges
-5. `README: SOUL-Calibrate` - 50 edges
-6. `29 — Your voice, your body, your signature: one fixed sentence, three uses` - 49 edges
-7. `SoulEngine` - 48 edges
-8. `20 — Recurring situations: one answer, every later reading of the same situation` - 47 edges
-9. `Reading` - 42 edges
-10. `04 Rolling personal baseline` - 42 edges
+1. `30 · The understanding layer` - 70 edges
+2. `References` - 61 edges
+3. `22 — The engine: code Nightlet can run on its own data` - 59 edges
+4. `SoulEngine` - 58 edges
+5. `README: SOUL-Calibrate` - 56 edges
+6. `Reading` - 55 edges
+7. `05 Active questions` - 52 edges
+8. `27 — Voice and vibration: what each is for, and how to integrate them` - 52 edges
+9. `29 — Your voice, your body, your signature: one fixed sentence, three uses` - 51 edges
+10. `20 — Recurring situations: one answer, every later reading of the same situation` - 47 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Ladder of results on free voice notes (synthetic, 5 seeds x 40 people, 4 states): generic 0.44 -> baseline 0.68 -> daily anchor 0.74 -> 1/2/4 tagged readings 0.80/0.82/0.83` --semantically_similar_to--> `test_personal_baseline_and_answers_help_when_the_speaker_dominates()`  [INFERRED] [semantically similar]
@@ -65,10 +77,10 @@
   engine/soulcal/support.py → docs/22-engine.md
 - `First synthetic archetype check: 24 consenting synthetic people of three types (serious face, flat voice, masks with words), 6 weeks, 10 seeds; generic vs pooled vs archetype start` --implemented_by--> `archetypes_demo()`  [INFERRED]
   docs/25-coarse-to-fine-and-archetypes.md → engine/soulcal/__main__.py
-- `When-to-pulse synthetic check: body alone helps 3% of tense moments (51% of pulses at excitement), generic reading 16%, calibrated decision 56-57% at 86-88% precision; learned rhythm 0.41 vs 0.36` --implemented_by--> `support_demo()`  [INFERRED]
-  docs/26-when-to-pulse.md → engine/soulcal/__main__.py
-- `anchors_demo()` --implements--> `Engine check (4 seeds x 25 people, two voice notes and one question a day, days 22-42): public approach 0.41 (right when speaking 52%), engine without signature 0.57 (61%), + enrollment and anchor 0.67 (74%), + 3 tagged a week 0.75 (81%), default with answered notes 0.81 (88%); added instead of replacing 0.65 (70%); unsoftened 0.71 (75%, speaks 87%)`  [INFERRED]
-  engine/soulcal/__main__.py → docs/29-voice-signatures.md
+- `Label-free archetype signature from the first 4 days (usual look of each channel, rate of words-expression disagreement), grouped by k-means` --implemented_by--> `signature()`  [INFERRED]
+  docs/25-coarse-to-fine-and-archetypes.md → engine/soulcal/archetypes.py
+- `Archetypes built from cohort answers (channel weights and priors per group)` --implemented_by--> `fit()`  [INFERRED]
+  docs/25-coarse-to-fine-and-archetypes.md → engine/soulcal/archetypes.py
 
 ## Import Cycles
 - None detected.
@@ -94,160 +106,202 @@
 - **Pulse calibrated to the person: live heart rate, interoception and resonance breathing rate, implemented in SupportConfig/SupportPolicy and checked in haptics_sim** — docs_27_voice_and_vibration_calibration_to_live_heart_rate, docs_27_voice_and_vibration_interoception, docs_27_voice_and_vibration_resonance_breathing_rate, engine_soulcal_support_supportconfig, engine_soulcal_support_supportpolicy_breathing_rate, engine_soulcal_haptics_sim_haptics_check [INFERRED 0.85]
 - **E31 real-voice check: leave-one-speaker-out protocol on RAVDESS with emotion2vec+ or MFCC encoders, run by realvoice/e31_real_voice.py** — docs_16_experiments_e31, docs_28_speech_front_end_e31_protocol, docs_28_speech_front_end_ravdess, docs_28_speech_front_end_emotion2vec_plus, docs_28_speech_front_end_mfcc_encoder, realvoice_e31_real_voice, realvoice_readme_results_output [EXTRACTED 1.00]
 - **Open speech front end feeding the model-agnostic engine: speech to text and speech emotion models produce text and voice probabilities for SoulEngine** — docs_28_speech_front_end_plug_in_pipeline, docs_28_speech_front_end_whisper, docs_28_speech_front_end_parakeet, docs_28_speech_front_end_sensevoice, docs_28_speech_front_end_emotion2vec_plus, docs_22_engine_four_state_adapter, docs_28_speech_front_end_two_signals_one_voice_note [INFERRED 0.85]
-- **Masking detection: words-vs-expression questions and tense recall** — docs_22_engine_masking_questions, engine_examples_demo_words_vs_expression, docs_22_engine_tense_recall, engine_soulcal_engine_soulengine_incongruence, docs_22_engine_quality_gate [INFERRED 0.85]
 - **One fixed sentence, three moments: enrollment, daily anchor, tagged reading -> personal signature** — docs_29_voice_signatures_one_fixed_sentence_three_moments, docs_29_voice_signatures_enrollment, docs_29_voice_signatures_daily_anchor, docs_29_voice_signatures_tagged_reading, docs_29_voice_signatures_personal_signature [EXTRACTED 1.00]
 - **Signature wired as the engine's voice channel: replace generic voice, soften (temperature 4), body not counted twice, answered voice notes teach it** — docs_29_voice_signatures_feeds_voice_channel, docs_29_voice_signatures_replaces_generic_voice, docs_29_voice_signatures_softened_temperature4, docs_29_voice_signatures_avoid_double_counting_body, docs_29_voice_signatures_answers_teach_signature, engine_soulcal_engine_soulengine [EXTRACTED 1.00]
+- **Masking detection: words-vs-expression questions and tense recall** — docs_22_engine_masking_questions, engine_examples_demo_words_vs_expression, docs_22_engine_tense_recall, engine_soulcal_engine_soulengine_incongruence, docs_22_engine_quality_gate [INFERRED 0.85]
 - **Pattern graph statistical guardrails against chance moon links** — docs_22_engine_fdr_correction, docs_22_engine_replication_split, docs_22_engine_supported_vs_exploratory, docs_22_engine_moon_links_exploratory [EXTRACTED 1.00]
+- **Scaffolded answers for people who do not know what they feel: ask what it is like, not sure, body first, reliability weighting, simulated by answers_check** — docs_30_understanding_layer_ask_what_it_is_like, docs_30_understanding_layer_not_sure_option, docs_30_understanding_layer_compose, docs_30_understanding_layer_body_first, docs_30_understanding_layer_answer_reliability, docs_30_understanding_layer_answers_check [EXTRACTED 1.00]
+- **Four evidence-based ingredients of the understanding layer** — docs_30_understanding_layer_affect_labeling, docs_30_understanding_layer_emotional_granularity, docs_30_understanding_layer_body_mirror, docs_30_understanding_layer_reflection_prompts [EXTRACTED 1.00]
 
-## Communities (35 total, 3 thin omitted)
+## Communities (46 total, 4 thin omitted)
 
-### Community 0 - "Voice, vibration and the pulse"
+### Community 0 - "Speech front end and real-voice check"
 Cohesion: 0.05
-Nodes (71): The body triggers, the voice decides, the vibration acts (original contribution 15): voice moments teach body-only moments, voice check-in, pulse tied to live heart rate and resonance breathing, soulcal haptics command (tuning the pulse), Breathing pacer: vibration rising and fading at about 6 breaths a minute (HRV biofeedback pace), When to pulse: pulse on a sure 'tense', offer when 'tense' is among the options, nothing for calm, energized, low or quiet, 26 — When and how the bracelet should pulse, 20% of eligible moments held out at random: a micro-randomised trial inside the product, Pulse effect: heart-rate and HRV recovery with a pulse minus the person's recovery without one; optional one-tap 'did it help?', One line on screen with the pulse; calm voice off by default (people are often not alone) (+63 more)
+Nodes (57): Strong open speech models as the front end, calibration on top (original contribution 16), Model-agnostic input: probabilities over four states (basic_emotions_to_states), Stronger speech front ends: how much calibration still adds (channels_sim.frontend_check), Real-voice check with an open speech-emotion model (E31), outside the engine (realvoice/e31_real_voice.py), One line on screen with the pulse; calm voice off by default (people are often not alone), Audio events (a laugh, a sigh, crying) as a natural next input, CosyVoice (FunAudioLLM): open text-to-speech, the open counterpart for generating speech; only matters for the optional calm voice, not for reading, 28 — Listening well from day one: open speech models as the front end (+49 more)
 
-### Community 1 - "Risks, traps and cold start"
-Cohesion: 0.05
-Nodes (67): Checks: gain of voice over words (B4 vs B1), conflict accuracy, per-source ablation, What 'precise' means: agreement with the state the person would choose, per reading and per person (not intensity, mixed states or causes yet), Diagnostic drift of language, Face signal risk, Person leakage in evaluation, Non-diagnostic language battery, Persona invariance battery, Safety routing battery (+59 more)
-
-### Community 2 - "Simulation scripts and question budget results"
+### Community 1 - "Voice-and-body signatures"
 Cohesion: 0.06
-Nodes (31): main(), mean_runs(), main(), aggregate(), fmt(), main(), curves(), main() (+23 more)
+Nodes (40): Voice-and-body signatures (original contribution 17): one fixed sentence for enrollment, daily anchor and tagged readings; wired into the engine as its voice channel (softened, replacing the generic voice reading, body not counted twice) and into the real-voice check, Voice enrollment: three fixed sentences a day; later the same sentence read in a clear state becomes the person's signature, In code: engine/soulcal/anchors.py (SignatureModel.set_anchor), with enrollment and tagged readings, Lexical leakage, The signature as the voice channel in code: softened, replacing the generic voice reading, body not counted twice; answered voice notes become tagged readings (SoulEngine.enroll/anchor/tag, Reading.voice_features, EngineConfig.signature*, signature_difference()), Voice-and-body signatures in code (anchors.SignatureModel, .difference()): enrollment, daily anchor, tagged readings; what changes in the person, The 5-second evening anchor is the cheapest, most valuable feedback (3 evenings a week costs 7-12 points), Signature accuracy week 3 / week 6: light 0.72/0.74, standard 0.75/0.82, fast 0.82/0.86 (+32 more)
 
-### Community 3 - "Speech front end and real-voice check"
+### Community 2 - "Recurring situations and question budget"
+Cohesion: 0.07
+Nodes (66): Recurring situations (original contribution 8), Ambiguous-moment timing helps when situations recur, Class-conditional (per-state) conformal calibration, Hard daily question budget, Alarm fatigue (prompts), Broken guarantee (personal memory changes probabilities), Life change (situation memory), Too many questions (+58 more)
+
+### Community 3 - "Voice, vibration and the pulse"
 Cohesion: 0.06
-Nodes (56): E31 First check on real voice: RAVDESS (24 speakers) or any labeled multi-speaker set, emotion2vec+ front end, ready-to-run realvoice/e31_real_voice.py; personal baseline and a few answers per speaker vs generic head and zero-shot scores on held-out recordings, Model-agnostic input: probabilities over four states (basic_emotions_to_states), Audio events (a laugh, a sigh, crying) as a natural next input, CosyVoice (FunAudioLLM): open text-to-speech, the open counterpart for generating speech; only matters for the optional calm voice, not for reading, 28 — Listening well from day one: open speech models as the front end, Check E31: on real voice with emotion2vec+ as front end, the personal baseline and a few answers per speaker beat the generic head and the zero-shot scores on held-out recordings of each speaker, E31 protocol: leave one speaker out; half of the held-out speaker's clips are the calibration pool, half the test; zero-shot, generic head, + personal baseline (unlabeled), + 2/4/8/16 answers, ElevenLabs Scribe (commercial): speech to text in 90+ languages with non-speech event tags; a cloud reference point (ElevenLabs is best known for generating speech, not reading people) (+48 more)
+Nodes (60): The body triggers, the voice decides, the vibration acts (original contribution 15): voice moments teach body-only moments, voice check-in, pulse tied to live heart rate and resonance breathing, Kintsugi case, The medical line: name states, never conditions, soulcal haptics command (tuning the pulse), Synthetic checks of sources (voice, words, face, body), app use, voice check-ins and pulse tuning in code (channels_sim, haptics_sim), Offer: one soft tap and 'Want a calm minute?'; the answer is also a label, Slow heartbeat rhythm: heartbeat-like vibration at 80% of the person's heart rate at that moment, never faster, Amazon Halo Tone: always-on band microphones analysing tone of voice; criticised for privacy, microphones removed, line discontinued 2023 (always-on listening costs trust) (+52 more)
 
-### Community 4 - "Recurring situations and question budget"
-Cohesion: 0.07
-Nodes (70): Recurring situations (original contribution 8), Ambiguous-moment timing helps when situations recur, Hard daily question budget, Situation memory next to the personal head, Broken guarantee (personal memory changes probabilities), Life change (situation memory), Too many questions, Users stop answering (bridge node) (+62 more)
-
-### Community 5 - "Engine overview and commands"
+### Community 4 - "Cohort pilot and archetype path"
 Cohesion: 0.06
-Nodes (56): The soulcal engine (original contribution 10), Archetypes from a consenting cohort, new people matched after a few days (archetypes.fit, ArchetypeModel.start_engine; future phase, prototype), soulcal archetypes command (future phase, synthetic cohort), soulcal channels command (voice, words, face, body), Concept-to-code map, Conformal set, speak / ask / quiet, daily question budget (SoulEngine.observe); adaptive per-person thresholds (SoulEngine._learn), One-tap "not quite" corrections (SoulEngine.correct), Demo: today 0.57 vs baseline 0.63 vs engine 0.77 accuracy in week 6; 0.94 when speaking (+48 more)
+Nodes (54): Coarse to fine, cohort learning and archetype prototype (original contribution 13), What 'precise' means: agreement with the state the person would choose, per reading and per person (not intensity, mixed states or causes yet), CGM: from user calibration to factory calibration, Dexcom G6 (first factory-calibrated real-time CGM), E19 Cohort transfer, E27 Four vs eight states, E28 Answers needed by granularity, E29 Level of detail per reading (+46 more)
 
-### Community 6 - "First simulation code"
-Cohesion: 0.10
-Nodes (30): main(), style(), summarise(), calibrate(), coverage(), decide(), prediction_sets(), _quantile() (+22 more)
-
-### Community 7 - "Voice-and-body signatures"
-Cohesion: 0.07
-Nodes (31): Voice-and-body signatures (original contribution 17): one fixed sentence for enrollment, daily anchor and tagged readings; wired into the engine as its voice channel (softened, replacing the generic voice reading, body not counted twice) and into the real-voice check, Voice enrollment: three fixed sentences a day; later the same sentence read in a clear state becomes the person's signature, In code: engine/soulcal/anchors.py (SignatureModel.set_anchor), with enrollment and tagged readings, Lexical leakage, The 5-second evening anchor is the cheapest, most valuable feedback (3 evenings a week costs 7-12 points), Signature accuracy week 3 / week 6: light 0.72/0.74, standard 0.75/0.82, fast 0.82/0.86, Answered voice notes teach the signature: a voice note the person answers is also stored as a tagged reading (free speech, noisier, no extra effort), Blood pressure: one more body feature if the bracelet measures it; not assumed here (+23 more)
-
-### Community 8 - "Cohort pilot and archetype path"
-Cohesion: 0.07
-Nodes (42): Coarse to fine, cohort learning and archetype prototype (original contribution 13), GDPR (voice as personal data), Consent level 2 — research cohort, GDPR, E19 Cohort transfer, E29 Level of detail per reading, E30 Archetypes vs one head pooled over the cohort, A private cohort helps everyone (0.550 -> 0.590 for users never asked) (+34 more)
-
-### Community 9 - "SOUL-Bench code"
-Cohesion: 0.10
-Nodes (24): Input format: soulcal/schema.py (CSV columns or Reading objects), seconds_per_week(), bench_table(), _only(), _running_average(), _score(), soul_bench(), anchors_demo() (+16 more)
-
-### Community 10 - "Enrollment details"
-Cohesion: 0.10
-Nodes (37): Ihori et al. 2025 in-context personalization (NTT), Islam & Washington self-supervised personal pre-training, Meta-PerSER (Interspeech 2025), Triantafyllopoulos et al. 2022 speaker enrolment, Trap: baseline absorbs anomalous days (normalising long stress), Baseline per device, Label-free drift trigger (conformal test martingale), 04 Rolling personal baseline (+29 more)
-
-### Community 11 - "Engine core code"
-Cohesion: 0.11
-Nodes (17): moon_age_days(), moon_longitude(), moon_phase(), moon_sign(), reflection_factors(), sun_sign(), _utc(), _bh() (+9 more)
-
-### Community 12 - "Signature checks (code)"
-Cohesion: 0.11
-Nodes (10): The signature inside the engine (4 seeds x 25 people): public approach 0.41/52%, engine without signature 0.57/61%, + enrollment and anchor 0.67/74%, + 3 tagged 0.75/81%, default 0.81/88%; added instead of replacing 0.65/70%; not softened 0.71/75%, anchors_check(), engine_check(), _person(), _reading(), simulate(), _to_reading(), checkin_check() (+2 more)
-
-### Community 13 - "Archetype and channel checks (code)"
-Cohesion: 0.15
-Nodes (14): app_use_check(), frontend_check(), _score(), sources_check(), EngineConfig, run_stream(), Decision, Profile (+6 more)
-
-### Community 14 - "Problem and evidence"
-Cohesion: 0.12
-Nodes (27): Barrett et al. 2019 (faces not reliable emotion read-outs), 00 The problem, Fisher, Medaglia & Jeronimus 2018 (group-to-individual generalisability), Koch et al. 2026 in-the-wild smartphone voice study, Audio-language models follow words not voice (LISTEN, VoxParadox), Missing labels, Moving reference (people change over weeks), Physiological confounders (exercise, caffeine, alcohol, cycle, medication) (+19 more)
-
-### Community 15 - "Active questions and decision rule"
-Cohesion: 0.13
-Nodes (28): Active questions, Affect labeling (Lieberman et al., 2007), Class-conditional (per-state) conformal calibration, Conformal prediction set as question options, Clinical skills training: naming emotions (DBT), 05 Active questions, Emotional granularity (Hoemann, Barrett & Quigley, 2021), Just-in-time adaptive intervention (JITAI) framework (+20 more)
-
-### Community 16 - "Architecture and the closed loop"
-Cohesion: 0.13
-Nodes (21): Reading audit of the language layer, SOUL-Calibrate (original contribution 1): entry calibration, 5-second session anchor, rolling personal baseline, conformal questions, Cold start, 01 Architecture of SOUL-Calibrate, Valence/arousal sliders (Russell's Affect Grid, Self-Assessment Manikin), 02 Enrollment (entry calibration), Measurement reactivity, 03 Session anchor (5 seconds) (+13 more)
-
-### Community 17 - "Engine fusion code"
-Cohesion: 0.13
-Nodes (7): Fusion of face, voice, words and body with missing channels (model.FusionHead); personal head shrunk toward a transparent prior (FusionHead.update), Learned channel weights (face 0.51, voice 0.59, words 0.73; start 0.50/0.60/0.80), context_vector(), feature_vector(), FusionHead, prior_weights(), SituationMemory
-
-### Community 18 - "Engine baseline and conformal code"
+### Community 5 - "Simulation scripts and question budget results"
 Cohesion: 0.09
-Nodes (5): Words vs expression: 29 questions, 48% at real masking (masking 9% of readings), EMA, calibrate_thresholds(), _js_bits(), _softmax()
+Nodes (19): main(), main(), main(), main(), main(), A. One calibration week then 5 test days: 4 vs 8 states, old rule vs wide questions, STATES.md — Four states or eight? (results), B. Personalization speed with 4 vs 8 states (wide questions allowed) (+11 more)
 
-### Community 19 - "Archetype prototype"
-Cohesion: 0.13
-Nodes (10): Archetype, ArchetypeModel, fit(), _js(), _kmeans(), _person(), signature(), synthetic_check() (+2 more)
+### Community 6 - "Signature checks (code)"
+Cohesion: 0.10
+Nodes (22): Conformal set, speak / ask / quiet, daily question budget (SoulEngine.observe); adaptive per-person thresholds (SoulEngine._learn), User-chosen question hours (evenings only costs accuracy unless one more question is allowed), The signature inside the engine (4 seeds x 25 people): public approach 0.41/52%, engine without signature 0.57/61%, + enrollment and anchor 0.67/74%, + 3 tagged 0.75/81%, default 0.81/88%; added instead of replacing 0.65/70%; not softened 0.71/75%, engine_check(), _reading(), _to_reading(), EngineConfig, _softmax() (+14 more)
 
-### Community 20 - "Question budget experiments"
+### Community 7 - "Risks, traps and cold start"
 Cohesion: 0.11
-Nodes (26): E24 Personalization speed, E25 Burden by preset, E26 Free notes, Ambiguous moments beat random moments at every budget (0.92 vs ~0.80 plateau), 23 — How many questions: budget, timing and personalization speed, Harder engine demo check (week 6: 0.63 none, 0.77 1/day, 0.81 2-3/day), Experiments E24-E26 (presets on real users, answer rate/drop-out, notes vs questions), Failed idea: consensus memory made accuracy worse at every error rate (0.910->0.835, 0.818->0.717, 0.675->0.581) (+18 more)
+Nodes (48): Checks: gain of voice over words (B4 vs B1), conflict accuracy, per-source ablation, Face signal risk, Novelty during enrollment, Before the interview: synthetic simulation of E1/E2/E3/E4/E9/E19/E20-like experiments, Claims ledger (days 1-30), CREMA-D dataset, 16 — Experiment plan: where it works and where it does not, E1 Person normalisation vs none (+40 more)
 
-### Community 21 - "Clinical practice"
-Cohesion: 0.19
-Nodes (16): Prompt as clinical alarm (alarm fatigue), 12 — What clinical practice already knows, HeartSteps trial, Pulse gates: bracelet worn, no strong movement, at most 3 a day and 90 minutes apart, only in the user's hours (question budget applied to the wrist), Pulse as an intervention to calm, not a stress notification ('pulses when you need to come back to yourself'; no outcome guaranteed, so measure per person), Bos et al. (2022) early warning signals in bipolar disorder, Chromik et al. (2022) alarm fatigue in intensive care, Costache et al. (2025) DBT, alexithymia and emotion awareness (+8 more)
+### Community 8 - "Engine fusion code"
+Cohesion: 0.06
+Nodes (12): Fusion of face, voice, words and body with missing channels (model.FusionHead); personal head shrunk toward a transparent prior (FusionHead.update), Explanation: evidence per channel for each reading (Decision.contributions), Situation memory in code (model.SituationMemory): time, day and what the channels say, Learned channel weights (face 0.51, voice 0.59, words 0.73; start 0.50/0.60/0.80), Words vs expression: 29 questions, 48% at real masking (masking 9% of readings), EMA, calibrate_thresholds(), _js_bits() (+4 more)
 
-### Community 22 - "Engine personal baseline"
-Cohesion: 0.21
-Nodes (3): User-chosen question hours (evenings only costs accuracy unless one more question is allowed), PersonalBaseline, Reading
+### Community 9 - "Engine overview and commands"
+Cohesion: 0.07
+Nodes (42): soulcal archetypes command (future phase, synthetic cohort), soulcal channels command (voice, words, face, body), Concept-to-code map, One-tap "not quite" corrections (SoulEngine.correct), Demo: today 0.57 vs baseline 0.63 vs engine 0.77 accuracy in week 6; 0.94 when speaking, 22 — The engine: code Nightlet can run on its own data, Drift trigger: conformal test martingale (PersonalBaseline._martingale_step), Engine tests (28), incl. loop beats today and no supported moon pattern when none planted (+34 more)
 
-### Community 23 - "Privacy and regulation"
-Cohesion: 0.17
-Nodes (16): openSMILE eGeMAPS features (88) computed on phone, EU AI Act Article 5(1)(f), AI Act Annex III high-risk emotion recognition, 09 Privacy and regulation, Federated learning with differential privacy (Gboard), Kintsugi case, The medical line: name states, never conditions, Kintsugi: short prompted free-form voice answer (~25 s) screened for depression in 14,898 adults, sensitivity 71% (a short prompted sample carries signal) (+8 more)
+### Community 10 - "Ideas from prior work"
+Cohesion: 0.07
+Nodes (29): Calibration vs representation diagnosis, Integer additive model on bracelet, Diagnostic drift of language, Assist_CLI-V2 repository, 13 — Ideas reused from the author's prior work, efficient-on-device-ai repository, IDS-KAN repository, kan-ids-v2 repository (KAN-IDS drift-adaptation study) (+21 more)
 
-### Community 24 - "Analogous systems"
-Cohesion: 0.18
-Nodes (19): User error in labels, BCI cross-subject/cross-session transfer learning, CGM: from user calibration to factory calibration, Dexcom G6 (first factory-calibrated real-time CGM), 11 — Analogous systems in other fields, Empatica Embrace wearable seizure detection, Fitbit Body Response (Google), Gboard federated learning with differential privacy (+11 more)
+### Community 11 - "Archetype and channel checks (code)"
+Cohesion: 0.10
+Nodes (20): Rhythm chosen per person by Thompson sampling on the measured effect (SupportPolicy), Pulse tuning in support.py: slow heartbeat at 80% of the current heart rate, never above 90%; breathing pacer starts at 6/min and learns resonance rate by Thompson sampling over 4.5-7 on a separate random stream, app_use_check(), checkin_check(), _mask(), _score(), sources_check(), Decision (+12 more)
 
-### Community 25 - "README: the project at a glance"
+### Community 12 - "User control and situations"
+Cohesion: 0.12
+Nodes (22): main(), run(), answer(), configure_states(), exp_life_change(), exp_situations(), make_person(), Memory (+14 more)
+
+### Community 13 - "First simulation code"
 Cohesion: 0.16
-Nodes (17): anchors.SignatureModel module: voice-and-body signatures from one fixed sentence (enrollment, daily anchor, tagged readings); what changes in the person, Astrology reflection layer, Clinical methods for timing and testing (JITAI, MRT, outcome monitoring, HRV biofeedback, alarm fatigue), Coarse to fine and archetypes (shown precision 0.75 day 3, 0.85 week 1 vs 0.55/0.75), README: SOUL-Calibrate, False-discovery correction and replication, Future phase: learn from consenting users as glucose monitors moved from finger-stick to factory calibration, Graphify knowledge graph of the project (1,111 concepts, 3,337 links) (+9 more)
+Nodes (27): main(), style(), summarise(), make_population(), _neighbour(), SimConfig, state_from_affect(), User (+19 more)
 
-### Community 26 - "Ideas from prior work"
-Cohesion: 0.19
-Nodes (9): Reuse of author's prior research (drift, conformal martingales, integer on-device inference, evidence maps), Calibration vs representation diagnosis, Integer additive model on bracelet, Assist_CLI-V2 repository, 13 — Ideas reused from the author's prior work, efficient-on-device-ai repository, IDS-KAN repository, kan-ids-v2 repository (KAN-IDS drift-adaptation study) (+1 more)
+### Community 14 - "Engine core code"
+Cohesion: 0.09
+Nodes (17): PersonalBaseline, _bh(), factors_for(), find_patterns(), _fisher_two_sided(), Link, report(), _table() (+9 more)
 
-### Community 27 - "Authorship"
+### Community 15 - "Clinical practice"
+Cohesion: 0.12
+Nodes (28): Prompt as clinical alarm (alarm fatigue), 12 — What clinical practice already knows, HeartSteps trial, Breathing pacer: vibration rising and fading at about 6 breaths a minute (HRV biofeedback pace), When to pulse: pulse on a sure 'tense', offer when 'tense' is among the options, nothing for calm, energized, low or quiet, 26 — When and how the bracelet should pulse, Pulse gates: bracelet worn, no strong movement, at most 3 a day and 90 minutes apart, only in the user's hours (question budget applied to the wrist), 20% of eligible moments held out at random: a micro-randomised trial inside the product (+20 more)
+
+### Community 16 - "SOUL-Bench code"
+Cohesion: 0.12
+Nodes (24): When-to-pulse synthetic check: body alone helps 3% of tense moments (51% of pulses at excitement), generic reading 16%, calibrated decision 56-57% at 86-88% precision; learned rhythm 0.41 vs 0.36, Policy comparison: body alone 3% tense helped, generic 16%, calibrated fixed 56%, learned 57% (extra recovery 0.41); turned off 0% / 0% / 2% / 6%, synthetic_check(), bench_table(), _only(), _running_average(), _score(), soul_bench() (+16 more)
+
+### Community 17 - "Active questions and decision rule"
+Cohesion: 0.11
+Nodes (31): Cold start, Measurement reactivity, Active questions, Affect labeling (Lieberman et al., 2007), Conformal prediction set as question options, Clinical skills training: naming emotions (DBT), 05 Active questions, Just-in-time adaptive intervention (JITAI) framework (+23 more)
+
+### Community 18 - "Problem and evidence"
+Cohesion: 0.10
+Nodes (28): Barrett et al. 2019 (faces not reliable emotion read-outs), 00 The problem, Fisher, Medaglia & Jeronimus 2018 (group-to-individual generalisability), Koch et al. 2026 in-the-wild smartphone voice study, Audio-language models follow words not voice (LISTEN, VoxParadox), Missing labels, Physiological confounders (exercise, caffeine, alcohol, cycle, medication), Hypotheses from words and voice; body sets intensity (+20 more)
+
+### Community 19 - "Enrollment details"
 Cohesion: 0.15
-Nodes (13): Transfer of clinical methods (original contribution 4), Emanuele De Bernardis, MIT License, Nightlet SOUL layer proposal (first written 21 November 2026), Strong open speech models as the front end, calibration on top (original contribution 16), What 'precise' means, and eight states (original contribution 12), Private cohort pilot (original contribution 3), Question budget and personalization speed (original contribution 11): light / standard / fast, chosen hours, free notes (+5 more)
+Nodes (32): Moving reference (people change over weeks), Valence/arousal sliders (Russell's Affect Grid, Self-Assessment Manikin), 02 Enrollment (entry calibration), Ihori et al. 2025 in-context personalization (NTT), Islam & Washington self-supervised personal pre-training, Meta-PerSER (Interspeech 2025), Triantafyllopoulos et al. 2022 speaker enrolment, Trap: baseline absorbs anomalous days (normalising long stress) (+24 more)
 
-### Community 28 - "Incongruence and masking"
+### Community 20 - "Understanding layer concept"
+Cohesion: 0.15
+Nodes (29): The understanding layer (original contribution 18): the reflective part of SOUL as a way in rather than a signal (from the conversation with Nightlet's founder); prompts at hard moments to name, feel and see one's states, dosed by moment, bridge to people; checked on 462 real people from five open ESM studies, Naming the feeling (affect labeling) lowers amygdala response and distress, Interoception, the body as a mirror: heartbeat-synchronised wrist vibration; signature shown back and the heartbeat pulse, 30 · The understanding layer, Reflection prompted by context: LLM prompts from phone sensing (MindScape), expressive writing; questions from situation memory and a weekly story, Two rounds of simulation on the 462 real profiles (understanding_sim.py, 8 weeks, 3 seeds): round 1 effects as reported, round 2 conservative, Understanding layer: helps the person understand the reading (put it into words, notice it in the body, see their own patterns, talk to someone when it lasts), APA (2025) AI and adolescent well-being; health advisory on generative AI chatbots and wellness apps (+21 more)
+
+### Community 21 - "Analogous systems"
+Cohesion: 0.12
+Nodes (26): openSMILE eGeMAPS features (88) computed on phone, EU AI Act Article 5(1)(f), AI Act Annex III high-risk emotion recognition, 09 Privacy and regulation, Federated learning with differential privacy (Gboard), BCI cross-subject/cross-session transfer learning, 11 — Analogous systems in other fields, Empatica Embrace wearable seizure detection (+18 more)
+
+### Community 22 - "Question budget experiments"
+Cohesion: 0.10
+Nodes (27): E24 Personalization speed, E25 Burden by preset, E26 Free notes, Personalization speed presets, chosen question hours, free notes (PRESETS, EngineConfig.question_hours, SoulEngine.note), Ambiguous moments beat random moments at every budget (0.92 vs ~0.80 plateau), 23 — How many questions: budget, timing and personalization speed, Harder engine demo check (week 6: 0.63 none, 0.77 1/day, 0.81 2-3/day), Experiments E24-E26 (presets on real users, answer rate/drop-out, notes vs questions) (+19 more)
+
+### Community 23 - "README: voice, vibration and the loop"
+Cohesion: 0.13
+Nodes (24): SOUL (State Observation & Understanding Layer), Clinical methods for timing and testing (JITAI, MRT, outcome monitoring, HRV biofeedback, alarm fatigue), Closed personal loop, Decision with a guarantee (speak / ask / stay quiet), README: SOUL-Calibrate, Enrollment (3-7 days): fixed sentences, resting physiology, sliders and one word; later the same sentence read in a clear state becomes the voice-and-body signature, Future phase: learn from consenting users as glucose monitors moved from finger-stick to factory calibration, Graphify knowledge graph of the project (1,169 concepts, 3,430 links) (+16 more)
+
+### Community 24 - "Architecture and the closed loop"
+Cohesion: 0.13
+Nodes (20): SOUL-Calibrate (original contribution 1): entry calibration, 5-second session anchor, rolling personal baseline, conformal questions, 01 Architecture of SOUL-Calibrate, 03 Session anchor (5 seconds), Signal quality check (HNR, voice detected), Personal head (per-user, on-device), Labels weighted by answer reliability, Shrinkage toward population, Situation memory next to the personal head (+12 more)
+
+### Community 25 - "Archetype prototype"
+Cohesion: 0.17
+Nodes (10): Archetypes from a consenting cohort, new people matched after a few days (archetypes.fit, ArchetypeModel.start_engine; future phase, prototype), Archetype demo setup: 24 synthetic people (3 types x 8), 4-day label-free signature, 3 archetypes, pooled-head control, up to 1 question a day, 10 seeds, Archetype, ArchetypeModel, fit(), _js(), _kmeans(), _person() (+2 more)
+
+### Community 26 - "People who don't know what they feel"
+Cohesion: 0.19
+Nodes (17): A person who does not know what they feel in code: ask what it is like (pleasant? energy?), body first, weigh answers by reliability (understanding.compose, body_first, AnswerReliability; understanding_sim.answers_check), Alexithymia (low emotional awareness; TAS-20), understanding.AnswerReliability: weighs each answer by how often this person agrees with confident readings (one-person Dawid & Skene), answers_check simulation on the 462 real profiles: hard quarter vs others, 3 seeds (python -m soulcal understanding), Ask what it is like, not its name: pleasant or unpleasant first (valence), then a lot of energy or little, with 'not sure' always allowed, Emotional awareness improves with training (interventions reduce alexithymia, g = -0.52; mindfulness lowers TAS-20 by ~5 points), The body comes first: shared bodily maps of emotions; interoceptive awareness predicts alexithymia; skills-based body-awareness training works best, understanding.body_first(): says what the bracelet and voice show before the question, then "where do you feel it?" (+9 more)
+
+### Community 27 - "Understanding layer code"
+Cohesion: 0.19
+Nodes (8): Understanding layer in code: a finer word, the body mirror, a reflective question, a weekly story, a bridge to people; dosed at hard moments; need gate for the bridge (understanding.NeedGate, granularity_index, prompt; understanding_sim.understanding_check on open ESM data), understanding.NeedGate: watches share of negative readings and swaps of confidently separated negative states; decides only the bridge to a person, granularity_index(), NeedGate, prompt(), _person_run(), test_need_gate_and_prompts(), understanding module: need gate, granularity index, reflective prompts with an optional lens; checked on 462 people from open ESM data
+
+### Community 28 - "Personal head and baseline"
+Cohesion: 0.19
+Nodes (6): centered_matrix(), PersonalHead, rolling_transform(), RollingBaseline, test_fixed_baseline_does_not_move(), test_personal_head_falls_back_to_population_without_answers()
+
+### Community 29 - "Understanding results"
+Cohesion: 0.15
+Nodes (14): Answers results: hard quarter right answers 0.75 -> 0.89 (0.82 conservative) with what-it-is-like questions, 0.92 with body first; gap to others 10 points -> 1-3; reading +4-5 points, level with others, Bridge to people: when distress lasts (10 days in a row of mostly negative readings) the prompt points to a person, never to more time in the app, Understanding layer results: tense/low confusion 0.30 -> 0.17 (0.24 conservative), negative affect -10% (-4%) for people who need it; ~4 prompts a week vs ~1 for people doing well, The reading barely changes (0.68 -> 0.69): better labels help the person more than the model, The step towards a person is precise: 12-16% of people who need it, about 0.1% of people doing well, Answers round 1: ask for the name 0.75/0.85 -> what it is like 0.89/0.92 -> body first 0.92/0.94 -> reliability 0.92/0.94 -> layer 0.93/0.94; reading weeks 7-8 0.66 -> 0.71, Answers round 2 (conservative): 0.75/0.85 -> 0.82/0.86 -> 0.84/0.88 -> 0.84/0.88 -> 0.85/0.88; reading 0.66 -> 0.70, Understanding layer (docs/30) demo output: 462 people from open ESM data (+6 more)
+
+### Community 30 - "Engine input and run"
+Cohesion: 0.21
+Nodes (8): Input format: soulcal/schema.py (CSV columns or Reading objects), RunResult, write_decisions(), _num(), _probs(), read_csv(), write_csv(), test_csv_round_trip()
+
+### Community 31 - "Authorship"
+Cohesion: 0.14
+Nodes (14): Transfer of clinical methods (original contribution 4), Emanuele De Bernardis, MIT License, Nightlet SOUL layer proposal (first written 21 November 2026), What 'precise' means, and eight states (original contribution 12), Reuse of author's prior research (drift, conformal martingales, integer on-device inference, evidence maps), Private cohort pilot (original contribution 3), Question budget and personalization speed (original contribution 11): light / standard / fast, chosen hours, free notes (+6 more)
+
+### Community 32 - "Astrology reflection code"
+Cohesion: 0.30
+Nodes (8): moon_age_days(), moon_longitude(), moon_phase(), moon_sign(), reflection_factors(), sun_sign(), _utc(), test_astro_reference_dates()
+
+### Community 33 - "Incongruence and masking"
 Cohesion: 0.20
 Nodes (12): Incongruence as a reason to ask (original contribution 9), Masking (words vs face or voice), E21 Words vs expression, Empathic prompting (prompt-level incongruence handling), Learning whether the person masks or has a serious face, Dragut et al. (2026) Evaluating multimodal emotion recognition in proactive conversational agents, Hoque & Picard, Acted vs. natural frustration and delight, Section: Recurring situations and incongruence (20, 21) (+4 more)
 
-### Community 29 - "Evaluation: SOUL-Bench"
+### Community 34 - "Evaluation: SOUL-Bench"
+Cohesion: 0.27
+Nodes (13): Check: questions/day, answer rate, 'none of these' share, per-state coverage, gain per question, Claims ledger, 08 Evaluation: SOUL-Bench, Seven evaluation questions (answers needed, baseline gain, questions saved, voice vs words, coverage, drift, proximal calm), Where it may fail: flat voices, same-answer users, rare states, Label efficiency: area under the answers -> accuracy curve, Model ladder B0-B6, Split by person and in time (+5 more)
+
+### Community 35 - "Conformal speak, ask, quiet"
+Cohesion: 0.24
+Nodes (7): calibrate(), coverage(), decide(), prediction_sets(), _quantile(), test_decision_rule(), test_prediction_sets_are_never_empty()
+
+### Community 36 - "Coarse-to-fine simulation"
 Cohesion: 0.29
-Nodes (12): Check: questions/day, answer rate, 'none of these' share, per-state coverage, gain per question, Claims ledger, 08 Evaluation: SOUL-Bench, Seven evaluation questions (answers needed, baseline gain, questions saved, voice vs words, coverage, drift, proximal calm), Where it may fail: flat voices, same-answer users, rare states, Label efficiency: area under the answers -> accuracy curve, Split by person and in time, Prompt precision (alarm-fatigue metric) (+4 more)
+Nodes (6): Coarse-to-fine simulation setup (8 states, 5 seeds x 60 people, 6 situations, 4 readings/day, 28 days), coarse_of(), coarse_proba(), evidence_vector(), run(), _threshold()
 
-### Community 30 - "README: voice, vibration and the loop"
-Cohesion: 0.22
-Nodes (8): SOUL (State Observation & Understanding Layer), How others use voice (Nightlet episodic voice, Amazon Halo Tone, Kintsugi), Closed personal loop, How it works: readings against the personal baseline, personal model + situation memory, conformal set -> speak / ask / quiet, pulse when sure of tension, offer when maybe tense, invite a 5-second voice note when the body is aroused without voice, Nightlet, Session anchor (5 seconds), SOUL-Calibrate: personal calibration, active questions and user-grounded evaluation for emotion-reading systems, Support step: the bracelet pulses only when the reading is sure the person is tense, tuned to their heart and breathing; when the person is not talking, the body can invite a 5-second voice note
+### Community 37 - "Emotional granularity evidence"
+Cohesion: 0.31
+Nodes (10): Emotional granularity (Hoemann, Barrett & Quigley, 2021), Emotional granularity grows with repeated momentary reporting; measured by granularity_index, Lowest quarter of differentiation: answers right 75% vs 85% for the others, Emotion knowledge raises differentiation (short emotion-knowledge intervention; online emotion-word training partial effects, 2024), Finding: people with more negative affect tell their negative emotions apart less well (Spearman rho = -0.27, p < 1e-8), 'Needs it': top quarter of negative affect or bottom quarter of differentiation (42% of people; overlap 8%, two different needs), Negative-emotion differentiation (1 minus the mean correlation between negative emotions), Open experience-sampling data: 462 people with 30+ prompts from five studies (archive jmbh/EmotionTimeSeries); person-level summaries only (esm_profiles.json, sim/esm/extract_profiles.py) (+2 more)
 
-### Community 31 - "README: voice and body"
-Cohesion: 0.25
-Nodes (8): Personal incongruence score (Jensen-Shannon divergence vs personal usual distance), Enrollment (3-7 days): fixed sentences, resting physiology, sliders and one word; later the same sentence read in a clear state becomes the voice-and-body signature, Listening well from day one: open speech models (words via Whisper, Parakeet, Handy, SenseVoice; voice via emotion2vec+, SenseVoice; on the phone, swappable); generic 0.62 -> 0.82+, calibration still adds +0.16 today, +0.08 with much stronger models; E31 ready to run, Tuning the pulse to each person: heartbeat at 80% of the live heart rate (never above 90%); learned resonance breathing (4.5-7/min); live heartbeat 0.72 vs fixed 0.53, learned breathing 0.81 vs 0.71, Voice and body, which matters? Body alone 0.52, voice and words 0.69, together 0.81; voice moments teach body-only moments (0.67 vs 0.52); voice check-in raises tense moments reached 28% -> 46%; never always-on listening, Voice, body and the bracelet: the body triggers, the voice decides, the vibration acts, Your voice, your body, your signature: one fixed sentence, three uses; 0.44 -> 0.68 -> 0.74 -> 0.82 with two tagged readings; voice + body beat either alone; signature shown back; voluntary modes light 0.74 / standard 0.82 / fast 0.86 by week 6, When the bracelet pulses: pulse when sure of tension, offer when unsure, nothing when calm, excited, low or moving; body alone 3% of tense moments vs calibrated 56% at 88% precision; 20% held out
+### Community 38 - "Answer reliability"
+Cohesion: 0.31
+Nodes (4): AnswerReliability, _ar(), _person_answers(), test_helping_a_person_who_does_not_know_what_they_feel()
+
+### Community 39 - "Engine entry and commands"
+Cohesion: 0.29
+Nodes (8): The soulcal engine (original contribution 10), soulcal command line: pytest (28 tests), bench, demo, run, archetypes, support, channels, haptics, anchors, understanding, soulcal — the SOUL-Calibrate engine (engine README), soulcal: decision and personalization layer on any face, voice and text emotion model plus bracelet signals (baseline, fusion, conformal speak/ask/quiet, memory, corrections, disagreement, pattern graph), soulcal understanding command: the understanding layer, people from open ESM data, Astrology reflection layer, Figure 11: understanding layer (fig11_understanding_layer.png), Understanding yourself: the understanding layer (a way in, not a signal; 462 real people; confusion 0.30 -> 0.17, negative affect -10% for people who need it; ~1 prompt a week for people doing well; bridge to a person 12-16%)
+
+### Community 40 - "README: the project at a glance"
+Cohesion: 0.33
+Nodes (6): anchors.SignatureModel module: voice-and-body signatures from one fixed sentence (enrollment, daily anchor, tagged readings); what changes in the person, Engine demo, 20 synthetic people: week-6 accuracy 0.57 -> 0.77; when speaking 0.68 -> 0.94, False-discovery correction and replication, Personal pattern graph (context, body, expression, astrology reflection layer), soulcal bench: SOUL-Bench ladder B0-B6 on any readings with self-reports, soulcal engine (engine/soulcal, numpy-only Python package)
+
+### Community 41 - "Public approach comparison"
+Cohesion: 0.67
+Nodes (3): Public approach today: generic speech model + population body norms, nothing personal (0.41, right 52% when speaking), The single voice-and-body reading is right about twice as often as the public approach (0.81 vs 0.41) and 88% vs 52% when it speaks, Problem: weak, highly personal emotion signals (prosody rho=0.02; 32.5-69.3% speaker variance)
 
 ## Knowledge Gaps
-- **35 isolated node(s):** `Valence/arousal sliders (Russell's Affect Grid, Self-Assessment Manikin)`, `Rolling baseline recovers after step change (0.581 vs 0.584; fixed 0.541)`, `Baseline per device`, `AI Act Annex III high-risk emotion recognition`, `Persona invariance battery` (+30 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 177 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **37 isolated node(s):** `soulcal`, `MIT License`, `RinDig (open-source inspiration)`, `Simulation of the loop with synthetic users`, `Valence/arousal sliders (Russell's Affect Grid, Self-Assessment Manikin)` (+32 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 201 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `29 — Your voice, your body, your signature: one fixed sentence, three uses` connect `Voice-and-body signatures` to `Voice, vibration and the pulse`, `Risks, traps and cold start`, `Speech front end and real-voice check`, `Engine overview and commands`, `SOUL-Bench code`, `Enrollment details`, `Signature checks (code)`, `Active questions and decision rule`, `Architecture and the closed loop`, `Question budget experiments`, `Clinical practice`, `Privacy and regulation`, `README: the project at a glance`, `README: voice and body`?**
-  _High betweenness centrality (0.106) - this node is a cross-community bridge._
-- **Are the 2 inferred relationships involving `27 — Voice and vibration: what each is for, and how to integrate them` (e.g. with `Voice, words, face and body (synthetic people)` and `Tuning the pulse to each person (synthetic; the effects are assumptions from the literature)`) actually correct?**
-  _`27 — Voice and vibration: what each is for, and how to integrate them` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `Valence/arousal sliders (Russell's Affect Grid, Self-Assessment Manikin)`, `Rolling baseline recovers after step change (0.581 vs 0.584; fixed 0.541)`, `Baseline per device` to the rest of the system?**
-  _35 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Voice, vibration and the pulse` be split into smaller, more focused modules?**
-  _Cohesion score 0.0502497796062298 - nodes in this community are weakly interconnected._
-- **Why does `27 — Voice and vibration: what each is for, and how to integrate them` connect `Voice, vibration and the pulse` to `Risks, traps and cold start`, `Speech front end and real-voice check`, `Recurring situations and question budget`, `Engine overview and commands`, `Voice-and-body signatures`, `Archetype and channel checks (code)`, `Problem and evidence`, `Clinical practice`, `Privacy and regulation`, `README: voice, vibration and the loop`, `README: voice and body`?**
-  _High betweenness centrality (0.106) - this node is a cross-community bridge._
-- **Are the 3 inferred relationships involving `05 Active questions` (e.g. with `A strong front end makes the engine sure more often, so it asks fewer questions (front end and calibration work together)` and `Answered voice notes teach the signature: a voice note the person answers is also stored as a tagged reading (free speech, noisier, no extra effort)`) actually correct?**
-  _`05 Active questions` has 3 INFERRED edges - model-reasoned connections that need verification._
-- **Should `Risks, traps and cold start` be split into smaller, more focused modules?**
-  _Cohesion score 0.05365686944634313 - nodes in this community are weakly interconnected._
+- **Why does `30 · The understanding layer` connect `Understanding layer concept` to `Voice-and-body signatures`, `Cohort pilot and archetype path`, `Emotional granularity evidence`, `Risks, traps and cold start`, `Engine entry and commands`, `Engine overview and commands`, `Clinical practice`, `Analogous systems`, `Architecture and the closed loop`, `People who don't know what they feel`, `Understanding layer code`, `Understanding results`?**
+  _High betweenness centrality (0.097) - this node is a cross-community bridge._
+- **Are the 13 inferred relationships involving `SoulEngine` (e.g. with `soulcal: decision and personalization layer on any face, voice and text emotion model plus bracelet signals (baseline, fusion, conformal speak/ask/quiet, memory, corrections, disagreement, pattern graph)` and `ArchetypeModel`) actually correct?**
+  _`SoulEngine` has 13 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `soulcal`, `MIT License`, `RinDig (open-source inspiration)` to the rest of the system?**
+  _37 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Speech front end and real-voice check` be split into smaller, more focused modules?**
+  _Cohesion score 0.05368421052631579 - nodes in this community are weakly interconnected._
+- **Why does `29 — Your voice, your body, your signature: one fixed sentence, three uses` connect `Voice-and-body signatures` to `Speech front end and real-voice check`, `Voice, vibration and the pulse`, `Signature checks (code)`, `Risks, traps and cold start`, `README: the project at a glance`, `Engine overview and commands`, `Clinical practice`, `Active questions and decision rule`, `Enrollment details`, `Understanding layer concept`, `Analogous systems`, `Question budget experiments`, `README: voice, vibration and the loop`, `Architecture and the closed loop`?**
+  _High betweenness centrality (0.095) - this node is a cross-community bridge._
+- **Should `Voice-and-body signatures` be split into smaller, more focused modules?**
+  _Cohesion score 0.058596491228070174 - nodes in this community are weakly interconnected._
+- **Why does `22 — The engine: code Nightlet can run on its own data` connect `Engine overview and commands` to `Speech front end and real-voice check`, `Voice-and-body signatures`, `Evaluation: SOUL-Bench`, `Voice, vibration and the pulse`, `Cohort pilot and archetype path`, `Signature checks (code)`, `Engine entry and commands`, `Engine fusion code`, `README: the project at a glance`, `Problem and evidence`, `Enrollment details`, `Question budget experiments`, `Architecture and the closed loop`, `Archetype prototype`?**
+  _High betweenness centrality (0.076) - this node is a cross-community bridge._

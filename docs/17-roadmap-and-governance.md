@@ -19,8 +19,8 @@ Author: Emanuele De Bernardis · Module: Roadmap · Organises: [[16-experiments]
 | --- | --- | --- |
 | 0 — Foundations | labels, consent levels, feature parity | parity test passes; consent levels approved; label form fixed |
 | 1 — SOUL-Bench on public data | ladder B0–B6, conformal calibration, real voice (E31) | E1, E2, E4, E14, E31 results in the ledger |
-| 2 — Team dogfooding | the loop runs on the team's phones, with enrollment, daily anchor and tagged readings | E3, E5, E6, E13, E17 results; question budget set; signatures for every team member |
-| 3 — Private cohort pilot | consented group, micro-randomised; pulse, voice check-ins and signatures | E7, E8, E11, E12, E15, E16, E18, E19, E32–E36 results |
+| 2 — Team dogfooding | the loop runs on the team's phones, with enrollment, daily anchor and tagged readings, and the understanding layer's prompts ([[30-understanding-layer]]) | E3, E5, E6, E13, E17 results; question budget set; signatures for every team member |
+| 3 — Private cohort pilot | consented group, micro-randomised; pulse, voice check-ins, signatures and the understanding layer (lens, body mirror, bridge to people) | E7, E8, E11, E12, E15, E16, E18, E19, E32–E40 results |
 | 4 — Product | speak / ask / quiet in production | prompt precision, answer rate and coverage monitored weekly |
 
 ## Weekly review

@@ -33,6 +33,8 @@ all its state in a small JSON file on the phone.
 | Body-only moment, body aroused, tension possible: invite a 5-second voice note, at most once a day | `SupportPolicy.decide` → `invite` | [[27-voice-and-vibration]] |
 | Synthetic checks of sources (voice, words, face, body), app use, voice check-ins, pulse tuning | `channels_sim`, `haptics_sim` | [[27-voice-and-vibration]] |
 | Stronger speech front ends: how much calibration still adds | `channels_sim.frontend_check` | [[28-speech-front-end]] |
+| Understanding layer: a finer word, the body mirror, a reflective question, a weekly story, a bridge to people; dosed at hard moments; need gate for the bridge | `understanding.NeedGate`, `granularity_index`, `prompt`; `understanding_sim.understanding_check` on open ESM data | [[30-understanding-layer]] |
+| A person who does not know what they feel: ask what it is like (pleasant? energy?), body first, weigh answers by reliability | `understanding.compose`, `body_first`, `AnswerReliability`; `understanding_sim.answers_check` | [[30-understanding-layer]] |
 | Voice-and-body signatures: enrollment, daily anchor, tagged readings of a fixed sentence; what changes in the person | `anchors.SignatureModel`, `.difference()` | [[29-voice-signatures]] |
 | The signature as the voice channel: softened, replacing the generic voice reading, body not counted twice; answered voice notes become tagged readings | `SoulEngine.enroll/anchor/tag`, `Reading.voice_features`, `EngineConfig.signature*`, `signature_difference()` | [[29-voice-signatures]] |
 | Real-voice check with an open speech-emotion model (E31), outside the engine | `realvoice/e31_real_voice.py` | [[28-speech-front-end]] |
@@ -54,7 +56,7 @@ eng.save("user-42.json")                     # stays on the device
 
 ```bash
 cd engine
-python -m pytest tests -q                    # 25 tests
+python -m pytest tests -q                    # 28 tests
 python -m soulcal channels --out examples/demo_out     # voice, words, face, body
 python -m soulcal haptics --out examples/demo_out      # tuning the pulse
 python -m soulcal support --out examples/demo_out      # when to pulse, synthetic
@@ -141,6 +143,6 @@ The graph is written in the project-map format, so the same viewer draws it:
 
 ## Check
 
-- `python -m pytest engine/tests -q` passes (25 tests, including "the loop beats today's generic reading" and
+- `python -m pytest engine/tests -q` passes (28 tests, including "the loop beats today's generic reading" and
   "no supported moon pattern when none is planted").
 - On real data: `python -m soulcal run` on a pilot export, then SOUL-Bench metrics per user ([[08-evaluation-soul-bench]]).

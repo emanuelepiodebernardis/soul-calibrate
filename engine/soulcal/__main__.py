@@ -8,6 +8,7 @@
     python -m soulcal channels --out demo_out        voice, words, face and body; stronger speech front ends (synthetic)
     python -m soulcal haptics --out demo_out         how the pulse is tuned to each person (synthetic)
     python -m soulcal anchors --out demo_out         personal voice-and-body signatures from a fixed sentence (synthetic)
+    python -m soulcal understanding --out demo_out   the understanding layer, people drawn from open ESM data
                           [--birth-date 1990-05-17]  only for the optional reflection layer
 """
 
@@ -233,6 +234,52 @@ def haptics_demo(out: Path, seeds: int) -> None:
     print("\n".join(t))
 
 
+def understanding_demo(out: Path, seeds: int) -> None:
+    from .understanding_sim import load_profiles, understanding_check
+    out.mkdir(parents=True, exist_ok=True)
+    prof = load_profiles()
+    na = np.array([p["na_mean"] for p in prof])
+    dif = np.array([p["neg_diff"] for p in prof])
+    rank = lambda v: np.argsort(np.argsort(v))
+    rho = float(np.corrcoef(rank(na), rank(dif))[0, 1])
+    r = understanding_check(seeds=seeds)
+    r["real_data"] = {"people": len(prof), "spearman_negative_affect_vs_differentiation": rho}
+    t = ["# Understanding layer (docs/30)", "",
+         f"People drawn from open experience-sampling data: {len(prof)} people from five studies. In the real data, "
+         f"people with more negative affect tell their negative emotions apart less well (Spearman rho = {rho:.2f}). "
+         f"'Needs the layer' = top quarter of negative affect or bottom quarter of differentiation: "
+         f"{r['need_share']:.0%} of people. Effects of the layer are assumptions from published studies; "
+         f"{seeds} seeds, 8 weeks, reading scored on weeks 7-8.", ""]
+    for rn, res in r["rounds"].items():
+        t += [f"## {rn}", "", "| Condition | Group | Reading right | Tense/low confusion | Negative affect | Prompts a week | Layer on, week 8 | Pointed to a person |",
+              "| --- | --- | --- | --- | --- | --- | --- | --- |"]
+        for c, v in res.items():
+            for g, lab in (("need", "needs it"), ("well", "doing well")):
+                x = v[g]
+                t.append(f"| {c} | {lab} | {x['reading_right']:.2f} | {x['confusion_start']:.2f} -> {x['confusion_end']:.2f} | "
+                         f"{x['negative_affect_change']:+.1%} | {x['prompts_per_week']:.1f} | {x['layer_on_at_week_8']:.0%} | {x['bridge_offered']:.0%} |")
+        t.append("")
+    from .understanding_sim import answers_check
+    ans = answers_check(seeds=seeds)
+    r["answers"] = ans
+    t += ["## A person who does not know what they feel", "",
+          f"The {ans['hard_share']:.0%} of people with the lowest differentiation in the real data, against the others. "
+          "Instead of asking for the name of the feeling: ask what it is like (pleasant or unpleasant, a lot of energy or "
+          "little, with 'not sure' allowed), show their own body signals first, and weigh each answer by how much this "
+          "person's answers can be trusted.", ""]
+    for rn, res in ans["rounds"].items():
+        t += [f"### {rn}", "", "| How the system asks and learns | Answers right (hard / others) | 'Not sure' | Reading right, weeks 7-8 (hard / others) |",
+              "| --- | --- | --- | --- |"]
+        for c, v in res.items():
+            h, o = v["hard"], v["others"]
+            t.append(f"| {c} | {h['answers_right']:.2f} / {o['answers_right']:.2f} | {h['not_sure']:.0%} / {o['not_sure']:.0%} | "
+                     f"{h['reading_right']:.2f} / {o['reading_right']:.2f} |")
+        t.append("")
+    (out / "UNDERSTANDING.md").write_text("\n".join(t) + "\n", encoding="utf-8")
+    (out / "understanding.json").write_text(json.dumps(r, indent=1), encoding="utf-8")
+    print("\n".join(t))
+
+
 def anchors_demo(out: Path, seeds: int) -> None:
     from .anchors_sim import anchors_check
     out.mkdir(parents=True, exist_ok=True)
@@ -297,9 +344,14 @@ def main() -> None:
     an = sub.add_parser("anchors")
     an.add_argument("--out", default="demo_out")
     an.add_argument("--seeds", type=int, default=5)
+    un = sub.add_parser("understanding")
+    un.add_argument("--out", default="demo_out")
+    un.add_argument("--seeds", type=int, default=3)
     a = ap.parse_args()
     if a.cmd == "demo":
         demo(Path(a.out), a.people, a.weeks)
+    elif a.cmd == "understanding":
+        understanding_demo(Path(a.out), a.seeds)
     elif a.cmd == "anchors":
         anchors_demo(Path(a.out), a.seeds)
     elif a.cmd == "channels":

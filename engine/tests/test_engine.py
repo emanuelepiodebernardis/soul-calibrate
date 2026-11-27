@@ -310,3 +310,52 @@ def test_signature_in_the_engine_beats_the_generic_voice_reading():
     assert full["spoken_correct"] > today["spoken_correct"]
     public = r["Public approach today: generic speech model + population body norms, nothing personal"]
     assert full["accuracy"] > public["accuracy"] + 0.2
+
+
+def test_need_gate_and_prompts():
+    """The understanding layer stays quiet for a person doing well and steps in with distress or swapped labels."""
+    from soulcal.understanding import NeedGate, granularity_index, prompt
+    g = NeedGate()
+    for d in range(14):
+        for _ in range(4):
+            g.observe(d, "calm")
+        g.end_of_day(d)
+    assert g.decide(14) == "monitor"
+    assert prompt("monitor", "calm") is None
+    h = NeedGate()
+    for d in range(14):
+        for _ in range(4):
+            h.observe(d, "tense")
+        h.answer(d, "tense", "low", True)
+        h.end_of_day(d)
+    assert h.decide(14) == "bridge"
+    assert abs(granularity_index([("tense", "low"), ("tense", "tense"), ("low", "low"), ("calm", "calm")]) - 2 / 3) < 1e-9
+    p = prompt("support", "tense", lens="weather")
+    assert p["kind"] == "vocabulary" and p["text"].endswith("?") and p["lens"] == "weather"
+
+
+def test_understanding_check_on_open_data():
+    from soulcal.understanding_sim import understanding_check
+    r = understanding_check(seeds=1, people=60)
+    res = r["rounds"]["Round 1 (effects as reported)"]
+    off, on = res["No understanding layer"], res["Layer at hard moments, for everyone"]
+    assert r["people"] > 400
+    assert on["need"]["confusion_end"] < off["need"]["confusion_end"]
+    assert on["need"]["prompts_per_week"] > on["well"]["prompts_per_week"]
+    assert on["well"]["bridge_offered"] <= on["need"]["bridge_offered"]
+
+
+def test_helping_a_person_who_does_not_know_what_they_feel():
+    """Easy questions compose the state; answers that contradict confident readings weigh less."""
+    from soulcal.understanding import AnswerReliability, body_first, compose
+    assert compose("unpleasant", "a lot") == ["tense"]
+    assert compose("unpleasant", "not sure") == ["tense", "low"]
+    assert body_first([("heart rate", 12.0)]).startswith("Right now your heart rate is higher")
+    r = AnswerReliability()
+    assert r.weight("tense", "low", True) > 0.5
+    for _ in range(10):
+        r.record("tense", "low", True)
+    assert r.weight("tense", "low", True) < 0.2 and r.weight("tense", "low", False) == 1.0
+    from soulcal.understanding_sim import answers_check, load_profiles
+    res = answers_check(seeds=1, profiles=load_profiles()[:80])["rounds"]["Round 1 (effects as reported)"]
+    assert res["+ ask what it is like (pleasant? energy?)"]["hard"]["answers_right"] > res["Ask for the name (today)"]["hard"]["answers_right"]

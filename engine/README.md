@@ -9,7 +9,7 @@ personal pattern graph with statistical guardrails (including the astrology refl
 
 ```bash
 pip install -e .                       # or just run from this folder
-python -m pytest tests -q              # 25 tests
+python -m pytest tests -q              # 28 tests
 python -m soulcal bench --readings my_readings.csv
 python -m soulcal demo --out examples/demo_out
 python -m soulcal run --readings my_readings.csv --out results [--birth-date 1990-05-17]
@@ -18,6 +18,7 @@ python -m soulcal support --out examples/demo_out       # when and how the brace
 python -m soulcal channels --out examples/demo_out      # voice, words, face and body
 python -m soulcal haptics --out examples/demo_out       # tuning the pulse to the person
 python -m soulcal anchors --out examples/demo_out       # voice-and-body signatures, alone and inside the engine
+python -m soulcal understanding --out examples/demo_out # the understanding layer, people from open ESM data
 ```
 
 Voice-and-body signatures (docs/29): `engine.enroll(x)`, `engine.anchor(x)`, `engine.tag("tense", x)`, then

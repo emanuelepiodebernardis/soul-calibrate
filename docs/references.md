@@ -63,6 +63,30 @@ Compiled by Emanuele De Bernardis, November 2026. Grouped by the module that use
 - RinDig, [AuditEngine](https://github.com/RinDig/AuditEngine): psychometric batteries administered to language models → [[14-reading-audit]]
 - RinDig, [icm-architect](https://github.com/RinDig/icm-architect) and Van Clief & McDermott, *Interpretable Context Methodology* ([arXiv:2603.16021](https://arxiv.org/abs/2603.16021)) → structure of this repository, [[17-roadmap-and-governance]]
 
+## Understanding layer — [[30-understanding-layer]]
+
+- Open experience-sampling data: archive jmbh/EmotionTimeSeries (J. Haslbeck); Bringmann et al. (2013) PLoS ONE;
+  Bringmann et al. (2016) Assessment; Fisher et al. (2017) J. Abnormal Psychology; Fried, Papanikolaou & Epskamp
+  (2021) Clinical Psychological Science; Rowland & Wenzel (2020) Mindfulness.
+- Lieberman et al. (2007). Putting feelings into words: affect labeling disrupts amygdala activity. Psychological Science 18(5).
+- Hoemann, Barrett & Quigley (2021). Emotional granularity increases with intensive ambulatory assessment. Frontiers in Psychology.
+- Kim, Whitmore, Chua, Pei, Abdalla & Maes (2025). Emotional effects of enhanced interoception via heartbeat-synchronized haptic feedback. Proc. ACM IMWUT 9(4).
+- Nepal et al. (2024). MindScape: integrating LLM and behavioral sensing for personalized AI-driven journaling. Proc. ACM IMWUT 8(4).
+- Expressive writing meta-analysis, healthy and subclinical samples: Hedges' g = -0.12 (31 RCTs, N = 4,012).
+- Watkins et al. (2024). ECoWeB PREVENT and PROMOTE trials. Lancet Digital Health 6(12).
+- White, Kross & Duckworth (2015). Spontaneous self-distancing and adaptive self-reflection across adolescence. Child Development.
+- Barnum effect: Forer (1949); Glick, Gottesman & Jolton (1989), skeptics and believers in astrology.
+- APA (2025). Artificial intelligence and adolescent well-being; APA (2025) health advisory on generative AI chatbots and wellness apps.
+- MIT Media Lab & OpenAI (2025). Affective use and emotional well-being on ChatGPT.
+- WHO Commission on Social Connection (2025). From loneliness to social connection.
+- Mazza et al. (2026). Interventions for alexithymia: a meta-analysis (59 studies, g = -0.52). Journal of Affective Disorders.
+- Norman, Marzano, Coulson & Oskis (2019). Effects of mindfulness-based interventions on alexithymia: a systematic review. Evidence-Based Mental Health 22(1).
+- Vedernikova, Kuppens & Erbas (2021). From knowledge to differentiation: increasing emotion knowledge through an intervention increases negative emotion differentiation. Frontiers in Psychology.
+- Nummenmaa, Glerean, Hari & Hietanen (2014). Bodily maps of emotions. PNAS 111(2).
+- Bornemann & Singer (2017). Taking time to feel our body: steady increases in heartbeat perception accuracy and decreases in alexithymia over 9 months of contemplative mental training. Psychophysiology 54(3).
+- Dawid & Skene (1979). Maximum likelihood estimation of observer error-rates using the EM algorithm. Applied Statistics 28(1).
+- How We Feel (Yale Center for Emotional Intelligence); mindLAMP (BIDMC, open source); MentaLLaMA (Yang et al., WWW 2024).
+
 ## When to pulse — [[26-when-to-pulse]]
 
 - Azevedo, Bennett, Bilicki, Hooper, Markopoulou, Tsakiris (2017). The calming effect of a new wearable device during the anticipation of public speech. *Scientific Reports* 7:2285. [doi:10.1038/s41598-017-02274-2](https://doi.org/10.1038/s41598-017-02274-2)

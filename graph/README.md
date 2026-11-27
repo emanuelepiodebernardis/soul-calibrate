@@ -11,12 +11,12 @@ simulation code and results in `sim/`, and the engine in `engine/soulcal/` with 
 | `graph.json` | the graph data (nodes, links, communities) |
 | `build_map.py` | rebuilds `map.html` from `graph.json` with a precomputed layout |
 
-At the last build (round 10): 1169 nodes, 3430 links, 35 communities (32 with three or more nodes), from 49 documents
-and 35 code files: the docs, the simulation and the `soulcal` engine.
+At the last build (round 11): 1364 nodes, 4152 links, 46 communities (42 with three or more nodes), from 51 documents
+and 46 code files: the docs, the simulation and the `soulcal` engine.
 
 ## What the graph found
 
-Built nine times while the project grew; each round pointed at the next fix.
+Built eleven times while the project grew; each round pointed at the next fix.
 
 | Round | What the graph showed | What was done |
 | --- | --- | --- |
@@ -30,10 +30,11 @@ Built nine times while the project grew; each round pointed at the next fix.
 | 8 (+ speech front end) | docs/28 links 11 areas (32 links); E31, open since round 5, now has code (`realvoice/`) linked to the evidence that the speaker dominates the voice, to SOUL-Bench and to the voice channel of the engine. New gaps: the real-voice check runs beside the engine (embeddings and a linear head), not through it; the next step is to feed emotion2vec+ scores into the engine's voice channel on real recordings | `realvoice/e31_real_voice.py`, `channels_sim.frontend_check` |
 | 9 (+ voice-and-body signatures) | docs/29 links 12 areas (37 links) and turns the enrollment sentences and the 5-second session anchor, on paper since round 1, into code, joined with tagged readings in one area; voluntary modes connect it to the question budget. New gaps: the signature model sits beside the engine (its probabilities still have to be passed into the voice channel), and the real-voice check (E31) does not yet use signatures: emotion2vec+ features are the natural input | `anchors.SignatureModel`, `anchors.MODES`, E35–E36 |
 | 10 (+ one reading: the signature in the engine) | Both round-9 gaps closed: `SoulEngine.enroll`, `anchor` and `tag` and the engine check sit with the signature code, `_use_signature` joins the engine's personal baseline, and docs/29 now has 100 links into 20 areas (from 37 into 12), so the signature is no longer beside the engine but one of its bridges. E31's signature arms tie the real-voice check to the fixed-sentence protocol. Still open: everything is synthetic; with a strong speech model, whether the signature should replace or add to the generic voice reading has to be measured again | `SoulEngine.enroll/anchor/tag`, `Reading.voice_features`, `anchors_sim.engine_check`, E31 signature arms |
+| 11 (+ understanding yourself) | docs/30 links 19 areas (196 links). The understanding layer splits into four areas: the concept (from the conversation with Nightlet's founder), its code (`NeedGate`, `prompt`), its results on 462 real people, and a new area for people who do not know what they feel, joined to the evidence on emotional granularity and to the risks of cold start. Answer reliability sits next to SOUL-Bench and the engine core: answers are now weighed by how much each person's answers can be trusted, not taken as truth. Still open: all effects are simulated on real profiles; the reading gains only 4-5 points, so the value is in better answers and in the person, to be measured in E37–E43 | `understanding.py`, `understanding_sim.py`, `AnswerReliability`, `compose`, `body_first`, E37–E43 |
 
 Still only on paper (no code yet): the enrollment and anchor screens in the app (their logic is in `anchors.py`), the reading audit batteries, the
 private cohort pilot, the measured effect and tuning of the pulse (E32, E34), voice check-ins on real people
-(E33), signatures on real people (E35, E36), the micro-randomised trials, and running the real-voice check (E31,
+(E33), signatures on real people (E35, E36), the understanding layer and the scaffolded questions on real people (E37–E43), the micro-randomised trials, and running the real-voice check (E31,
 ready in `realvoice/`). Most need real users or Nightlet's app; E31 only needs public speech data and a GPU.
 
 ## Rebuild

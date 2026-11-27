@@ -216,6 +216,28 @@ signature to 0.81, and from 52% and 61% to 88% right when it speaks. → [docs/2
 
 ![Voice signatures](sim/results/fig10_voice_signatures.png)
 
+### Understanding yourself: the understanding layer
+
+After the conversation with Nightlet's founder: the reflective part of SOUL (astrology included) is a way in, not a
+signal, a language that leads a young person to look at their own feelings. The understanding layer helps the
+person put the reading into words, notice it in the body (the signature, the heartbeat pulse), see their own
+patterns, and talk to someone when it lasts. A symbolic lens can frame a prompt; the content is always the person's
+own data. In open experience-sampling data from five studies (462 real people), **people with more negative affect
+tell their negative emotions apart less well** (rho = -0.27). Simulating those people for 8 weeks with effects taken
+from published studies, prompts at hard moments cut the confusion between tense and low from 0.30 to 0.17 (0.24 in a
+conservative round) and negative affect by 10% (4%) for people who need it, while people doing well get about one
+prompt a week and no change. The layer doses itself; a person-level gate does worse; the step towards a person
+reaches 12-16% of people who need it and almost none of the others.
+
+![Understanding layer](sim/results/fig11_understanding_layer.png)
+
+For people who do not really know what they feel, the system does not ask for the name of the feeling: it asks
+whether it is pleasant and how much energy there is ("not sure" allowed), shows their own body signals first, and
+weighs each answer by how much that person's answers can be trusted. In the same simulation the right answers of the
+quarter of people who find it hardest rise from 0.75 to 0.89 (0.82 conservative), close to everyone else. → [docs/30-understanding-layer.md](docs/30-understanding-layer.md)
+
+![Answers from people who do not know what they feel](sim/results/fig12_answers.png)
+
 ### Tuning the pulse to each person
 
 Products that calm with vibration are triggered on demand (doppel, TouchPoints, Apollo) or automatically against a
@@ -242,6 +264,7 @@ in a JSON file on the phone.
 | `archetypes` | prototype: archetypes from a consenting cohort, new people matched after 4 days | [25](docs/25-coarse-to-fine-and-archetypes.md) |
 | `support.SupportPolicy` | when and how the bracelet pulses; held-out moments; rhythm, live-heart-rate heartbeat and resonance breathing learned per person | [26](docs/26-when-to-pulse.md), [27](docs/27-voice-and-vibration.md) |
 | `channels_sim`, `haptics_sim` | synthetic checks: voice, words, face and body; voice check-ins; tuning the pulse | [27](docs/27-voice-and-vibration.md) |
+| `understanding` | understanding layer: need gate, granularity index, reflective prompts with an optional lens; checked on 462 people from open ESM data | [30](docs/30-understanding-layer.md) |
 | `anchors.SignatureModel` | voice-and-body signatures from one fixed sentence: enrollment, daily anchor, tagged readings; what changes in the person | [29](docs/29-voice-signatures.md) |
 
 | Engine demo, 20 synthetic people | Accuracy, week 6 | Accuracy when speaking |
@@ -277,7 +300,7 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 - **Reading audit:** the language model writes the reading but never decides it. → [docs/14](docs/14-reading-audit.md)
 - **Privacy and regulation:** personal learning on the device, shared training only with separate consent;
   emotion recognition is high-risk under the EU AI Act. → [docs/09](docs/09-privacy-and-regulation.md)
-- **Experiment plan:** E1–E36, each with what would prove it wrong. → [docs/16](docs/16-experiments.md)
+- **Experiment plan:** E1–E43, each with what would prove it wrong. → [docs/16](docs/16-experiments.md)
 
 ## 7. What is not done yet
 
@@ -285,7 +308,7 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
   generated audio, signatures included (RAVDESS actors read the same sentences in every emotion); it needs a machine
 with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 - **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
-  voice check-ins (E33) and the tuning of the rhythm (E34); signatures and whether seeing them helps (E35, E36).
+  voice check-ins (E33) and the tuning of the rhythm (E34); signatures and whether seeing them helps (E35, E36); the understanding layer (E37–E40) and people who do not know what they feel (E41–E43).
 - **Still on paper:** the enrollment screens in the app (the logic is in `anchors.py`), the reading audit batteries, the cohort pilot, the
   micro-randomised trials, support for "low", and an engine with more than four states (`detail.py` works on top).
 
@@ -335,6 +358,7 @@ voice-and-body signature moved from beside the engine to one of its bridges (doc
 | | | [27 Voice and vibration](docs/27-voice-and-vibration.md) |
 | | | [28 Speech front end](docs/28-speech-front-end.md) |
 | | | [29 Voice signatures](docs/29-voice-signatures.md) |
+| | | [30 Understanding layer](docs/30-understanding-layer.md) |
 
 Start with `docs/00-problem.md`, then follow the links, or start from the map.
 
@@ -352,15 +376,17 @@ python run_user_control.py --seeds 5 --out results  # chosen hours, free notes, 
 python run_states.py --seeds 5 --out results        # four vs eight states
 python run_progressive.py --seeds 5 --out results   # coarse to fine
 cd ../engine
-python -m pytest -q tests                           # 25 tests
+python -m pytest -q tests                           # 28 tests
 python -m soulcal demo --out examples/demo_out      # today vs the engine
 python -m soulcal archetypes --out examples/demo_out
 python -m soulcal support --out examples/demo_out   # when the bracelet pulses
 python -m soulcal channels --out examples/demo_out  # voice, words, face and body
 python -m soulcal haptics --out examples/demo_out   # tuning the pulse
 python -m soulcal anchors --out examples/demo_out   # voice-and-body signatures, alone and in the engine
+python -m soulcal understanding --out examples/demo_out   # the understanding layer and the answers, 462 people from open data
 python -m soulcal bench --readings my.csv           # SOUL-Bench on your own readings
-cd ../sim && python plot_support.py && python plot_channels.py && python plot_anchors.py   # figures 8-10
+cd ../sim && python plot_support.py && python plot_channels.py && python plot_anchors.py && python plot_understanding.py ../engine/soulcal/data/esm_profiles.json ../engine/examples/demo_out/understanding.json results/fig11_understanding_layer.png
+python plot_answers.py ../engine/examples/demo_out/understanding.json results/fig12_answers.png   # figures 8-12
 cd .. && python -m pytest -q realvoice/tests            # E31 protocol, no download
 python realvoice/e31_real_voice.py --data path/to/RAVDESS --encoder emotion2vec   # E31 on real voice
 python graph/build_overview.py                      # graph overview image

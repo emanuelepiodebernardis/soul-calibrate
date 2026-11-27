@@ -46,6 +46,10 @@ repository records the date of each part.
    state, so each person's own way of showing a state is learned, and shown back to them; wired into the engine
    as its voice channel (softened, replacing the generic voice reading, the body not counted twice), and into the
    real-voice check. → `docs/29`, `engine/soulcal/anchors.py`, `engine/soulcal/engine.py`
+18. **The understanding layer:** the reflective part of SOUL as a way in rather than a signal (from the conversation
+   with Nightlet's founder); prompts at hard moments that help the person name, feel and see their own states,
+   dosed by moment rather than by labelling people, with a bridge to people when distress lasts; checked on 462
+   real people from five open experience-sampling studies. → `docs/30`, `engine/soulcal/understanding.py`
 
 ## Credits
 
