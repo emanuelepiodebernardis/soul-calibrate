@@ -12,8 +12,9 @@ model, in-house or from a partner, and makes its reading right for this person. 
 asks "does this feel right?" or stays quiet, and so when the bracelet should pulse to calm. It learns on the
 phone without breaking "never used for training", and measures every model against the user's own answers.
 
-**All numbers in this repository come from synthetic people.** They show how the method behaves, not how real
-users are; the first checks on real data are E31 (real voice) and E32 (the pulse) in [docs/16](docs/16-experiments.md).
+**Almost all numbers in this repository come from synthetic people.** They show how the method behaves, not how real
+users are. The exception is the understanding layer, simulated on the profiles of 462 real people from five open
+experience-sampling studies; the first checks on real data are E31 (real voice) and E32 (the pulse) in [docs/16](docs/16-experiments.md).
 
 ## Contents
 
@@ -264,7 +265,7 @@ in a JSON file on the phone.
 | `archetypes` | prototype: archetypes from a consenting cohort, new people matched after 4 days | [25](docs/25-coarse-to-fine-and-archetypes.md) |
 | `support.SupportPolicy` | when and how the bracelet pulses; held-out moments; rhythm, live-heart-rate heartbeat and resonance breathing learned per person | [26](docs/26-when-to-pulse.md), [27](docs/27-voice-and-vibration.md) |
 | `channels_sim`, `haptics_sim` | synthetic checks: voice, words, face and body; voice check-ins; tuning the pulse | [27](docs/27-voice-and-vibration.md) |
-| `understanding` | understanding layer: need gate, granularity index, reflective prompts with an optional lens; checked on 462 people from open ESM data | [30](docs/30-understanding-layer.md) |
+| `understanding` | understanding layer: need gate, granularity index, reflective prompts with an optional lens; for people who do not know what they feel, questions on what it is like, body first and answer reliability; checked on 462 people from open ESM data | [30](docs/30-understanding-layer.md) |
 | `anchors.SignatureModel` | voice-and-body signatures from one fixed sentence: enrollment, daily anchor, tagged readings; what changes in the person | [29](docs/29-voice-signatures.md) |
 
 | Engine demo, 20 synthetic people | Accuracy, week 6 | Accuracy when speaking |
@@ -304,7 +305,7 @@ Full outputs: [DEMO](engine/examples/demo_out/DEMO.md) · [PATTERNS](engine/exam
 
 ## 7. What is not done yet
 
-- **Real data.** Everything is synthetic. The first experiment on real audio (E31) is written and tested on
+- **Real data.** Everything is synthetic, except the profiles behind the understanding layer (462 real people, open data). The first experiment on real audio (E31) is written and tested on
   generated audio, signatures included (RAVDESS actors read the same sentences in every emotion); it needs a machine
 with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 - **The pulse's effect.** It is assumed in the checks; it has to be measured on a consenting cohort (E32), with
@@ -314,8 +315,8 @@ with internet to download emotion2vec+ and RAVDESS: `realvoice/`.
 
 ## 8. How the ideas connect: knowledge graph
 
-The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,169 concepts and
-3,430 links across documents and code, grouped into areas. Read left to right: where an idea comes from
+The project was mapped with [Graphify](https://pypi.org/project/graphifyy/) after every step: 1,364 concepts and
+4,152 links across documents and code, grouped into areas. Read left to right: where an idea comes from
 (evidence), how it becomes part of the loop, how it is evaluated, and where it is built in code. Each circle is an
 area, each line the links between two areas (thicker = more); every area's two strongest links are drawn, so none is
 left without a line, and arcs on the left of a column join areas of the same group.
@@ -325,8 +326,8 @@ left without a line, and arcs on the left of a column join areas of the same gro
 Each round of the graph pointed at the next fix: active questions turned out to be the bridge of the whole system
 (so answer rate is the first metric); the situation memory and the personal head were joined; the coarse-to-fine
 question and the glucose-monitor idea got code and a test; the pulse and then voice and vibration became among the most
-connected documents, because they are where the reading, the budget and the evaluation meet; in the last round the
-voice-and-body signature moved from beside the engine to one of its bridges (docs/29: 100 links into 20 areas). **Open the interactive map
+connected documents, because they are where the reading, the budget and the evaluation meet; the voice-and-body signature moved from beside the engine to one of its bridges (docs/29: 100 links into 20 areas);
+in the last round the understanding layer joined 19 areas (docs/30), with its own area for people who do not know what they feel and answers weighed by how far each person's answers can be trusted. **Open the interactive map
 [`graph/map.html`](graph/map.html)** (works offline) to follow any concept to its sources and its code.
 → [graph/README.md](graph/README.md), [graph/GRAPH_REPORT.md](graph/GRAPH_REPORT.md)
 
